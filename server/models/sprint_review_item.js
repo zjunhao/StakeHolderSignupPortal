@@ -4,7 +4,7 @@ const SprintReviewItemSchema = mongoose.Schema({
     // title of sprint review
     title: {
         type: String,
-        required: true
+        required: true  
     },
     // how many slots are available in total for this sprint review
     total_slots: {
