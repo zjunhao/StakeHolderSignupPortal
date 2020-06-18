@@ -4,8 +4,6 @@ import { map } from 'rxjs/operators';
 
 import { ItemDetail } from '../models/item-detail';
 
-// import { Contact } from 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +17,7 @@ export class DashboardService {
   getSprintReviews() {
     return this._http.get(this._baseUrl + '/sprintreview/getItemList').pipe(
       map(res => console.log(res))
+      // map(res => res.json())
     );
   }
 
