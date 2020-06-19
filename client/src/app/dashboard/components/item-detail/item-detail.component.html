@@ -1,9 +1,8 @@
 <div>
     Title: {{itemDetail.title}}
 </div>
-<!-- TODO: change here to available slots -->
 <div>
-    Total Slots: {{itemDetail.totalSlots}}
+    Available Slots: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length - itemDetail.administratorAddedAttendees.length}}
 </div>
 <div>
     Organizor: {{itemDetail.organizer}}
@@ -14,9 +13,8 @@
 <div>
     Description: {{itemDetail.description}}
 </div>
-<!-- TODO: change here to all attendees -->
 <div>
-    Attendees: {{itemDetail.selfSignupAttendees}}
+    Attendees: {{itemDetail.selfSignupAttendees.concat(itemDetail.administratorAddedAttendees)}}
 </div>
 <div>
     Meeting Link: {{itemDetail.meetingLink}}

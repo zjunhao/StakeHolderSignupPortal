@@ -4,6 +4,7 @@ import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError as observableThrowError } from 'rxjs';
 
 import { DetailItemModel } from '../models/detail-item-model';
+import { ListItemModel } from '../models/list-item-model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class DashboardService {
     const url = `${this.baseUrl}/sprintreview/getItemList`;
 
     return this._http
-      .get<DetailItemModel[]>(url)
+      .get<ListItemModel[]>(url)
       .pipe(map(data => data), catchError(this.handleError));
   }
 
