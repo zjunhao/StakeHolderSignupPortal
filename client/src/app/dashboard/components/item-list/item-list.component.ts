@@ -3,6 +3,7 @@ import { MatListOption } from '@angular/material/list'
 import { LISTITEMS } from '../../../../assets/mock-data/mock-list-items';
 import { ListItemModel } from '../../models/list-item-model';
 import { Router } from '@angular/router';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-item-list',
@@ -14,12 +15,13 @@ export class ItemListComponent implements OnInit {
   listItems: ListItemModel[] = LISTITEMS;
 
   constructor(
+    private dashBoardService: DashboardService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    // this.dashBoardService.getSprintReviewList().subscribe(listItems => (this.listItems = listItems));
   }
-
 
   onSelectionChange(selectedOptions: MatListOption[]) {
     // we don't support multiple selection, so selectedOptions will only have 1 element.

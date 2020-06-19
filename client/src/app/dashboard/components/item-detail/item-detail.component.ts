@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DetailItemModel } from '../../models/detail-item-model';
+import { DETAILITEM } from 'src/assets/mock-data/mock-detail-item';
 
 @Component({
   selector: 'app-item-detail',
@@ -21,7 +22,8 @@ export class ItemDetailComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         const id = params['id'];
-        this.dashBoardService.getSprintReview(id).subscribe(itemDetail => (this.itemDetail = itemDetail));
+        // this.dashBoardService.getSprintReview(id).subscribe(itemDetail => (this.itemDetail = itemDetail));
+        this.itemDetail = DETAILITEM;
       } else {
         this.itemDetail = new DetailItemModel();
       }

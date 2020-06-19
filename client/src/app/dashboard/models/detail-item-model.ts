@@ -6,7 +6,7 @@ export class DetailItemModel {
     organizer: string;
     time: string;
     description?: string;
-    selfSignupAttendeesId?: number[];
-    administratorAddedAttendeesId?: number[];
+    selfSignupAttendees?: string[];
+    administratorAddedAttendees?: string[];
     meetingLink?: string; 
 }
