@@ -1,14 +1,24 @@
-<mat-accordion>
-    <mat-expansion-panel>
+<!-- <mat-accordion>
+    <mat-expansion-panel *ngFor="let listItem of listItems">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Sprint review 4.6
+            {{listItem.title}}
         </mat-panel-title>
         <mat-panel-description>
-          Ob notes update, annotation update
+          <span>{{listItem.description}}</span>
+          <span>{{listItem.time}}</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
       <app-item-detail></app-item-detail>
     </mat-expansion-panel>
-</mat-accordion>
-  
+</mat-accordion> -->
+
+<mat-selection-list #itemList [multiple]="false" (selectionChange)="onSelectionChange(itemList.selectedOptions.selected)">
+  <mat-list-option *ngFor="let listItem of listItems" [value]="listItem._id">
+    <div>
+      <span>{{listItem.title}}</span>
+      <span>{{listItem.description}}</span>
+      <span>{{listItem.time}}</span>
+    </div>
+  </mat-list-option>
+</mat-selection-list>
