@@ -1,18 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ItemListComponent } from './components/item-list/item-list.component';
-import { ItemDetailComponent } from './components/item-detail/item-detail.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list'
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ItemListComponent } from './components/item-list/item-list.component';
+import { ItemDetailComponent } from './components/item-detail/item-detail.component';
+import { ItemCreaterComponent } from './components/item-creater/item-creater.component';
 
 @NgModule({
-  declarations: [ItemListComponent, ItemDetailComponent],
+  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent],
   imports: [
     CommonModule,
     MatExpansionModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
   ],
   exports: [
     ItemListComponent,

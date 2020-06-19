@@ -1,0 +1,14 @@
+<form (submit)="createSprintReview()" style="border-color: aquamarine; border-style: solid;">
+    <mat-form-field appearance="standard">
+      <mat-label>Title</mat-label>
+      <input matInput name="eventtitle" [(ngModel)]="newItem.title">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="standard">
+      <mat-label>Total Slots</mat-label>
+      <input matInput name="slots" [(ngModel)]="newItem.totalSlots">
+    </mat-form-field>   
+    <br>
+    <button type ="submit">Submit</button>
+    <button type="reset">Cancel</button>
+</form>
