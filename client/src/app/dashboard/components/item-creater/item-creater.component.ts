@@ -14,9 +14,9 @@ export class ItemCreaterComponent implements OnInit {
   newItem = new DetailItemModel();
 
   // form controls
-  titleFC = new FormControl('', [Validators.required, Validators.minLength(1)]);
-  descriptionFC = new FormControl('', [Validators.required, Validators.minLength(1)]);
-  organizerFC = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  titleFC = new FormControl('', [Validators.required]);
+  descriptionFC = new FormControl('', [Validators.required]);
+  organizerFC = new FormControl('', [Validators.required]);
   totalSlotFC = new FormControl('', [Validators.required, Validators.pattern('\\d+')]);
   startTimeFC = new FormControl('', [Validators.required, Validators.pattern('\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d')]);
   endTimeFC = new FormControl('', [Validators.required, Validators.pattern('\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d')]);
@@ -34,17 +34,47 @@ export class ItemCreaterComponent implements OnInit {
       console.log('saved success');
       // this.dashboardService.addSprintReview(this.newItem).subscribe( () =>{
       //   this.newItemCreated.emit('new item created');
+      //   // clear form fields
+      //   // collapse form
       // })
     }
   }
 
-  getErrorMessage() {
-    // console.log('called');
-    // if (this.email.hasError('required')) {
-    //   return 'You must enter a value';
-    // }
-
-    // return this.email.hasError('email') ? 'Not a valid email' : '';
-    return 'Field cannot be empty'
+  // error messages for each form field
+  getTitleErrorMessage() {
+    return 'Title cannot be empty';
+  }
+  getDescriptionErrorMessage() {
+    return 'Description cannot be empty'
+  }
+  getOrganizerErrorMessage() {
+    return 'Organizer cannot be empty'
+  }
+  getTotalSlotsErrorMessage() {
+    if (this.totalSlotFC.hasError('required')) {
+      return 'Total slots cannot be empty';
+    } else if (this.totalSlotFC.hasError('pattern')){
+      return 'Slots should be a number';
+    } else {
+      return '';
+    }
+  }
+  getStartTimeErrorMessage() {
+    if (this.startTimeFC.hasError('required')) {
+      return 'Start time cannot be empty';
+    } else if (this.startTimeFC.hasError('pattern')){
+      return 'Date time format not correct';
+    } else {
+      return '';
+    }
+  }
+  getEndTimeErrorMessage() {
+    if (this.endTimeFC.hasError('required')) {
+      return 'End time cannot be empty';
+    } else if (this.endTimeFC.hasError('pattern')){
+      return 'Date time format not correct';
+    } else {
+      return '';
+    }
   }
 }

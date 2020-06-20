@@ -3,42 +3,42 @@
     <mat-form-field appearance="standard">
       <mat-label>Title</mat-label>
       <input matInput name="eventtitle" [(ngModel)]="newItem.title" [formControl]="titleFC" required>
-      <mat-error *ngIf="titleFC.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="titleFC.invalid">{{getTitleErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>
     <!-- Short Description -->
     <mat-form-field appearance="standard">
       <mat-label>Short Description</mat-label>
       <input matInput name="description" [(ngModel)]="newItem.description" [formControl]="descriptionFC" required>
-      <mat-error *ngIf="descriptionFC.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error>
     </mat-form-field>   
     <br>
     <!-- Start Time -->
     <div>
       <label for="startTime">Start Time</label>
       <input type="datetime-local" name="startTime" [(ngModel)]="newItem.startTime" [formControl]="startTimeFC" required>
-      <mat-error *ngIf="startTimeFC.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="startTimeFC.invalid">{{getStartTimeErrorMessage()}}</mat-error>
     </div>
     <br>
     <!-- End Time -->
     <div>
       <label for="endTime">End Time</label>
       <input type="datetime-local" name="endTime" [(ngModel)]="newItem.endTime" [formControl]="endTimeFC" required>
-      <mat-error *ngIf="endTimeFC.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="endTimeFC.invalid">{{getEndTimeErrorMessage()}}</mat-error>
     </div>
     <br>
     <!-- Organizer -->
     <mat-form-field appearance="standard">
       <mat-label>Event Organizer</mat-label>
       <input matInput name="organizer" [(ngModel)]="newItem.organizer" [formControl]="organizerFC" required>
-      <mat-error *ngIf="organizerFC.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="organizerFC.invalid">{{getOrganizerErrorMessage()}}</mat-error>
     </mat-form-field>   
     <br>
     <!-- Total Slots -->
     <mat-form-field appearance="standard">
       <mat-label>Total Slots</mat-label>
       <input matInput name="slots" [(ngModel)]="newItem.totalSlots" [formControl]="totalSlotFC" required>
-      <mat-error *ngIf="totalSlotFC.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="totalSlotFC.invalid">{{getTotalSlotsErrorMessage()}}</mat-error>
     </mat-form-field>   
     <br>
     <!-- Meeting Link -->
