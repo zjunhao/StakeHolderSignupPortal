@@ -4,7 +4,8 @@ export class DetailItemModel {
     title: string;
     totalSlots: number;
     organizer: string;
-    time: string;
+    startTime: string;
+    endTime: string;
     description?: string;
     selfSignupAttendees?: string[];
     administratorAddedAttendees?: string[];

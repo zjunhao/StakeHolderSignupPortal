@@ -16,15 +16,20 @@ const SprintReviewItemSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    // what time this sprint review happen
-    event_time: {
+    // what time this sprint review starts
+    start_time: {
+        type: String,
+        required: true
+    },
+    // what time this sprint review ends
+    end_time: {
         type: String,
         required: true
     },
     // short description about this sprint review
     short_description: {
         type: String,
-        required: false
+        required: true
     },
     // id of sprint review attendees signup themselves
     self_signup_attendees_id: {

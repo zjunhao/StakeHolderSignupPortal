@@ -14,9 +14,10 @@ route.get('/getItemList', (req, res) => {
 route.post('/addItem', (req, res)=>{
     let newItem = new SprintReviewItem({
         title: req.body.title,
-        total_slots: req.body.total_slots,
+        total_slots: req.body.totalSlots,
         event_organizer: req.body.organizer,
-        event_time: req.body.time
+        start_time: req.body.startTime,
+        end_time: req.body.endTime
     });
 
     newItem.save((err, item)=>{

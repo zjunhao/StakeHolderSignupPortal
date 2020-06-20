@@ -20,7 +20,7 @@ export class ItemListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.dashBoardService.getSprintReviewList().subscribe(listItems => (this.listItems = listItems));
+    // this.refreshList();
   }
 
   onSelectionChange(selectedOptions: MatListOption[]) {
@@ -28,5 +28,9 @@ export class ItemListComponent implements OnInit {
     const selectedItemId = selectedOptions[0].value;
     const link = ['/itemdetail', selectedItemId];
     this.router.navigate(link);
+  }
+
+  refreshList() {
+    this.dashBoardService.getSprintReviewList().subscribe(listItems => (this.listItems = listItems));
   }
 }
