@@ -53,7 +53,7 @@ export class DashboardService {
     const url = `${this.baseUrl}/sprintreview/deleteItem/${sprintReviewId}`;
 
     return this._http
-      .delete<DetailItemModel>(url)
+      .delete(url)
       .pipe(catchError(this.handleError));
   }
 

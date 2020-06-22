@@ -20,6 +20,7 @@
       <span>{{listItem.description}}</span>
       <span>{{listItem.startTime}}</span>
       <span>{{listItem.endTime}}</span>
+      <button (click)='deleteSprintReview($event, listItem._id)'>delete</button>
     </div>
   </mat-list-option>
 </mat-selection-list>
