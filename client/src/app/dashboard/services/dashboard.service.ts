@@ -6,6 +6,7 @@ import { Observable, throwError as observableThrowError } from 'rxjs';
 import { DetailItemModel } from '../models/detail-item-model';
 import { ListItemModel } from '../models/list-item-model';
 import { ServerDetailItemModel } from '../models/detail-item-model-server';
+import { ServerListItemModel } from '../models/list-item-model-server';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class DashboardService {
     const url = `${this.baseUrl}/sprintreview/getItemList`;
 
     return this._http
-      .get<ListItemModel[]>(url)
-      .pipe(map(data => data), catchError(this.handleError));
+      .get<ServerListItemModel[]>(url)
+      .pipe(map(serverListItems => this.toClientListItems(serverListItems)), catchError(this.handleError));
   }
 
   // get all details about a specific sprint review
@@ -31,8 +32,8 @@ export class DashboardService {
 
     return this._http
       .get<ServerDetailItemModel>(url)
-      .pipe(map(serverDetailItemModel => this.toClientDetailItemModel(serverDetailItemModel)));
-      // .pipe(map(serverDetailItemModel => this.toClientDetailItemModel(serverDetailItemModel)), catchError(this.handleError));
+      // .pipe(map(serverDetailItemModel => this.toClientDetailItemModel(serverDetailItemModel)));
+      .pipe(map(serverDetailItem => this.toClientDetailItem(serverDetailItem)), catchError(this.handleError));
   }
 
   // add new sprint review
@@ -61,18 +62,30 @@ export class DashboardService {
     return observableThrowError(res.error || 'Server error');
   }
 
-  private toClientDetailItemModel(serverDetailItemModel: ServerDetailItemModel): DetailItemModel {
+  private toClientDetailItem(serverDetailItem: ServerDetailItemModel): DetailItemModel {
     return {
-      _id: serverDetailItemModel._id,
-      title: serverDetailItemModel.title,
-      totalSlots: serverDetailItemModel.total_slots,
-      organizer: serverDetailItemModel.event_organizer,
-      startTime: serverDetailItemModel.start_time,
-      endTime: serverDetailItemModel.end_time,
-      description: serverDetailItemModel.short_description,
-      selfSignupAttendees: serverDetailItemModel.self_signup_attendees,
-      administratorAddedAttendees: serverDetailItemModel.administrator_added_attendees,
-      meetingLink: serverDetailItemModel.meeting_link, 
+      _id: serverDetailItem._id,
+      title: serverDetailItem.title,
+      totalSlots: serverDetailItem.total_slots,
+      organizer: serverDetailItem.event_organizer,
+      startTime: serverDetailItem.start_time,
+      endTime: serverDetailItem.end_time,
+      description: serverDetailItem.short_description,
+      selfSignupAttendees: serverDetailItem.self_signup_attendees,
+      administratorAddedAttendees: serverDetailItem.administrator_added_attendees,
+      meetingLink: serverDetailItem.meeting_link, 
     } as DetailItemModel;
+  }
+
+  private toClientListItems(serverListItems: ServerListItemModel[]): ListItemModel[] {
+    return serverListItems.map(serverListItem => {
+      return {
+        _id: serverListItem._id,
+        title: serverListItem.title,
+        startTime: serverListItem.start_time,
+        endTime: serverListItem.end_time,
+        description: serverListItem.short_description,
+      } as ListItemModel;
+    });
   }
 }

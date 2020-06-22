@@ -5,8 +5,21 @@ const SprintReviewItem = require('../models/sprint_review_item');
 
 // get a list of all sprint reviews
 route.get('/getItemList', (req, res) => {
+    // TODO: get list group by group
     SprintReviewItem.find(function(err, itemList){
-        res.json(itemList);
+        let trimItemList = [];
+        itemList.forEach(item => {
+            let trimItem = {
+                _id: item._id,
+                title: item.title,
+                start_time: item.start_time,
+                end_time: item.end_time,
+                short_description: item.short_description
+            }
+            trimItemList.push(trimItem);
+        })
+        trimItemList.sort((a, b) => (b.start_time.localeCompare(a.start_time)));
+        res.json(trimItemList);
     });
 });
 

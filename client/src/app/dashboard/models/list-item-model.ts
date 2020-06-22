@@ -2,6 +2,7 @@
 export class ListItemModel {
     _id?: string;
     title: string;
-    time: string;
+    startTime: string;
+    endTime: string;
     description: string;
 }
