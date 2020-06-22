@@ -1,4 +1,7 @@
-/** Detail model for item shown when item on item list is clicked */
+/** 
+ * Detail model for item shown when item on item list is clicked.
+ * Client format.
+ */
 export class DetailItemModel {
     _id?: string;
     title: string;
@@ -6,7 +9,7 @@ export class DetailItemModel {
     organizer: string;
     startTime: string;
     endTime: string;
-    description?: string;
+    description: string;
     selfSignupAttendees?: string[];
     administratorAddedAttendees?: string[];
     meetingLink?: string; 

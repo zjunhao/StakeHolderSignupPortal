@@ -12,7 +12,8 @@ import { DashboardService } from '../../services/dashboard.service';
 })
 export class ItemListComponent implements OnInit {
 
-  listItems: ListItemModel[] = LISTITEMS;
+  // listItems: ListItemModel[] = LISTITEMS;
+  listItems: ListItemModel[];
 
   constructor(
     private dashBoardService: DashboardService,
@@ -20,7 +21,7 @@ export class ItemListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.refreshList();
+    this.refreshList();
   }
 
   onSelectionChange(selectedOptions: MatListOption[]) {
@@ -31,6 +32,9 @@ export class ItemListComponent implements OnInit {
   }
 
   refreshList() {
-    this.dashBoardService.getSprintReviewList().subscribe(listItems => (this.listItems = listItems));
+    // this.dashBoardService.getSprintReviewList().subscribe(listItems => (this.listItems = listItems));
+    this.dashBoardService.getSprintReviewList().subscribe(listItems => {
+      this.listItems = listItems;
+    });
   }
 }

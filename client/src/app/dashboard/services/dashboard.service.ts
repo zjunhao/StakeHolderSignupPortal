@@ -5,6 +5,7 @@ import { Observable, throwError as observableThrowError } from 'rxjs';
 
 import { DetailItemModel } from '../models/detail-item-model';
 import { ListItemModel } from '../models/list-item-model';
+import { ServerDetailItemModel } from '../models/detail-item-model-server';
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +26,13 @@ export class DashboardService {
   }
 
   // get all details about a specific sprint review
-  getSprintReview(id: string) {
+  getSprintReview(id: string): Observable<DetailItemModel> {
     const url = `${this.baseUrl}/sprintreview/getItem/${id}`;
 
     return this._http
-      .get<DetailItemModel>(url)
-      .pipe(map(data => data), catchError(this.handleError));
+      .get<ServerDetailItemModel>(url)
+      .pipe(map(serverDetailItemModel => this.toClientDetailItemModel(serverDetailItemModel)));
+      // .pipe(map(serverDetailItemModel => this.toClientDetailItemModel(serverDetailItemModel)), catchError(this.handleError));
   }
 
   // add new sprint review
@@ -57,5 +59,20 @@ export class DashboardService {
   private handleError(res: HttpErrorResponse | any) {
     console.error(res.error || res.body.error);
     return observableThrowError(res.error || 'Server error');
+  }
+
+  private toClientDetailItemModel(serverDetailItemModel: ServerDetailItemModel): DetailItemModel {
+    return {
+      _id: serverDetailItemModel._id,
+      title: serverDetailItemModel.title,
+      totalSlots: serverDetailItemModel.total_slots,
+      organizer: serverDetailItemModel.event_organizer,
+      startTime: serverDetailItemModel.start_time,
+      endTime: serverDetailItemModel.end_time,
+      description: serverDetailItemModel.short_description,
+      selfSignupAttendees: serverDetailItemModel.self_signup_attendees,
+      administratorAddedAttendees: serverDetailItemModel.administrator_added_attendees,
+      meetingLink: serverDetailItemModel.meeting_link, 
+    } as DetailItemModel;
   }
 }

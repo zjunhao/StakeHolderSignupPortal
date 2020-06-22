@@ -31,12 +31,11 @@ export class ItemCreaterComponent implements OnInit {
   createSprintReview() {
     if (this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid 
           && this.totalSlotFC.valid && this.startTimeFC.valid && this.endTimeFC.valid) {
-      console.log('saved success');
-      // this.dashboardService.addSprintReview(this.newItem).subscribe( () =>{
-      //   this.newItemCreated.emit('new item created');
-      //   // clear form fields
-      //   // collapse form
-      // })
+      this.dashboardService.addSprintReview(this.newItem).subscribe( () =>{
+        this.newItemCreated.emit('new item created');
+        // clear form fields
+        // collapse form
+      })
     }
   }
 

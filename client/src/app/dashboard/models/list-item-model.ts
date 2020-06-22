@@ -3,5 +3,5 @@ export class ListItemModel {
     _id?: string;
     title: string;
     time: string;
-    description?: string;
+    description: string;
 }

@@ -15,14 +15,14 @@
     <br>
     <!-- Start Time -->
     <div>
-      <label for="startTime">Start Time</label>
+      <label for="startTime">Start Time *</label>
       <input type="datetime-local" name="startTime" [(ngModel)]="newItem.startTime" [formControl]="startTimeFC" required>
       <mat-error *ngIf="startTimeFC.invalid">{{getStartTimeErrorMessage()}}</mat-error>
     </div>
     <br>
     <!-- End Time -->
     <div>
-      <label for="endTime">End Time</label>
+      <label for="endTime">End Time *</label>
       <input type="datetime-local" name="endTime" [(ngModel)]="newItem.endTime" [formControl]="endTimeFC" required>
       <mat-error *ngIf="endTimeFC.invalid">{{getEndTimeErrorMessage()}}</mat-error>
     </div>
