@@ -9,7 +9,7 @@
     <!-- Short Description -->
     <mat-form-field appearance="standard">
       <mat-label>Short Description</mat-label>
-      <input matInput name="description" [(ngModel)]="newItem.description" [formControl]="descriptionFC" required>
+      <textarea matInput name="description" [(ngModel)]="newItem.description" [formControl]="descriptionFC" required></textarea>
       <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error>
     </mat-form-field>   
     <br>
