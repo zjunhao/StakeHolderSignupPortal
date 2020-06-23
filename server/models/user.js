@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
+
     email: {
         type: String,
         required: true
     },
-    phone: {
+    password: {
         type: String,
-        required: false
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
     },
     // normal user or administrator
     privilege: {

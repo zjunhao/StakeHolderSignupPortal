@@ -7,11 +7,12 @@ route.get('/example', (req, res) => {
     res.send('/example being hit');
 });
 
-// create a new sprint review
+// signUp a user
 route.post('/createUser', (req, res)=>{
     let newUser = new User({
+        email: req.body.email,
+        password: req.body.password,
         name: req.body.name,
-        email: req.body.email
     });
 
     newUser.save((err, user)=>{

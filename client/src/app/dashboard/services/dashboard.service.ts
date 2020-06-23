@@ -15,7 +15,9 @@ export class DashboardService {
 
   private baseUrl = 'http://localhost:3000/api';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   // get a list of sprint review
   getSprintReviewList() {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SignupModel } from '../../models/signup-model';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -9,12 +11,18 @@ import { SignupModel } from '../../models/signup-model';
 export class SignUpComponent implements OnInit {
   signupInfo: SignupModel = new SignupModel();
 
-  constructor() { }
+  constructor(
+    private loginService: LoginService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
 
   signupUser() {
-
+    this.loginService.signUpUser(this.signupInfo).subscribe(()=>{
+      // TODO: add error handling
+      this.router.navigate(['/signupsucceed']);
+    });
   }
 }
