@@ -15,13 +15,13 @@ export class DashboardService {
 
   private baseUrl = 'http://localhost:3000/api';
 
-  constructor(private _http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   // get a list of sprint review
   getSprintReviewList() {
     const url = `${this.baseUrl}/sprintreview/getItemList`;
 
-    return this._http
+    return this.http
       .get<ServerListItemModel[]>(url)
       .pipe(map(serverListItems => this.toClientListItems(serverListItems)), catchError(this.handleError));
   }
@@ -30,7 +30,7 @@ export class DashboardService {
   getSprintReview(id: string): Observable<DetailItemModel> {
     const url = `${this.baseUrl}/sprintreview/getItem/${id}`;
 
-    return this._http
+    return this.http
       .get<ServerDetailItemModel>(url)
       // .pipe(map(serverDetailItemModel => this.toClientDetailItemModel(serverDetailItemModel)));
       .pipe(map(serverDetailItem => this.toClientDetailItem(serverDetailItem)), catchError(this.handleError));
@@ -43,17 +43,29 @@ export class DashboardService {
 
     const url = `${this.baseUrl}/sprintreview/addItem`;
 
-    return this._http
+    return this.http
       .post<DetailItemModel>(url, newSprintReview, {headers: headers})
       .pipe(catchError(this.handleError));
   }
 
   // delete a specific sprint review
-  deleteSprintReview(sprintReviewId: string) {
-    const url = `${this.baseUrl}/sprintreview/deleteItem/${sprintReviewId}`;
+  deleteSprintReview(id: string) {
+    const url = `${this.baseUrl}/sprintreview/deleteItem/${id}`;
 
-    return this._http
+    return this.http
       .delete(url)
+      .pipe(catchError(this.handleError));
+  }
+
+  // update field of a sprint review
+  updateSprintReview(id: string, updateBody: object){
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    const url = `${this.baseUrl}/sprintreview/updateItem/${id}`;
+    
+    return this.http
+      .put(url, updateBody)
       .pipe(catchError(this.handleError));
   }
 

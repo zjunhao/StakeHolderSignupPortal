@@ -7,9 +7,9 @@ const SprintReviewItem = require('../models/sprint_review_item');
 route.get('/getItemList', (req, res) => {
     // TODO: get list group by group
     SprintReviewItem.find(function(err, itemList){
-        let trimItemList = [];
+        var trimItemList = [];
         itemList.forEach(item => {
-            let trimItem = {
+            var trimItem = {
                 _id: item._id,
                 title: item.title,
                 start_time: item.start_time,
@@ -28,10 +28,8 @@ route.get('/getItem/:id', (req, res) => {
     // TODO: for each attendee id, find attendee name and return name instead
     SprintReviewItem.findById(req.params.id, function(err, itemDetail){
         if (err) { 
-            console.log('SERVER > get item detail error');
             res.json(err);
         } else {
-            console.log('SERVER > get item detail succeed');
             res.json(itemDetail);
         }
     })
@@ -39,7 +37,7 @@ route.get('/getItem/:id', (req, res) => {
 
 // create a new sprint review
 route.post('/addItem', (req, res)=>{
-    let newItem = new SprintReviewItem({
+    var newItem = new SprintReviewItem({
         title: req.body.title,
         total_slots: req.body.totalSlots,
         event_organizer: req.body.organizer,
@@ -67,5 +65,43 @@ route.delete('/deleteItem/:id', (req,res)=>{
         }
     })
 });
+
+// update field of a sprint review
+route.put('/updateItem/:id', (req, res)=>{
+    var condition = {_id: req.params.id};
+    var update = getUpdateFromRequest(req);
+
+    SprintReviewItem.update(condition, update, function(err, numAffected) {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json('Item updated');
+        }
+    })
+})
+
+function getUpdateFromRequest(req) {
+    var keys = Object.keys(req.body);
+    if (keys.length !== 1) {
+        return null;
+    }
+
+    switch (keys[0]) {
+        case "title": 
+            return {$set: { title: req.body.title}};
+        case "organizer":
+            return {$set: { event_organizer: req.body.organizer }};
+        case "startTime":
+            return {$set: { start_time: req.body.startTime }};
+        case "endTime":
+            return {$set: { end_time: req.body.endTime }};
+        case "description":
+            return {$set: { short_description: req.body.description }};
+        case "meetingLink":
+            return {$set: { meeting_link: req.body.meetingLink }};
+        default:
+            return null;
+    }
+}
 
 module.exports = route;

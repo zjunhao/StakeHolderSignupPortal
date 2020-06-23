@@ -26,6 +26,7 @@ import { ItemCreaterComponent } from './components/item-creater/item-creater.com
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatListModule,
     ReactiveFormsModule
   ],
   exports: [
