@@ -1,0 +1,13 @@
+<form (submit)="signIn()">
+    <div>
+      <label for="email">Email</label>
+      <input id="email" name="email" [(ngModel)]="loginInfo.email" required>
+    </div>
+    <div>
+      <label for="pwd">Password</label>
+      <input id="pwd" name="pwd" type="password" [(ngModel)]="loginInfo.password" required>
+    </div>
+    
+    <button type ="submit">Log In</button>
+</form>
+<button routerLink="/signup">Sign Up</button>
