@@ -39,6 +39,7 @@ export class ItemListComponent implements OnInit {
   }
 
   deleteSprintReview($event, _id:string) {
+    // TODO: promp user to confirm delete
     // prevent event from bubbling up to <mat-selection-list> in template
     $event.stopPropagation();
     this.dashBoardService.deleteSprintReview(_id).subscribe(()=>{
