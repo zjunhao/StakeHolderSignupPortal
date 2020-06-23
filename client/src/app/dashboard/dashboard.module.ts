@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
+import { RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ItemListComponent } from './components/item-list/item-list.component';
@@ -27,7 +28,8 @@ import { ItemCreaterComponent } from './components/item-creater/item-creater.com
     MatDatepickerModule,
     MatNativeDateModule,
     MatListModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     ItemListComponent,

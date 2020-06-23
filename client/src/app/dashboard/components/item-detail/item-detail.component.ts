@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DetailItemModel } from '../../models/detail-item-model';
-import { DETAILITEM } from 'src/assets/mock-data/mock-detail-item';
 
 @Component({
   selector: 'app-item-detail',

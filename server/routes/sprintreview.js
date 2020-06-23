@@ -68,40 +68,43 @@ route.delete('/deleteItem/:id', (req,res)=>{
 
 // update field of a sprint review
 route.put('/updateItem/:id', (req, res)=>{
+    function getUpdateFromRequest(request) {
+        var keys = Object.keys(request.body);
+        if (keys.length !== 1) {
+            return null;
+        }
+    
+        switch (keys[0]) {
+            case "title": 
+                return {$set: { title: request.body.title}};
+            case "organizer":
+                return {$set: { event_organizer: request.body.organizer }};
+            case "startTime":
+                return {$set: { start_time: request.body.startTime }};
+            case "endTime":
+                return {$set: { end_time: request.body.endTime }};
+            case "description":
+                return {$set: { short_description: request.body.description }};
+            case "meetingLink":
+                return {$set: { meeting_link: request.body.meetingLink }};
+            default:
+                return null;
+        }
+    }
+
     var condition = {_id: req.params.id};
     var update = getUpdateFromRequest(req);
-
     SprintReviewItem.update(condition, update, function(err, numAffected) {
         if (err) {
             res.json(err);
+        } else if (update === null) {
+            res.json('Nothing being updated, please make sure your request body has the correct key name');
         } else {
             res.json('Item updated');
         }
     })
 })
 
-function getUpdateFromRequest(req) {
-    var keys = Object.keys(req.body);
-    if (keys.length !== 1) {
-        return null;
-    }
 
-    switch (keys[0]) {
-        case "title": 
-            return {$set: { title: req.body.title}};
-        case "organizer":
-            return {$set: { event_organizer: req.body.organizer }};
-        case "startTime":
-            return {$set: { start_time: req.body.startTime }};
-        case "endTime":
-            return {$set: { end_time: req.body.endTime }};
-        case "description":
-            return {$set: { short_description: req.body.description }};
-        case "meetingLink":
-            return {$set: { meeting_link: req.body.meetingLink }};
-        default:
-            return null;
-    }
-}
 
 module.exports = route;
