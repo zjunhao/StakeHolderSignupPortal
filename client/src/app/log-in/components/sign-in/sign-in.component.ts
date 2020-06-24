@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../../models/login-model';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
-import { UserModel } from '../../models/user-model';
+import { UserModel } from '../../../shared/models/user-model';
 
 @Component({
   selector: 'app-sign-in',

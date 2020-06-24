@@ -5,7 +5,7 @@ import { Observable, throwError as observableThrowError } from 'rxjs';
 import { SignupModel } from '../models/signup-model';
 import { LoginModel } from '../models/login-model';
 import { ServerUserModel } from '../models/user-model-server';
-import { UserModel } from '../models/user-model';
+import { UserModel } from '../../shared/models/user-model';
 
 @Injectable({
   providedIn: 'root'
