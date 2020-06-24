@@ -7,7 +7,7 @@
       <label for="pwd">Password</label>
       <input id="pwd" name="pwd" type="password" [(ngModel)]="loginInfo.password" required>
     </div>
-    <div id="login-error"></div>
+    <div id="login-error">{{loginErrorText}}</div>
 
     <button type ="submit">Log In</button>
 </form>

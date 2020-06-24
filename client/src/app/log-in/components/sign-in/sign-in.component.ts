@@ -11,6 +11,7 @@ import { UserModel } from '../../../shared/models/user-model';
 })
 export class SignInComponent implements OnInit {
   loginInfo: LoginModel = new LoginModel();
+  loginErrorText: string = "";
 
   constructor(
     private loginService: LoginService,
@@ -24,15 +25,13 @@ export class SignInComponent implements OnInit {
     this.loginService.loginUser(this.loginInfo).subscribe(user => {
       if (user !== null) {
         // user credential is valid
-        const errorElem = document.getElementById('login-error');
-        errorElem.innerHTML = '';
+        this.loginErrorText = "";
         localStorage.setItem("currentUser", JSON.stringify(user));
         console.log(localStorage.getItem("currentUser"));
         this.router.navigate(['/dashboard']);
       } else {
         // user credential not correct
-        const errorElem = document.getElementById('login-error');
-        errorElem.innerHTML = 'Email / Password not correct.';
+        this.loginErrorText = 'Email / Password not correct.';
       }
     });
 
