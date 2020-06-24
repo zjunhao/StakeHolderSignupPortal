@@ -3,10 +3,6 @@ const route = express.Router();
 
 const User = require('../models/user');
 
-route.get('/example', (req, res) => {
-    res.send('/example being hit');
-});
-
 // signUp a user
 route.post('/createUser', (req, res)=>{
     let newUser = new User({
@@ -15,14 +11,21 @@ route.post('/createUser', (req, res)=>{
         name: req.body.name,
     });
 
-    // TODO: if user alreay exists, error back
-    newUser.save((err, user)=>{
-        if(err){
-            res.json({msg: 'Failed to create new user'});
+    User.find({email: req.body.email}, (err, user) => {
+        if (err) {
+            res.json({success: false, message: err});
+        } else if (user.length > 0) {
+            res.json({success: false, message: 'email already exists'});
         } else {
-            res.json({msg: 'New user created successfully'});
+            newUser.save((err, user)=>{
+                if(err){
+                    res.json({success: false, message: err});
+                } else {
+                    res.json({success: true, message: 'New user created successfully'});
+                }
+            });
         }
-    });
+    })
 });
 
 // login a user
