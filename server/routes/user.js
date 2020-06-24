@@ -32,6 +32,7 @@ route.post('/createUser', (req, res)=>{
 route.post('/loginUser', (req, res)=>{
     if (!req.body.email || !req.body.password) {
         res.json({success: false, message: 'Missing email or password'});
+        return;
     }
     User.find({email: req.body.email}, (err, user) => {
         if (err) {
@@ -50,7 +51,8 @@ route.post('/loginUser', (req, res)=>{
                     userInfo: {
                         _id: user[0]._id,
                         email: user[0].email,
-                        name: user[0].name
+                        name: user[0].name,
+                        privilege: user[0].privilege
                     }
                 });
             }

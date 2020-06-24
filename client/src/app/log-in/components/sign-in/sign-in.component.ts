@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../../models/login-model';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
+import { UserModel } from '../../models/user-model';
 
 @Component({
   selector: 'app-sign-in',
@@ -21,9 +22,19 @@ export class SignInComponent implements OnInit {
 
   signIn() {
     this.loginService.loginUser(this.loginInfo).subscribe(user => {
-      localStorage.setItem("currentUser", JSON.stringify(user));
+      if (user !== null) {
+        // user credential is valid
+        const errorElem = document.getElementById('login-error');
+        errorElem.innerHTML = '';
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        console.log(localStorage.getItem("currentUser"));
+        this.router.navigate(['/dashboard']);
+      } else {
+        // user credential not correct
+        const errorElem = document.getElementById('login-error');
+        errorElem.innerHTML = 'Email / Password not correct.';
+      }
     });
-    console.log(localStorage.getItem("currentUser"));
-    this.router.navigate(['/dashboard']);
+
   }
 }

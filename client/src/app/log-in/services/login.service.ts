@@ -39,14 +39,23 @@ export class LoginService {
 
     return this.http
       .post<ServerUserModel>(url, user, {headers: headers})
-      .pipe(map(serverUserModel => this.toClientUserModel(serverUserModel)), catchError(this.handleError));
+      .pipe(
+        map(serverUserModel => {
+          if (serverUserModel.success) {
+            return this.toClientUserModel(serverUserModel);
+          } else {
+            return null;
+          }
+        }), 
+        catchError(this.handleError));
   }
 
   private toClientUserModel(serverModel: ServerUserModel): UserModel {
     return {
       _id: serverModel.userInfo._id,
       email: serverModel.userInfo.email,
-      name: serverModel.userInfo.name
+      name: serverModel.userInfo.name,
+      privilege: serverModel.userInfo.privilege
     } as UserModel;
   }
 

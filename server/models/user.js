@@ -17,7 +17,8 @@ const UserSchema = mongoose.Schema({
     // normal user or administrator
     privilege: {
         type: String,
-        required: false
+        required: false,
+        default: 'normal'
     }
 });
 

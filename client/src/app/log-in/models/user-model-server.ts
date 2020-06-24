@@ -11,4 +11,5 @@ class UserInfo{
     _id: string;
     email: string;
     name: string;
+    privilege: string;
 }
