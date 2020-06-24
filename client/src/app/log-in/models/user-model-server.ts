@@ -2,7 +2,13 @@
  * Model storing information about a user, retrieved from server
  */
 export class ServerUserModel {
-    _id?: string;
+    success: boolean;
+    message: string;
+    userInfo: UserInfo;
+}
+
+class UserInfo{
+    _id: string;
     email: string;
     name: string;
 }

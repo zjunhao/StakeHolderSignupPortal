@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit {
   }
 
   signupUser() {
-    this.loginService.signUpUser(this.signupInfo).subscribe(()=>{
+    this.loginService.signupUser(this.signupInfo).subscribe(()=>{
       // TODO: add error handling
       this.router.navigate(['/signupsucceed']);
     });

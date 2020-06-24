@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError as observableThrowError } from 'rxjs';
 import { SignupModel } from '../models/signup-model';
+import { LoginModel } from '../models/login-model';
+import { ServerUserModel } from '../models/user-model-server';
+import { UserModel } from '../models/user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +18,36 @@ export class LoginService {
     private http: HttpClient
   ) { }
 
-  signUpUser(newUser: SignupModel) {
+  signupUser(newUser: SignupModel) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
 
     const url = `${this.baseUrl}/user/createUser`;
 
+    // TODO: hash passwords here
+
     return this.http
-      .post<SignupModel>(url, newUser, {headers: headers})
+      .post(url, newUser, {headers: headers})
       .pipe(catchError(this.handleError));
+  }
+
+  loginUser(user: LoginModel) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+
+    const url = `${this.baseUrl}/user/loginUser`;
+
+    return this.http
+      .post<ServerUserModel>(url, user, {headers: headers})
+      .pipe(map(serverUserModel => this.toClientUserModel(serverUserModel)), catchError(this.handleError));
+  }
+
+  private toClientUserModel(serverModel: ServerUserModel): UserModel {
+    return {
+      _id: serverModel.userInfo._id,
+      email: serverModel.userInfo.email,
+      name: serverModel.userInfo.name
+    } as UserModel;
   }
 
   private handleError(res: HttpErrorResponse | any) {
