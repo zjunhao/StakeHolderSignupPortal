@@ -10,7 +10,7 @@ import { DetailItemModel } from '../../models/detail-item-model';
 })
 export class ItemDetailComponent implements OnInit {
 
-  editMode: boolean = true;
+  editMode: boolean = false;
   itemDetail: DetailItemModel = new DetailItemModel();
 
   constructor(
@@ -23,6 +23,9 @@ export class ItemDetailComponent implements OnInit {
   }
 
   refreshItemDetail() {
+    // request example like .../:id/?editMode=false
+
+    // extract item id from request parameter
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         const id = params['id'];
@@ -31,6 +34,13 @@ export class ItemDetailComponent implements OnInit {
         });
       } 
     });
+
+    // extract editMode bool from request query parameter 
+    this.route.queryParams.forEach((params: Params) => {
+      if (params['editMode'] !== undefined) {
+        this.editMode = params['editMode'] === 'true';
+      }
+    })
   }
 
   onTitleUpdate() {

@@ -1,2 +1,2 @@
-<app-item-creater (newItemCreated)='refreshList()'></app-item-creater>
-<app-item-list></app-item-list>
+<app-item-creater *ngIf='editMode' (newItemCreated)='refreshList()'></app-item-creater>
+<app-item-list [editMode]='editMode'></app-item-list>

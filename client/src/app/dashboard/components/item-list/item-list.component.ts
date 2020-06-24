@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatListOption } from '@angular/material/list'
 import { LISTITEMS } from '../../../../assets/mock-data/mock-list-items';
 import { ListItemModel } from '../../models/list-item-model';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
@@ -14,6 +14,8 @@ export class ItemListComponent implements OnInit {
 
   // listItems: ListItemModel[] = LISTITEMS;
   listItems: ListItemModel[];
+
+  @Input() editMode: boolean;
 
   constructor(
     private dashBoardService: DashboardService,
@@ -28,7 +30,11 @@ export class ItemListComponent implements OnInit {
     // we don't support multiple selection, so selectedOptions will only have 1 element.
     const selectedItemId = selectedOptions[0].value;
     const link = ['/itemdetail', selectedItemId];
-    this.router.navigate(link);
+    let navigationExtras: NavigationExtras = {
+      queryParams: { 'editMode': this.editMode }
+    };
+    
+    this.router.navigate(link, navigationExtras);
   }
 
   refreshList() {

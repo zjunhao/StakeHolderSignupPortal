@@ -5,7 +5,9 @@
       <span>{{listItem.description}}</span>
       <span>{{listItem.startTime}}</span>
       <span>{{listItem.endTime}}</span>
-      <button (click)='deleteSprintReview($event, listItem._id)'>delete</button>
+      <ng-container *ngIf='editMode'>
+        <button (click)='deleteSprintReview($event, listItem._id)'>delete</button>
+      </ng-container>
     </div>
   </mat-list-option>
 </mat-selection-list>
