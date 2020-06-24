@@ -8,6 +8,11 @@ export class CurrentUserService {
 
   constructor() { }
 
+  getId(): string {
+    const currUser = this.getCurrentUserFromLocalStorage();
+    return currUser._id;
+  }
+
   getEmail(): string {
     const currUser = this.getCurrentUserFromLocalStorage();
     return currUser.email;

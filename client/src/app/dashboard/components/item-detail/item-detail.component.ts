@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DetailItemModel } from '../../models/detail-item-model';
+import { CurrentUserService } from '../../services/current-user.service';
 
 @Component({
   selector: 'app-item-detail',
@@ -12,9 +13,11 @@ export class ItemDetailComponent implements OnInit {
 
   editMode: boolean = false;
   itemDetail: DetailItemModel = new DetailItemModel();
+  signupResultMessage: string = '';
 
   constructor(
     private dashBoardService: DashboardService,
+    private currentUserService: CurrentUserService,
     private route: ActivatedRoute
   ) { }
 
@@ -43,6 +46,16 @@ export class ItemDetailComponent implements OnInit {
     })
   }
 
+  //-----------------------for normal user-----------------------------------------
+  attendeeSignUp() {
+    this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUserService.getId()).subscribe(res => {
+      if (res.message) {
+        this.signupResultMessage = res.message;
+      }
+    });
+  }
+
+  //-----------------------for administrator---------------------------------------
   onTitleUpdate() {
     const updateId = this.itemDetail._id;
     const updateBody = {"title" : this.itemDetail.title};

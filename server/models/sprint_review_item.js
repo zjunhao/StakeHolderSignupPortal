@@ -33,13 +33,13 @@ const SprintReviewItemSchema = mongoose.Schema({
     },
     // id of sprint review attendees signup themselves
     self_signup_attendees_id: {
-        type: [Number],
+        type: [String],
         required: false
     },
     // id of sprint review attendees add by administrator
     // attendees here does not take total slots
     administrator_added_attendees_id: {
-        type: [Number],
+        type: [String],
         required: false
     },
     // zoom link meeting for this sprint review

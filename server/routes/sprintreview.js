@@ -105,6 +105,36 @@ route.put('/updateItem/:id', (req, res)=>{
     })
 })
 
+// sign up attendee for sprint review
+route.put('/attendeeSignup/:itemId', (req, res)=>{
 
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+    if (!req.body.userId) {
+        res.json({success: false, message: 'Missing user id'});
+        return;
+    }
+
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: 'Item id does not exist'});
+        } else if (item.self_signup_attendees_id.includes(req.body.userId)) {
+            res.json({success: false, message: 'You have already signed up'});
+        } else if (item.self_signup_attendees_id.length >= item.total_slots) {
+            res.json({success: false, message: 'No open slots available'});
+        } else {
+            item.self_signup_attendees_id.push(req.body.userId);
+            item.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err});
+                } else {
+                    res.json({success: true, message: 'Sign up succeed'});
+                }
+            });
+        }
+    });
+})
 
 module.exports = route;

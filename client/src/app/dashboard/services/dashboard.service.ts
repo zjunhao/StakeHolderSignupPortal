@@ -7,6 +7,7 @@ import { DetailItemModel } from '../models/detail-item-model';
 import { ListItemModel } from '../models/list-item-model';
 import { ServerDetailItemModel } from '../models/detail-item-model-server';
 import { ServerListItemModel } from '../models/list-item-model-server';
+import { ServerSuccessMessageModel } from '../models/success-message-model-server';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,21 @@ export class DashboardService {
       .put(url, updateBody)
       .pipe(catchError(this.handleError));
   }
+
+  // user try to sign up for sprint review
+  attendeeSignUp(sprintReviewId: string, userId: string) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    const url = `${this.baseUrl}/sprintreview/attendeeSignup/${sprintReviewId}`;
+    
+    const userInfo = { userId: userId };
+
+    return this.http
+      .put<ServerSuccessMessageModel>(url, userInfo)
+      .pipe(catchError(this.handleError));
+  }
+
 
   private handleError(res: HttpErrorResponse | any) {
     console.error(res.error || res.body.error);
