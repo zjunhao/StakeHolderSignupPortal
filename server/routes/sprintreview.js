@@ -2,6 +2,7 @@ const express = require('express');
 const route = express.Router();
 
 const SprintReviewItem = require('../models/sprint_review_item');
+const User = require('../models/user');
 
 // get a list of all sprint reviews
 route.get('/getItemList', (req, res) => {
@@ -25,12 +26,43 @@ route.get('/getItemList', (req, res) => {
 
 // get all detail about a specific sprint review
 route.get('/getItem/:id', (req, res) => {
-    // TODO: for each attendee id, find attendee name and return name instead
     SprintReviewItem.findById(req.params.id, function(err, itemDetail){
         if (err) { 
             res.json(err);
         } else {
-            res.json(itemDetail);
+            // transform self_sign_up_attendees_id array to self_sign_up_attendees_info array and send it with other item detail info back
+            const query = {'_id': {$in: itemDetail.self_signup_attendees_id}};
+            User.find(query, (err, rawAttendeesInfo)=>{
+                if (err) {
+                    res.json(err);
+                } else {
+                    let attendeesInfo = [];
+                    rawAttendeesInfo.forEach(rawAttendeeInfo => {
+                        const attendeeInfo = {
+                            _id: rawAttendeeInfo._id,
+                            email: rawAttendeeInfo.email,
+                            name: rawAttendeeInfo.name,
+                            privilege: rawAttendeeInfo.privilege
+                        };
+                        attendeesInfo.push(attendeeInfo);
+                    });
+
+                    const itemDetailWithAttendeesInfo = {
+                        _id: itemDetail._id,
+                        title: itemDetail.title,
+                        total_slots: itemDetail.total_slots,
+                        event_organizer: itemDetail.event_organizer,
+                        start_time: itemDetail.start_time,
+                        end_time: itemDetail.end_time,
+                        short_description: itemDetail.short_description,
+                        self_signup_attendees: attendeesInfo,
+                        administrator_added_attendees: itemDetail.administrator_added_attendees_id,
+                        meeting_link: itemDetail.meeting_link
+                    };
+        
+                    res.json(itemDetailWithAttendeesInfo);
+                }
+            })
         }
     })
 });
@@ -103,7 +135,7 @@ route.put('/updateItem/:id', (req, res)=>{
             res.json('Item updated');
         }
     })
-})
+});
 
 // sign up attendee for sprint review
 route.put('/attendeeSignup/:itemId', (req, res)=>{
@@ -135,6 +167,37 @@ route.put('/attendeeSignup/:itemId', (req, res)=>{
             });
         }
     });
-})
+});
+
+// attendee unregister for sprint review
+route.put('/attendeeUnregister/:itemId', (req, res)=>{
+
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+    if (!req.body.userId) {
+        res.json({success: false, message: 'Missing user id'});
+        return;
+    }
+
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: 'Item id does not exist'});
+        } else if (!item.self_signup_attendees_id.includes(req.body.userId)) {
+            res.json({success: false, message: 'Cannot unregister since you have not signed up yet'});
+        } else {
+            const idx = item.self_signup_attendees_id.indexOf(req.body.userId);
+            item.self_signup_attendees_id.splice(idx, 1);
+            item.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err});
+                } else {
+                    res.json({success: true, message: 'Unregister succeed'});
+                }
+            });
+        }
+    });
+});
 
 module.exports = route;

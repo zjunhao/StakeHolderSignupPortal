@@ -8,6 +8,8 @@ import { ListItemModel } from '../models/list-item-model';
 import { ServerDetailItemModel } from '../models/detail-item-model-server';
 import { ServerListItemModel } from '../models/list-item-model-server';
 import { ServerSuccessMessageModel } from '../models/success-message-model-server';
+import { ServerAttendeeModel } from '../models/attendee-model-server';
+import { AttendeeModel } from '../models/attendee-model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +37,6 @@ export class DashboardService {
 
     return this.http
       .get<ServerDetailItemModel>(url)
-      // .pipe(map(serverDetailItemModel => this.toClientDetailItemModel(serverDetailItemModel)));
       .pipe(map(serverDetailItem => this.toClientDetailItem(serverDetailItem)), catchError(this.handleError));
   }
 
@@ -74,8 +75,8 @@ export class DashboardService {
 
   // user try to sign up for sprint review
   attendeeSignUp(sprintReviewId: string, userId: string) {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
+    // const headers = new Headers();
+    // headers.append('Content-Type', 'application/json');
 
     const url = `${this.baseUrl}/sprintreview/attendeeSignup/${sprintReviewId}`;
     
@@ -86,6 +87,15 @@ export class DashboardService {
       .pipe(catchError(this.handleError));
   }
 
+  attendeeUnregister(sprintReviewId: string, userId: string) {
+    const url = `${this.baseUrl}/sprintreview/attendeeUnregister/${sprintReviewId}`;
+    
+    const userInfo = { userId: userId };
+
+    return this.http
+      .put<ServerSuccessMessageModel>(url, userInfo)
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError(res: HttpErrorResponse | any) {
     console.error(res.error || res.body.error);
@@ -93,6 +103,7 @@ export class DashboardService {
   }
 
   private toClientDetailItem(serverDetailItem: ServerDetailItemModel): DetailItemModel {
+    const selfSignupAttendeesClientFormat = this.toClientSelfSignupAttendees(serverDetailItem.self_signup_attendees);
     return {
       _id: serverDetailItem._id,
       title: serverDetailItem.title,
@@ -101,10 +112,25 @@ export class DashboardService {
       startTime: serverDetailItem.start_time,
       endTime: serverDetailItem.end_time,
       description: serverDetailItem.short_description,
-      selfSignupAttendees: serverDetailItem.self_signup_attendees,
+      selfSignupAttendees: selfSignupAttendeesClientFormat,
       administratorAddedAttendees: serverDetailItem.administrator_added_attendees,
       meetingLink: serverDetailItem.meeting_link, 
     } as DetailItemModel;
+  }
+  private toClientSelfSignupAttendees(attendeesArrServer:ServerAttendeeModel[]): AttendeeModel[] {
+    let attendeesArr: AttendeeModel[] = [];
+
+    attendeesArrServer.forEach(attendeeServer => {
+      const attendeeClient = {
+        _id: attendeeServer._id,
+        name: attendeeServer.name,
+        email: attendeeServer.email,
+        privilege: attendeeServer.privilege 
+      } as AttendeeModel;
+      attendeesArr.push(attendeeClient);
+    });
+
+    return attendeesArr;
   }
 
   private toClientListItems(serverListItems: ServerListItemModel[]): ListItemModel[] {

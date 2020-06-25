@@ -1,3 +1,5 @@
+import { UserModel } from 'src/app/shared/models/user-model';
+
 /** 
  * Detail model for item shown when item on item list is clicked.
  * Client format.
@@ -10,7 +12,7 @@ export class DetailItemModel {
     startTime: string;
     endTime: string;
     description: string;
-    selfSignupAttendees?: string[];
+    selfSignupAttendees?: UserModel[];
     administratorAddedAttendees?: string[];
     meetingLink?: string; 
 }

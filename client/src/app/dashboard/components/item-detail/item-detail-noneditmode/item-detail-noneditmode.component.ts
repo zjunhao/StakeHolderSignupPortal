@@ -13,6 +13,8 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
 
   itemDetail: DetailItemModel = new DetailItemModel();
   signupResultMessage: string = '';
+  unregisterResultMessage: string = '';
+  userSignedUp: boolean;
 
   constructor(
     private dashBoardService: DashboardService,
@@ -41,6 +43,14 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
     this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUserService.getId()).subscribe(res => {
       if (res.message) {
         this.signupResultMessage = res.message;
+      }
+    });
+  }
+
+  attendeeUnregister() {
+    this.dashBoardService.attendeeUnregister(this.itemDetail._id, this.currentUserService.getId()).subscribe(res => {
+      if (res.message) {
+        this.unregisterResultMessage = res.message;
       }
     });
   }

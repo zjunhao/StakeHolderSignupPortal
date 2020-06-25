@@ -27,12 +27,20 @@
         <textarea id="description" [(ngModel)]="itemDetail.description"></textarea>
         <button (click)='onDescriptionUpdate()'>Save Changes</button>
     </mat-list-item>
-    <!-- <mat-list-item role="listitem">
-        Attendees: {{itemDetail.selfSignupAttendees.concat(itemDetail.administratorAddedAttendees)}}
-    </mat-list-item> -->
     <mat-list-item role="listitem">
         <label for="meetingLink">Meeting Link: </label>
         <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
         <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        <label for="selfSignedAttendees">Attendees Signed Up </label>
+        <ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
+            <li>
+                <span>Name: </span>
+                <span>{{user.name}}; </span>
+                <span>Email: </span>
+                <span>{{user.email}}</span>
+            </li>
+        </ul>
     </mat-list-item>
 </mat-list>

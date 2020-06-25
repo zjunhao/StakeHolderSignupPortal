@@ -1,3 +1,5 @@
+import { ServerAttendeeModel } from './attendee-model-server';
+
 /** 
  * Detail model for item shown when item on item list is clicked.
  * Format server return back.
@@ -10,7 +12,7 @@ export class ServerDetailItemModel {
     start_time: string;
     end_time: string;
     short_description: string;
-    self_signup_attendees?: string[];
+    self_signup_attendees: ServerAttendeeModel[];
     administrator_added_attendees?: string[];
     meeting_link?: string; 
 }

@@ -15,7 +15,6 @@ export class ItemDetailEditmodeComponent implements OnInit {
 
   constructor(
     private dashBoardService: DashboardService,
-    private currentUserService: CurrentUserService,
     private route: ActivatedRoute
   ) { }
 
@@ -36,6 +35,7 @@ export class ItemDetailEditmodeComponent implements OnInit {
     });
   }
 
+  // event handler for save form fileds
   onTitleUpdate() {
     const updateId = this.itemDetail._id;
     const updateBody = {"title" : this.itemDetail.title};
