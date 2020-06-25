@@ -1,0 +1,25 @@
+<mat-list role="list">
+    <mat-list-item role="listitem">
+        Title: {{itemDetail.title}}
+    </mat-list-item>
+    <!-- <mat-list-item role="listitem">
+        Available Slots: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length - itemDetail.administratorAddedAttendees.length}}
+    </mat-list-item> -->
+    <mat-list-item role="listitem">
+        Organizor: {{itemDetail.organizer}}
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        Time: {{itemDetail.startTime}} - {{itemDetail.endTime}}
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        Description: {{itemDetail.description}}
+    </mat-list-item>
+    <!-- <mat-list-item role="listitem">
+        Attendees: {{itemDetail.selfSignupAttendees.concat(itemDetail.administratorAddedAttendees)}}
+    </mat-list-item> -->
+    <!-- <mat-list-item role="listitem">
+        Meeting Link: {{itemDetail.meetingLink}}
+    </mat-list-item>  -->
+</mat-list> 
+<button (click)='attendeeSignUp()'>Sign me up!</button>
+<p id="signupResultMessage">{{signupResultMessage}}</p>

@@ -1,0 +1,38 @@
+<mat-list role="list">
+    <mat-list-item role="listitem">
+        <label for="title">Title: </label>
+        <textarea id="title" [(ngModel)]="itemDetail.title"></textarea>
+        <button (click)='onTitleUpdate()'>Save Changes</button>
+    </mat-list-item>
+    <!-- <mat-list-item role="listitem">
+        Available Slots: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length - itemDetail.administratorAddedAttendees.length}}
+    </mat-list-item> -->
+    <mat-list-item role="listitem">
+        <label for="organizer">Organizer: </label>
+        <textarea id="organizer" [(ngModel)]="itemDetail.organizer"></textarea>
+        <button (click)='onOrganzerUpdate()'>Save Changes</button>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        <label for="startTime">Start Time: </label>
+        <input type="datetime-local" id="startTime" [(ngModel)]="itemDetail.startTime">
+        <button (click)='onStartTimeUpdate()'>Save Changes</button>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        <label for="endTime">End Time: </label>
+        <input type="datetime-local" id="endTime" [(ngModel)]="itemDetail.endTime">
+        <button (click)='onEndTimeUpdate()'>Save Changes</button>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        <label for="description">Short Description: </label>
+        <textarea id="description" [(ngModel)]="itemDetail.description"></textarea>
+        <button (click)='onDescriptionUpdate()'>Save Changes</button>
+    </mat-list-item>
+    <!-- <mat-list-item role="listitem">
+        Attendees: {{itemDetail.selfSignupAttendees.concat(itemDetail.administratorAddedAttendees)}}
+    </mat-list-item> -->
+    <mat-list-item role="listitem">
+        <label for="meetingLink">Meeting Link: </label>
+        <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
+        <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
+    </mat-list-item>
+</mat-list>

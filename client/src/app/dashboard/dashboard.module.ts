@@ -14,9 +14,11 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ItemListComponent } from './components/item-list/item-list.component';
 import { ItemDetailComponent } from './components/item-detail/item-detail.component';
 import { ItemCreaterComponent } from './components/item-creater/item-creater.component';
+import { ItemDetailEditmodeComponent } from './components/item-detail/item-detail-editmode/item-detail-editmode.component';
+import { ItemDetailNoneditmodeComponent } from './components/item-detail/item-detail-noneditmode/item-detail-noneditmode.component';
 
 @NgModule({
-  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent],
+  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent, ItemDetailEditmodeComponent, ItemDetailNoneditmodeComponent],
   imports: [
     CommonModule,
     FormsModule,
