@@ -18,13 +18,11 @@
         Meeting Link: {{itemDetail.meetingLink}}
     </mat-list-item>  -->
 </mat-list> 
-<ng-container>
+<ng-container *ngIf='!userSignedUp'>
     <p>You've not signed up yet.</p>
-    <button (click)='attendeeSignUp()'>Sign me up!</button>
-    <p id="signupResultMessage">{{signupResultMessage}}</p>
+    <button class="signunsignbtn" (click)='attendeeSignUp()'>Sign me up!</button>
 </ng-container>
-<ng-container>
-    <p>You've signed up to this event already.</p>
-    <button (click)='attendeeUnregister()'>Remove me from attending</button>
-    <p id="unregisterResultMessage">{{unregisterResultMessage}}</p>
+<ng-container *ngIf='userSignedUp'>
+    <p>You've already signed up to this event.</p>
+    <button class="signunsignbtn" (click)='attendeeUnregister()'>Remove me from attending</button>
 </ng-container>

@@ -32,15 +32,18 @@
         <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
         <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
     </mat-list-item>
-    <mat-list-item role="listitem">
-        <label for="selfSignedAttendees">Attendees Signed Up </label>
-        <ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
-            <li>
-                <span>Name: </span>
-                <span>{{user.name}}; </span>
-                <span>Email: </span>
-                <span>{{user.email}}</span>
-            </li>
-        </ul>
-    </mat-list-item>
+
 </mat-list>
+<label for="selfSignedAttendees">Attendees Signed Up </label>
+<ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
+    <li>
+        <span>Name: </span>
+        <span>{{user.name}}; </span>
+        <span>Email: </span>
+        <span>{{user.email}}</span>
+        <span class="tooltip">
+            <button class="material-icons ">remove</button>
+            <span class="tooltiptext">Remove user from attending</span>
+        </span>
+    </li>
+</ul>

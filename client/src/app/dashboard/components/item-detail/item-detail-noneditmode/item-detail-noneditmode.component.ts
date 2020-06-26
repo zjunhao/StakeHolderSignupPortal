@@ -35,6 +35,7 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
         this.dashBoardService.getSprintReview(id).subscribe(res => {
           if (res.success) {
             this.itemDetail = res.itemDetail;
+            this.userSignedUp = this.currentUserSignedUp();
           }
           //TODO: Notice user when fail to get item detail
         });
@@ -44,18 +45,27 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
 
   attendeeSignUp() {
     this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUserService.getId()).subscribe(res => {
-      if (res.message) {
-        this.signupResultMessage = res.message;
-      }
+      alert(res.message);
+      this.refreshItemDetail();
     });
   }
 
   attendeeUnregister() {
     this.dashBoardService.attendeeUnregister(this.itemDetail._id, this.currentUserService.getId()).subscribe(res => {
-      if (res.message) {
-        this.unregisterResultMessage = res.message;
-      }
+      alert(res.message);
+      this.refreshItemDetail();
     });
   }
 
+  // determine whether current user has signed up
+  private currentUserSignedUp(): boolean {
+    const currentUserId = this.currentUserService.getId();
+    const signedUpUsers = this.itemDetail.selfSignupAttendees;
+    for (var i = 0; i < signedUpUsers.length; i++) {
+      if (signedUpUsers[i]._id.localeCompare(currentUserId) === 0){
+        return true;
+      };
+    }
+    return false;
+  }
 }
