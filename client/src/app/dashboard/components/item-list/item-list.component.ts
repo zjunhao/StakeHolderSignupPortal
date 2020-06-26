@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatListOption } from '@angular/material/list'
-import { LISTITEMS } from '../../../../assets/mock-data/mock-list-items';
-import { ListItemModel } from '../../models/list-item-model';
 import { Router, NavigationExtras } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
+import { ListItemModel } from '../../models/item-list-response-model';
 
 @Component({
   selector: 'app-item-list',
@@ -12,7 +11,6 @@ import { DashboardService } from '../../services/dashboard.service';
 })
 export class ItemListComponent implements OnInit {
 
-  // listItems: ListItemModel[] = LISTITEMS;
   listItems: ListItemModel[];
 
   @Input() editMode: boolean;
@@ -38,9 +36,11 @@ export class ItemListComponent implements OnInit {
   }
 
   refreshList() {
-    // this.dashBoardService.getSprintReviewList().subscribe(listItems => (this.listItems = listItems));
-    this.dashBoardService.getSprintReviewList().subscribe(listItems => {
-      this.listItems = listItems;
+    this.dashBoardService.getSprintReviewList().subscribe(res => {
+      if (res.success) {
+        this.listItems = res.itemList;
+      }
+      // TODO: maybe display error messsage if retrieve sprint review list fails
     });
   }
 
@@ -48,8 +48,11 @@ export class ItemListComponent implements OnInit {
     // TODO: promp user to confirm delete
     // prevent event from bubbling up to <mat-selection-list> in template
     $event.stopPropagation();
-    this.dashBoardService.deleteSprintReview(_id).subscribe(()=>{
-      this.refreshList();
+    this.dashBoardService.deleteSprintReview(_id).subscribe(res => {
+      if (res.success) {
+        this.refreshList();
+      }
+      // TODO: maybe display error message when fail to delete sprint review
     });
   }
 }

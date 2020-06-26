@@ -1,4 +1,4 @@
-import { DetailItemModel } from '../../app/dashboard/models/detail-item-model'
+import { DetailItemModel } from '../../app/dashboard/models/item-detail-response-model'
 
 export const DETAILITEM: DetailItemModel = {
     _id: '3',
@@ -8,7 +8,7 @@ export const DETAILITEM: DetailItemModel = {
     startTime: '2020-06-15T14:00',
     endTime: '2020-06-15T14:45',
     description: 'Demo on notes functionality',
-    selfSignupAttendees: ['Abc Def', 'Ghi Jkl'],
-    administratorAddedAttendees: ['Mno Pqr'],
+    selfSignupAttendees:[],
+    administratorAddedAttendees: [],
     meetingLink: 'https://hyland.zoom.us/j/95507965758?pwd=QzVQL25oL1hXWHVXOC9mRHFUSnF4UT09', 
 }

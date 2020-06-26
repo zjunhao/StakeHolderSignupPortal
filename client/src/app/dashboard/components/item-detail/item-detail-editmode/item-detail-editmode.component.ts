@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
-import { DetailItemModel } from 'src/app/dashboard/models/detail-item-model';
+import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
-import { CurrentUserService } from 'src/app/dashboard/services/current-user.service';
 
 @Component({
   selector: 'app-item-detail-editmode',
@@ -11,7 +10,6 @@ import { CurrentUserService } from 'src/app/dashboard/services/current-user.serv
 })
 export class ItemDetailEditmodeComponent implements OnInit {
   itemDetail: DetailItemModel = new DetailItemModel();
-  signupResultMessage: string = '';
 
   constructor(
     private dashBoardService: DashboardService,
@@ -28,8 +26,11 @@ export class ItemDetailEditmodeComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         const id = params['id'];
-        this.dashBoardService.getSprintReview(id).subscribe(itemDetail => {
-          this.itemDetail = itemDetail;
+        this.dashBoardService.getSprintReview(id).subscribe(res => {
+          if(res.success) {
+            this.itemDetail = res.itemDetail;
+          }
+          // TODO: notice user when get item detail fails
         });
       } 
     });
@@ -37,45 +38,39 @@ export class ItemDetailEditmodeComponent implements OnInit {
 
   // event handler for save form fileds
   onTitleUpdate() {
-    const updateId = this.itemDetail._id;
-    const updateBody = {"title" : this.itemDetail.title};
-    this.dashBoardService.updateSprintReview(updateId, updateBody).subscribe(()=>{
+    const itemId = this.itemDetail._id;
+    this.dashBoardService.updateSprintReview(itemId, "title", this.itemDetail.title).subscribe(()=>{
       this.refreshItemDetail();
     });
 
   }
   onOrganzerUpdate() {
-    const updateId = this.itemDetail._id;
-    const updateBody = {"organizer" : this.itemDetail.organizer};
-    this.dashBoardService.updateSprintReview(updateId, updateBody).subscribe(()=>{
+    const itemId = this.itemDetail._id;
+    this.dashBoardService.updateSprintReview(itemId, "organizer", this.itemDetail.organizer).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onStartTimeUpdate() {
-    const updateId = this.itemDetail._id;
-    const updateBody = {"startTime" : this.itemDetail.startTime};
-    this.dashBoardService.updateSprintReview(updateId, updateBody).subscribe(()=>{
+    const itemId = this.itemDetail._id;
+    this.dashBoardService.updateSprintReview(itemId, "startTime", this.itemDetail.startTime).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onEndTimeUpdate() {
-    const updateId = this.itemDetail._id;
-    const updateBody = {"endTime" : this.itemDetail.endTime};
-    this.dashBoardService.updateSprintReview(updateId, updateBody).subscribe(()=>{
+    const itemId = this.itemDetail._id;
+    this.dashBoardService.updateSprintReview(itemId, "endTime", this.itemDetail.endTime).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onDescriptionUpdate() {
-    const updateId = this.itemDetail._id;
-    const updateBody = {"description" : this.itemDetail.description};
-    this.dashBoardService.updateSprintReview(updateId, updateBody).subscribe(()=>{
+    const itemId = this.itemDetail._id;
+    this.dashBoardService.updateSprintReview(itemId, "description", this.itemDetail.description).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onMeetingLinkUpdate() {
-    const updateId = this.itemDetail._id;
-    const updateBody = {"meetingLink" : this.itemDetail.meetingLink};
-    this.dashBoardService.updateSprintReview(updateId, updateBody).subscribe(()=>{
+    const itemId = this.itemDetail._id;
+    this.dashBoardService.updateSprintReview(itemId, "meetingLink", this.itemDetail.meetingLink).subscribe(()=>{
       this.refreshItemDetail();
     });
   }

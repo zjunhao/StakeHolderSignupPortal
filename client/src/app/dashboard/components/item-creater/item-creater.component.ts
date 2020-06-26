@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { DetailItemModel } from '../../models/detail-item-model';
 import { DashboardService } from '../../services/dashboard.service';
 import { FormControl, Validators } from '@angular/forms';
+import { ItemCreatingModel } from '../../models/item-creating-model';
 
 @Component({
   selector: 'app-item-creater',
@@ -11,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
 export class ItemCreaterComponent implements OnInit {
   @Output() newItemCreated: EventEmitter<string> = new EventEmitter();
 
-  newItem = new DetailItemModel();
+  newItem = new ItemCreatingModel();
 
   // form controls
   titleFC = new FormControl('', [Validators.required]);
@@ -31,10 +31,13 @@ export class ItemCreaterComponent implements OnInit {
   createSprintReview() {
     if (this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid 
           && this.totalSlotFC.valid && this.startTimeFC.valid && this.endTimeFC.valid) {
-      this.dashboardService.addSprintReview(this.newItem).subscribe( () =>{
-        this.newItemCreated.emit('new item created');
-        // clear form fields
-        // collapse form
+      this.dashboardService.addSprintReview(this.newItem).subscribe( res => {
+        if (res.success) {
+          this.newItemCreated.emit('new item created');
+          // clear form fields
+          // collapse form
+        }
+        // TODO: maybe notify user if creating sprint review fails
       })
     }
   }

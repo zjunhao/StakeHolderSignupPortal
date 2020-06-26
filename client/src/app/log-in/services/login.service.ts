@@ -4,8 +4,8 @@ import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError as observableThrowError } from 'rxjs';
 import { SignupModel } from '../models/signup-model';
 import { LoginModel } from '../models/login-model';
-import { ServerUserModel } from '../models/user-model-server';
-import { UserModel } from '../../shared/models/user-model';
+import { SuccessMessageResponseModel } from 'src/app/shared/models/success-message-response-model';
+import { LoginResponseModel } from '../models/login-response-model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class LoginService {
     private http: HttpClient
   ) { }
 
-  signupUser(newUser: SignupModel) {
+  signupUser(newUser: SignupModel): Observable<SuccessMessageResponseModel> {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
 
@@ -27,36 +27,19 @@ export class LoginService {
     // TODO: hash passwords here
 
     return this.http
-      .post(url, newUser, {headers: headers})
+      .post<SuccessMessageResponseModel>(url, newUser, {headers: headers})
       .pipe(catchError(this.handleError));
   }
 
-  loginUser(user: LoginModel) {
+  loginUser(user: LoginModel): Observable<LoginResponseModel> {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
 
     const url = `${this.baseUrl}/user/loginUser`;
 
     return this.http
-      .post<ServerUserModel>(url, user, {headers: headers})
-      .pipe(
-        map(serverUserModel => {
-          if (serverUserModel.success) {
-            return this.toClientUserModel(serverUserModel);
-          } else {
-            return null;
-          }
-        }), 
-        catchError(this.handleError));
-  }
-
-  private toClientUserModel(serverModel: ServerUserModel): UserModel {
-    return {
-      _id: serverModel.userInfo._id,
-      email: serverModel.userInfo.email,
-      name: serverModel.userInfo.name,
-      privilege: serverModel.userInfo.privilege
-    } as UserModel;
+      .post<LoginResponseModel>(url, user, {headers: headers})
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(res: HttpErrorResponse | any) {

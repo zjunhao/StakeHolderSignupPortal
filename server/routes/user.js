@@ -13,13 +13,13 @@ route.post('/createUser', (req, res)=>{
 
     User.find({email: req.body.email}, (err, user) => {
         if (err) {
-            res.json({success: false, message: err});
+            res.json({success: false, message: err.message});
         } else if (user.length > 0) {
             res.json({success: false, message: 'email already exists'});
         } else {
             newUser.save((err, user)=>{
                 if(err){
-                    res.json({success: false, message: err});
+                    res.json({success: false, message: err.message});
                 } else {
                     res.json({success: true, message: 'New user created successfully'});
                 }
@@ -36,7 +36,7 @@ route.post('/loginUser', (req, res)=>{
     }
     User.find({email: req.body.email}, (err, user) => {
         if (err) {
-            res.json({success: false, message: err});
+            res.json({success: false, message: err.message});
         } else if (user.length > 1){
             res.json({success: false, message: 'More than one user use the same email'});
         } else if (user.length === 0) {
@@ -48,7 +48,7 @@ route.post('/loginUser', (req, res)=>{
                 res.json({
                     success: true, 
                     message: 'Login succeed',
-                    userInfo: {
+                    user: {
                         _id: user[0]._id,
                         email: user[0].email,
                         name: user[0].name,

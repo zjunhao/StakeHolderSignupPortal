@@ -8,19 +8,23 @@ const User = require('../models/user');
 route.get('/getItemList', (req, res) => {
     // TODO: get list group by group
     SprintReviewItem.find(function(err, itemList){
-        var trimItemList = [];
-        itemList.forEach(item => {
-            var trimItem = {
-                _id: item._id,
-                title: item.title,
-                start_time: item.start_time,
-                end_time: item.end_time,
-                short_description: item.short_description
-            }
-            trimItemList.push(trimItem);
-        })
-        trimItemList.sort((a, b) => (b.start_time.localeCompare(a.start_time)));
-        res.json(trimItemList);
+        if (err) {
+            res.json({success: false, message: err.message})
+        } else {
+            var trimItemList = [];
+            itemList.forEach(item => {
+                var trimItem = {
+                    _id: item._id,
+                    title: item.title,
+                    startTime: item.start_time,
+                    endTime: item.end_time,
+                    description: item.short_description
+                }
+                trimItemList.push(trimItem);
+            })
+            trimItemList.sort((a, b) => (b.startTime.localeCompare(a.startTime)));
+            res.json({success: true, message: 'Sprint review list retrieved successfully', itemList: trimItemList});
+        }
     });
 });
 
@@ -28,39 +32,32 @@ route.get('/getItemList', (req, res) => {
 route.get('/getItem/:id', (req, res) => {
     SprintReviewItem.findById(req.params.id, function(err, itemDetail){
         if (err) { 
-            res.json(err);
+            res.json({success: false, message: err.message});
         } else {
             // transform self_sign_up_attendees_id array to self_sign_up_attendees_info array and send it with other item detail info back
             const query = {'_id': {$in: itemDetail.self_signup_attendees_id}};
-            User.find(query, (err, rawAttendeesInfo)=>{
+            User.find(query, (err, attendeesInfo)=>{
                 if (err) {
-                    res.json(err);
+                    res.json({success: false, message: err.message});
                 } else {
-                    let attendeesInfo = [];
-                    rawAttendeesInfo.forEach(rawAttendeeInfo => {
-                        const attendeeInfo = {
-                            _id: rawAttendeeInfo._id,
-                            email: rawAttendeeInfo.email,
-                            name: rawAttendeeInfo.name,
-                            privilege: rawAttendeeInfo.privilege
-                        };
-                        attendeesInfo.push(attendeeInfo);
+                    attendeesInfo.forEach(attendeeInfo => {
+                        delete attendeeInfo.password;
                     });
 
                     const itemDetailWithAttendeesInfo = {
                         _id: itemDetail._id,
                         title: itemDetail.title,
-                        total_slots: itemDetail.total_slots,
-                        event_organizer: itemDetail.event_organizer,
-                        start_time: itemDetail.start_time,
-                        end_time: itemDetail.end_time,
-                        short_description: itemDetail.short_description,
-                        self_signup_attendees: attendeesInfo,
-                        administrator_added_attendees: itemDetail.administrator_added_attendees_id,
-                        meeting_link: itemDetail.meeting_link
+                        totalSlots: itemDetail.total_slots,
+                        organizer: itemDetail.event_organizer,
+                        startTime: itemDetail.start_time,
+                        endTime: itemDetail.end_time,
+                        description: itemDetail.short_description,
+                        selfSignupAttendees: attendeesInfo,
+                        administratorAddedAttendees: itemDetail.administrator_added_attendees_id,
+                        meetingLink: itemDetail.meeting_link
                     };
         
-                    res.json(itemDetailWithAttendeesInfo);
+                    res.json({success: true, message: 'Sprint review detail retrieved successfully', itemDetail: itemDetailWithAttendeesInfo});
                 }
             })
         }
@@ -80,9 +77,9 @@ route.post('/addItem', (req, res)=>{
 
     newItem.save((err, item)=>{
         if(err){
-            res.json({msg: 'Failed to create sprint review'});
+            res.json({success: false, message: 'Failed to create sprint review'});
         } else {
-            res.json({msg: 'Sprint review created successfully'});
+            res.json({success: true, message: 'Sprint review created successfully'});
         }
     });
 });
@@ -91,9 +88,9 @@ route.post('/addItem', (req, res)=>{
 route.delete('/deleteItem/:id', (req,res)=>{
     SprintReviewItem.remove({_id: req.params.id}, function(err, result){
         if (err) { 
-            res.json(err);
+            res.json({success: false, message: err.message});
         } else {
-            res.json(result);
+            res.json({success: true, message: 'Sprint review deleted successfully'});
         }
     })
 });
@@ -128,11 +125,11 @@ route.put('/updateItem/:id', (req, res)=>{
     var update = getUpdateFromRequest(req);
     SprintReviewItem.update(condition, update, function(err, numAffected) {
         if (err) {
-            res.json(err);
+            res.json({success: false, message: err.message});
         } else if (update === null) {
-            res.json('Nothing being updated, please make sure your request body has the correct key name');
+            res.json({success: false, message: 'Nothing being updated, please make sure your request body has the correct key name'});
         } else {
-            res.json('Item updated');
+            res.json({success: true, message: 'Sprint review detail updated'});
         }
     })
 });
@@ -160,7 +157,7 @@ route.put('/attendeeSignup/:itemId', (req, res)=>{
             item.self_signup_attendees_id.push(req.body.userId);
             item.save((err) => {
                 if (err) {
-                    res.json({success: false, message: err});
+                    res.json({success: false, message: err.message});
                 } else {
                     res.json({success: true, message: 'Sign up succeed'});
                 }
@@ -191,7 +188,7 @@ route.put('/attendeeUnregister/:itemId', (req, res)=>{
             item.self_signup_attendees_id.splice(idx, 1);
             item.save((err) => {
                 if (err) {
-                    res.json({success: false, message: err});
+                    res.json({success: false, message: err.message});
                 } else {
                     res.json({success: true, message: 'Unregister succeed'});
                 }

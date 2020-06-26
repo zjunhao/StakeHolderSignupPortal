@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../../models/login-model';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
-import { UserModel } from '../../../shared/models/user-model';
 
 @Component({
   selector: 'app-sign-in',
@@ -22,16 +21,15 @@ export class SignInComponent implements OnInit {
   }
 
   signIn() {
-    this.loginService.loginUser(this.loginInfo).subscribe(user => {
-      if (user !== null) {
-        // user credential is valid
+    this.loginService.loginUser(this.loginInfo).subscribe(loginResponse => {
+      if (!loginResponse.success) {
+        this.loginErrorText = loginResponse.message;
+      } else {
         this.loginErrorText = "";
-        localStorage.setItem("currentUser", JSON.stringify(user));
+        localStorage.setItem("currentUser", JSON.stringify(loginResponse.user));
+        console.log('current user: ');
         console.log(localStorage.getItem("currentUser"));
         this.router.navigate(['/dashboard']);
-      } else {
-        // user credential not correct
-        this.loginErrorText = 'Email / Password not correct.';
       }
     });
 

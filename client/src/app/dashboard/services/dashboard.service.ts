@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Observable, throwError as observableThrowError } from 'rxjs';
+import { ItemListResponseModel } from '../models/item-list-response-model';
+import { ItemDetailResponseModel } from '../models/item-detail-response-model';
+import { ItemCreatingModel } from '../models/item-creating-model';
+import { SuccessMessageResponseModel } from 'src/app/shared/models/success-message-response-model';
 
-import { DetailItemModel } from '../models/detail-item-model';
-import { ListItemModel } from '../models/list-item-model';
-import { ServerDetailItemModel } from '../models/detail-item-model-server';
-import { ServerListItemModel } from '../models/list-item-model-server';
-import { ServerSuccessMessageModel } from '../models/success-message-model-server';
-import { ServerAttendeeModel } from '../models/attendee-model-server';
-import { AttendeeModel } from '../models/attendee-model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,125 +20,79 @@ export class DashboardService {
   ) { }
 
   // get a list of sprint review
-  getSprintReviewList() {
+  getSprintReviewList(): Observable<ItemListResponseModel> {
     const url = `${this.baseUrl}/sprintreview/getItemList`;
 
     return this.http
-      .get<ServerListItemModel[]>(url)
-      .pipe(map(serverListItems => this.toClientListItems(serverListItems)), catchError(this.handleError));
+      .get<ItemListResponseModel>(url)
+      .pipe(catchError(this.handleError));
   }
 
   // get all details about a specific sprint review
-  getSprintReview(id: string): Observable<DetailItemModel> {
+  getSprintReview(id: string): Observable<ItemDetailResponseModel> {
     const url = `${this.baseUrl}/sprintreview/getItem/${id}`;
 
     return this.http
-      .get<ServerDetailItemModel>(url)
-      .pipe(map(serverDetailItem => this.toClientDetailItem(serverDetailItem)), catchError(this.handleError));
+      .get<ItemDetailResponseModel>(url)
+      .pipe(catchError(this.handleError));
   }
 
   // add new sprint review
-  addSprintReview(newSprintReview: DetailItemModel) {
+  addSprintReview(newSprintReview: ItemCreatingModel): Observable<SuccessMessageResponseModel> {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
 
     const url = `${this.baseUrl}/sprintreview/addItem`;
 
     return this.http
-      .post<DetailItemModel>(url, newSprintReview, {headers: headers})
+      .post<SuccessMessageResponseModel>(url, newSprintReview, {headers: headers})
       .pipe(catchError(this.handleError));
   }
 
   // delete a specific sprint review
-  deleteSprintReview(id: string) {
+  deleteSprintReview(id: string): Observable<SuccessMessageResponseModel> {
     const url = `${this.baseUrl}/sprintreview/deleteItem/${id}`;
 
     return this.http
-      .delete(url)
+      .delete<SuccessMessageResponseModel>(url)
       .pipe(catchError(this.handleError));
   }
 
   // update field of a sprint review
-  updateSprintReview(id: string, updateBody: object){
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
+  updateSprintReview(id: string, fieldName: string, fieldValue: string): Observable<SuccessMessageResponseModel>{
     const url = `${this.baseUrl}/sprintreview/updateItem/${id}`;
     
+    let reqBody = {};
+    reqBody[fieldName] = fieldValue;
+
     return this.http
-      .put(url, updateBody)
+      .put<SuccessMessageResponseModel>(url, reqBody)
       .pipe(catchError(this.handleError));
   }
 
   // user try to sign up for sprint review
-  attendeeSignUp(sprintReviewId: string, userId: string) {
-    // const headers = new Headers();
-    // headers.append('Content-Type', 'application/json');
-
+  attendeeSignUp(sprintReviewId: string, userId: string): Observable<SuccessMessageResponseModel> {
     const url = `${this.baseUrl}/sprintreview/attendeeSignup/${sprintReviewId}`;
     
-    const userInfo = { userId: userId };
+    const reqBody = { userId: userId };
 
     return this.http
-      .put<ServerSuccessMessageModel>(url, userInfo)
+      .put<SuccessMessageResponseModel>(url, reqBody)
       .pipe(catchError(this.handleError));
   }
 
-  attendeeUnregister(sprintReviewId: string, userId: string) {
+  attendeeUnregister(sprintReviewId: string, userId: string): Observable<SuccessMessageResponseModel> {
     const url = `${this.baseUrl}/sprintreview/attendeeUnregister/${sprintReviewId}`;
     
-    const userInfo = { userId: userId };
+    const reqBody = { userId: userId };
 
     return this.http
-      .put<ServerSuccessMessageModel>(url, userInfo)
+      .put<SuccessMessageResponseModel>(url, reqBody)
       .pipe(catchError(this.handleError));
   }
 
   private handleError(res: HttpErrorResponse | any) {
     console.error(res.error || res.body.error);
     return observableThrowError(res.error || 'Server error');
-  }
-
-  private toClientDetailItem(serverDetailItem: ServerDetailItemModel): DetailItemModel {
-    const selfSignupAttendeesClientFormat = this.toClientSelfSignupAttendees(serverDetailItem.self_signup_attendees);
-    return {
-      _id: serverDetailItem._id,
-      title: serverDetailItem.title,
-      totalSlots: serverDetailItem.total_slots,
-      organizer: serverDetailItem.event_organizer,
-      startTime: serverDetailItem.start_time,
-      endTime: serverDetailItem.end_time,
-      description: serverDetailItem.short_description,
-      selfSignupAttendees: selfSignupAttendeesClientFormat,
-      administratorAddedAttendees: serverDetailItem.administrator_added_attendees,
-      meetingLink: serverDetailItem.meeting_link, 
-    } as DetailItemModel;
-  }
-  private toClientSelfSignupAttendees(attendeesArrServer:ServerAttendeeModel[]): AttendeeModel[] {
-    let attendeesArr: AttendeeModel[] = [];
-
-    attendeesArrServer.forEach(attendeeServer => {
-      const attendeeClient = {
-        _id: attendeeServer._id,
-        name: attendeeServer.name,
-        email: attendeeServer.email,
-        privilege: attendeeServer.privilege 
-      } as AttendeeModel;
-      attendeesArr.push(attendeeClient);
-    });
-
-    return attendeesArr;
-  }
-
-  private toClientListItems(serverListItems: ServerListItemModel[]): ListItemModel[] {
-    return serverListItems.map(serverListItem => {
-      return {
-        _id: serverListItem._id,
-        title: serverListItem.title,
-        startTime: serverListItem.start_time,
-        endTime: serverListItem.end_time,
-        description: serverListItem.short_description,
-      } as ListItemModel;
-    });
   }
 }

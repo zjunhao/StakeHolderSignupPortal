@@ -1,4 +1,4 @@
-import { ListItemModel } from '../../app/dashboard/models/list-item-model';
+import { ListItemModel } from '../../app/dashboard/models/item-list-response-model';
 
 export const LISTITEMS: ListItemModel[] = [
   { _id: '1', title: 'Sprint Review 4.6', startTime: '2020-06-25T14:00', endTime: '2020-06-25T15:00',description: 'annotations and note list' },

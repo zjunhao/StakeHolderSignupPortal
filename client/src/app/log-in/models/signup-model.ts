@@ -1,5 +1,5 @@
 /** 
- * Model for user to log in
+ * Model client send to server for signning up
  */
 export class SignupModel {
     email: string;

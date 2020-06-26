@@ -10,6 +10,7 @@ import { LoginService } from '../../services/login.service';
 })
 export class SignUpComponent implements OnInit {
   signupInfo: SignupModel = new SignupModel();
+  errorMessage: string;
 
   constructor(
     private loginService: LoginService,
@@ -20,9 +21,13 @@ export class SignUpComponent implements OnInit {
   }
 
   signupUser() {
-    this.loginService.signupUser(this.signupInfo).subscribe(()=>{
-      // TODO: add error handling
-      this.router.navigate(['/signupsucceed']);
+    this.loginService.signupUser(this.signupInfo).subscribe((res)=>{
+      if (res.success) {
+        this.errorMessage = '';
+        this.router.navigate(['/signupsucceed']);
+      } else {
+        this.errorMessage = res.message;
+      }
     });
   }
 }

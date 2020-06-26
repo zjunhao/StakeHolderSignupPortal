@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DetailItemModel } from 'src/app/dashboard/models/detail-item-model';
+import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 import { CurrentUserService } from 'src/app/dashboard/services/current-user.service';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -32,8 +32,11 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         const id = params['id'];
-        this.dashBoardService.getSprintReview(id).subscribe(itemDetail => {
-          this.itemDetail = itemDetail;
+        this.dashBoardService.getSprintReview(id).subscribe(res => {
+          if (res.success) {
+            this.itemDetail = res.itemDetail;
+          }
+          //TODO: Notice user when fail to get item detail
         });
       } 
     });

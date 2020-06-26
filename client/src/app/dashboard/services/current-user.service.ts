@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserModel } from 'src/app/shared/models/user-model';
+import { CurrentUserModel } from '../models/current-user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,8 @@ export class CurrentUserService {
     return currUser.privilege;
   }
 
-  private getCurrentUserFromLocalStorage(): UserModel {
+  private getCurrentUserFromLocalStorage(): CurrentUserModel {
     const jsonStr = localStorage.getItem('currentUser');
-    return JSON.parse(jsonStr) as UserModel;
+    return JSON.parse(jsonStr) as CurrentUserModel;
   }
 }
