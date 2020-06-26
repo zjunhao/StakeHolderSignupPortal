@@ -197,4 +197,35 @@ route.put('/attendeeUnregister/:itemId', (req, res)=>{
     });
 });
 
+// Admin remove a attendee signed up by themself from sprint review
+route.put('/removeSelfSignupAttendee/:itemId', (req, res)=>{
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+    if (!req.body.userId) {
+        res.json({success: false, message: 'Missing user id'});
+        return;
+    }
+
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: 'Item id does not exist'});
+        } else if (!item.self_signup_attendees_id.includes(req.body.userId)) {
+            res.json({success: false, message: 'Cannot remove attendee since he has not signed up yet'});
+        } else {
+            const idx = item.self_signup_attendees_id.indexOf(req.body.userId);
+            item.self_signup_attendees_id.splice(idx, 1);
+            item.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Attendee removed'});
+                }
+            });
+        }
+    });
+});
+
+
 module.exports = route;

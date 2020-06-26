@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
     if (this.currentUserService.getPrivilege().localeCompare(UserPrivilegeEnum.admin) === 0) {
       this.editMode = true;
     }
-    // this.editMode = true;
+    this.editMode = true;
   }
 
   refreshList() {

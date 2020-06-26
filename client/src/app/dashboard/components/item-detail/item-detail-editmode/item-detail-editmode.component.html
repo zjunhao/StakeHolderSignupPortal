@@ -4,9 +4,15 @@
         <textarea id="title" [(ngModel)]="itemDetail.title"></textarea>
         <button (click)='onTitleUpdate()'>Save Changes</button>
     </mat-list-item>
-    <!-- <mat-list-item role="listitem">
-        Available Slots: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length - itemDetail.administratorAddedAttendees.length}}
-    </mat-list-item> -->
+    <mat-list-item role="listitem">
+        <label for="totalSlots">Total Slots: </label>
+        <input id="totalSlots" [(ngModel)]="itemDetail.totalSlots">
+        <button (click)='onTotalSlotsUpdate()'>Save Changes</button>
+        <p class="errorMsg">{{totalSlotsErrMsg}}</p>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        Slots Remaining: {{itemDetail.totalSlots - selfSignupAttendeesNum}}
+    </mat-list-item>
     <mat-list-item role="listitem">
         <label for="organizer">Organizer: </label>
         <textarea id="organizer" [(ngModel)]="itemDetail.organizer"></textarea>
@@ -42,7 +48,7 @@
         <span>Email: </span>
         <span>{{user.email}}</span>
         <span class="tooltip">
-            <button class="material-icons ">remove</button>
+            <button class="material-icons" (click)="removeSelfSignupAttendee(user._id)">remove</button>
             <span class="tooltiptext">Remove user from attending</span>
         </span>
     </li>

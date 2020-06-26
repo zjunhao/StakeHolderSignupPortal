@@ -81,8 +81,20 @@ export class DashboardService {
       .pipe(catchError(this.handleError));
   }
 
+  // User unregister to the sprint review
   attendeeUnregister(sprintReviewId: string, userId: string): Observable<SuccessMessageResponseModel> {
     const url = `${this.baseUrl}/sprintreview/attendeeUnregister/${sprintReviewId}`;
+    
+    const reqBody = { userId: userId };
+
+    return this.http
+      .put<SuccessMessageResponseModel>(url, reqBody)
+      .pipe(catchError(this.handleError));
+  }
+
+  // Admin remove user from sprint review
+  removeSelfSignupAttendee(sprintReviewId: string, userId: string): Observable<SuccessMessageResponseModel> {
+    const url = `${this.baseUrl}/sprintreview/removeSelfSignupAttendee/${sprintReviewId}`;
     
     const reqBody = { userId: userId };
 

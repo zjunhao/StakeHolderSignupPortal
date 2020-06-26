@@ -10,11 +10,13 @@ import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 })
 export class ItemDetailEditmodeComponent implements OnInit {
   itemDetail: DetailItemModel = new DetailItemModel();
+  selfSignupAttendeesNum: number = 0;
+  totalSlotsErrMsg: string = '';
 
   constructor(
     private dashBoardService: DashboardService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.refreshItemDetail();
@@ -29,10 +31,18 @@ export class ItemDetailEditmodeComponent implements OnInit {
         this.dashBoardService.getSprintReview(id).subscribe(res => {
           if(res.success) {
             this.itemDetail = res.itemDetail;
+            this.selfSignupAttendeesNum = res.itemDetail.selfSignupAttendees.length;
           }
           // TODO: notice user when get item detail fails
         });
       } 
+    });
+  }
+
+  removeSelfSignupAttendee(attendeeId: string) {
+    this.dashBoardService.removeSelfSignupAttendee(this.itemDetail._id, attendeeId).subscribe(res => {
+      // TODO: delete confirmation and delete error notification
+      this.refreshItemDetail();
     });
   }
 
@@ -73,6 +83,14 @@ export class ItemDetailEditmodeComponent implements OnInit {
     this.dashBoardService.updateSprintReview(itemId, "meetingLink", this.itemDetail.meetingLink).subscribe(()=>{
       this.refreshItemDetail();
     });
+  }
+  onTotalSlotsUpdate() {
+    if (this.itemDetail.totalSlots < this.selfSignupAttendeesNum) {
+      this.totalSlotsErrMsg = 'Total slots cannot be less than number of attendees signed up already';
+      return;
+    }
+    const itemId = this.itemDetail._id;
+    console.log(this.itemDetail.totalSlots);
   }
 
 }
