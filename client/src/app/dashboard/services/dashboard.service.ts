@@ -70,6 +70,18 @@ export class DashboardService {
       .pipe(catchError(this.handleError));
   }
 
+  // update total slots field of a sprint review
+  // this get handled separately from other fields update becuase there's more check backend for updating total slots
+  updateTotalSlots(id: string, newSlots: number): Observable<SuccessMessageResponseModel>{
+    const url = `${this.baseUrl}/sprintreview/updateTotalSlots/${id}`;
+
+    const reqBody = { totalSlots: newSlots };
+
+    return this.http
+      .put<SuccessMessageResponseModel>(url, reqBody)
+      .pipe(catchError(this.handleError));
+  }
+
   // user try to sign up for sprint review
   attendeeSignUp(sprintReviewId: string, userId: string): Observable<SuccessMessageResponseModel> {
     const url = `${this.baseUrl}/sprintreview/attendeeSignup/${sprintReviewId}`;

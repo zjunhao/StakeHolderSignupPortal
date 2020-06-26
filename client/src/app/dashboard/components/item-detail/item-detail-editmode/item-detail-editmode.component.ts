@@ -10,7 +10,7 @@ import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 })
 export class ItemDetailEditmodeComponent implements OnInit {
   itemDetail: DetailItemModel = new DetailItemModel();
-  selfSignupAttendeesNum: number = 0;
+
   totalSlotsErrMsg: string = '';
 
   constructor(
@@ -31,7 +31,6 @@ export class ItemDetailEditmodeComponent implements OnInit {
         this.dashBoardService.getSprintReview(id).subscribe(res => {
           if(res.success) {
             this.itemDetail = res.itemDetail;
-            this.selfSignupAttendeesNum = res.itemDetail.selfSignupAttendees.length;
           }
           // TODO: notice user when get item detail fails
         });
@@ -46,7 +45,23 @@ export class ItemDetailEditmodeComponent implements OnInit {
     });
   }
 
-  // event handler for save form fileds
+  // event handler for updating sprint review details
+  onTotalSlotsUpdate() {
+    if (this.itemDetail.totalSlots < this.itemDetail.selfSignupAttendees.length) {
+      this.totalSlotsErrMsg = 'Total slots cannot be less than number of attendees signed up already';
+      return;
+    } 
+
+    this.dashBoardService.updateTotalSlots(this.itemDetail._id, this.itemDetail.totalSlots).subscribe(res=>{
+      if (res.success) {
+        this.totalSlotsErrMsg = '';
+        this.refreshItemDetail();
+      } else {
+        this.totalSlotsErrMsg = res.message;
+      }
+    });
+  }
+
   onTitleUpdate() {
     const itemId = this.itemDetail._id;
     this.dashBoardService.updateSprintReview(itemId, "title", this.itemDetail.title).subscribe(()=>{
@@ -83,14 +98,6 @@ export class ItemDetailEditmodeComponent implements OnInit {
     this.dashBoardService.updateSprintReview(itemId, "meetingLink", this.itemDetail.meetingLink).subscribe(()=>{
       this.refreshItemDetail();
     });
-  }
-  onTotalSlotsUpdate() {
-    if (this.itemDetail.totalSlots < this.selfSignupAttendeesNum) {
-      this.totalSlotsErrMsg = 'Total slots cannot be less than number of attendees signed up already';
-      return;
-    }
-    const itemId = this.itemDetail._id;
-    console.log(this.itemDetail.totalSlots);
   }
 
 }

@@ -96,13 +96,13 @@ route.delete('/deleteItem/:id', (req,res)=>{
 });
 
 // update field of a sprint review
-route.put('/updateItem/:id', (req, res)=>{
+route.put('/updateItem/:id',  (req, res)=>{
     function getUpdateFromRequest(request) {
         var keys = Object.keys(request.body);
         if (keys.length !== 1) {
-            return null;
+            return res.json({success: false, message: 'Cannot update multiple fields at one request'});
         }
-    
+
         switch (keys[0]) {
             case "title": 
                 return {$set: { title: request.body.title}};
@@ -123,7 +123,8 @@ route.put('/updateItem/:id', (req, res)=>{
 
     var condition = {_id: req.params.id};
     var update = getUpdateFromRequest(req);
-    SprintReviewItem.update(condition, update, function(err, numAffected) {
+
+    SprintReviewItem.updateOne(condition, update, function(err, _) {
         if (err) {
             res.json({success: false, message: err.message});
         } else if (update === null) {
@@ -133,6 +134,35 @@ route.put('/updateItem/:id', (req, res)=>{
         }
     })
 });
+
+// update total slots for sprintreview
+route.put('/updateTotalSlots/:itemId', (req, res) => {
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+    if (!("totalSlots" in req.body)) {
+        res.json({success: false, message: 'Missing totalSlots in request body'});
+        return;
+    }
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: err.message});
+        } else if (item.self_signup_attendees_id.length > req.body.totalSlots) {
+            res.json({success: false, message: 'Total slots cannot be less than number of attendees already signed up'});
+        } else {
+            item.total_slots = req.body.totalSlots;
+            item.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Total slots updated'});
+                }
+            });
+        }
+    }); 
+})
+
 
 // sign up attendee for sprint review
 route.put('/attendeeSignup/:itemId', (req, res)=>{

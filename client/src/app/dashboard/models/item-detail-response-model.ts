@@ -18,6 +18,11 @@ export class DetailItemModel {
     selfSignupAttendees?: UserModel[];
     administratorAddedAttendees?: string[];
     meetingLink?: string; 
+
+    constructor() {
+        this.selfSignupAttendees = [];
+        this.administratorAddedAttendees = [];
+    }
 }
 
 class UserModel {

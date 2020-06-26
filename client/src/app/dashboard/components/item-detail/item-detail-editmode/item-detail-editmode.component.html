@@ -11,7 +11,7 @@
         <p class="errorMsg">{{totalSlotsErrMsg}}</p>
     </mat-list-item>
     <mat-list-item role="listitem">
-        Slots Remaining: {{itemDetail.totalSlots - selfSignupAttendeesNum}}
+        Slots Remaining: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}
     </mat-list-item>
     <mat-list-item role="listitem">
         <label for="organizer">Organizer: </label>
