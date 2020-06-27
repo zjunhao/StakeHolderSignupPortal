@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+    <button mat-button [matMenuTriggerFor]="menu">
+        <span class="material-icons">
+            account_circle
+        </span>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink='/accountpromote'>
+            <span class="material-icons">
+                assignment_ind
+            </span>
+            <span>
+                Promote me as administrator!
+            </span>
+        </button>
+        <button mat-menu-item (click)='logOutUser()'>
+            <span class="material-icons">
+                power_settings_new
+            </span>
+            <span>
+                Log out
+            </span>
+        </button>
+    </mat-menu>
+</mat-toolbar>
