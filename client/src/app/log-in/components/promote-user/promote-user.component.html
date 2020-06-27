@@ -2,7 +2,7 @@
     <form (submit)="promoteUser()" >
         <label>Please enter passcode to promote the account as administrator</label>
         <br>
-        <input name="passcode" [(ngModel)]='userInputPasscode'>
+        <input name="passcode" type="password" [(ngModel)]="userInputPasscode">
         <br>
     
         <button type="submit" >Submit</button>
@@ -12,7 +12,7 @@
 </ng-container>    
 
 <ng-container *ngIf='isUserAdmin'>
-    <label>Your account has administrator privilege, click button to remove administrator privilege</label>
+    <label>Your account has administrator privilege, click button to REMOVE administrator privilege</label>
     <br>
     <button (click)='removeUserAdmin()'>Remove administrator privilege</button>
     <p class="errMsg">{{unAdminErrMsg}}</p>

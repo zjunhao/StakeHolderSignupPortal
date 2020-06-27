@@ -47,9 +47,8 @@
         <span>{{user.name}}; </span>
         <span>Email: </span>
         <span>{{user.email}}</span>
-        <span class="tooltip">
-            <button class="material-icons" (click)="removeSelfSignupAttendee(user._id)">remove</button>
-            <span class="tooltiptext">Remove user from attending</span>
-        </span>
+        <button mat-raised-button matTooltip="Remove user from attending" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeSelfSignupAttendee(user._id)">
+            <span class="material-icons">remove</span>
+        </button>
     </li>
 </ul>

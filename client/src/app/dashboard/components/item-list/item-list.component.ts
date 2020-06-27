@@ -3,6 +3,7 @@ import { MatListOption } from '@angular/material/list'
 import { Router, NavigationExtras } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
 import { ListItemModel } from '../../models/item-list-response-model';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-item-list',
@@ -10,6 +11,8 @@ import { ListItemModel } from '../../models/item-list-response-model';
   styleUrls: ['./item-list.component.scss']
 })
 export class ItemListComponent implements OnInit {
+  // // position control for tooltip
+  // tooltipAfterPosition = new FormControl('after');
 
   listItems: ListItemModel[];
 

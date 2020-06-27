@@ -5,7 +5,12 @@
       <span>{{listItem.description}}</span>
       <span>Available Slots: {{listItem.remainingSlots}}</span>
       <ng-container *ngIf='editMode'>
-        <button (click)='deleteSprintReview($event, listItem._id)'>delete</button>
+        <!-- <button mat-raised-button  matTooltip="Delete"  [matTooltipPosition]="tooltipAfterPosition.value" (click)='deleteSprintReview($event, listItem._id)'>
+          <span class="material-icons">
+            delete_outline
+          </span>
+        </button> -->
+        <button (click)='deleteSprintReview($event, listItem._id)'>Delete</button>
       </ng-container>
     </div>
   </mat-list-option>

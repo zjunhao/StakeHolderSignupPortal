@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-item-detail-editmode',
@@ -10,6 +11,8 @@ import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 })
 export class ItemDetailEditmodeComponent implements OnInit {
   itemDetail: DetailItemModel = new DetailItemModel();
+
+  tooltipAfterPosition = new FormControl('after');
 
   totalSlotsErrMsg: string = '';
 
