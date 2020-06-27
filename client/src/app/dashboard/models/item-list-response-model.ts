@@ -10,5 +10,6 @@ export class ListItemModel {
     title: string;
     startTime: string;
     endTime: string;
+    remainingSlots: number;
     description: string;
 }

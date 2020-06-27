@@ -3,8 +3,7 @@
     <div>
       <span>{{listItem.title}}</span>
       <span>{{listItem.description}}</span>
-      <!-- available slots -->
-      <!-- <span>{{listItem.description}}</span> -->
+      <span>Available Slots: {{listItem.remainingSlots}}</span>
       <ng-container *ngIf='editMode'>
         <button (click)='deleteSprintReview($event, listItem._id)'>delete</button>
       </ng-container>

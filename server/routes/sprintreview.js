@@ -18,6 +18,7 @@ route.get('/getItemList', (req, res) => {
                     title: item.title,
                     startTime: item.start_time,
                     endTime: item.end_time,
+                    remainingSlots: item.total_slots - item.self_signup_attendees_id.length,
                     description: item.short_description
                 }
                 trimItemList.push(trimItem);

@@ -69,7 +69,7 @@ route.put('/promoteUser/:id', (req, res)=>{
         return res.json({success: false, message: 'Missing user id in request parameters'});
     }
     if (!req.body.passcode) {
-        return res.json({success: false, message: 'Missing passcode property in request body'});
+        return res.json({success: false, message: 'Missing passcode in request'});
     }
     if (req.body.passcode.localeCompare(correctPasscode) !== 0) {
         return res.json({success: false, message: 'Passcode not correct'});
