@@ -14,9 +14,9 @@
     <mat-list-item role="listitem">
         Description: {{itemDetail.description}}
     </mat-list-item>
-    <!-- <mat-list-item role="listitem">
+    <mat-list-item *ngIf='userSignedUp' role="listitem">
         Meeting Link: {{itemDetail.meetingLink}}
-    </mat-list-item>  -->
+    </mat-list-item> 
 </mat-list> 
 <ng-container *ngIf='!userSignedUp'>
     <p>You've not signed up yet.</p>
