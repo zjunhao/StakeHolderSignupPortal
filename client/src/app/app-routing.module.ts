@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/components/dashboard/dashboard.c
 import { SignInComponent } from './log-in/components/sign-in/sign-in.component';
 import { SignUpComponent } from './log-in/components/sign-up/sign-up.component';
 import { SignUpSucceedMessagePageComponent } from './log-in/components/sign-up-succeed-message-page/sign-up-succeed-message-page.component';
+import { PromoteUserComponent } from './log-in/components/promote-user/promote-user.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path:'login', component: SignInComponent },
   { path:'signup', component: SignUpComponent },
   { path:'signupsucceed', component: SignUpSucceedMessagePageComponent },
+  { path:'accountpromote', component: PromoteUserComponent },
   { path:'dashboard', component:DashboardComponent },
   { path:'itemdetail/:id', component:ItemDetailComponent },
 ];

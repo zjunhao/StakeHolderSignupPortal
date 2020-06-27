@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LogInModule } from './log-in/log-in.module';
+import { UserModule } from './log-in/user.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { LogInModule } from './log-in/log-in.module';
     HttpClientModule,
     AppRoutingModule,
     DashboardModule,
-    LogInModule,
+    UserModule,
     BrowserAnimationsModule
   ],
   providers: [

@@ -1,0 +1,17 @@
+<form (submit)="promoteUser()" >
+    <label>Please enter passcode to promote the account as administrator</label>
+    <br>
+    <input name="passcode" [(ngModel)]='userInputPasscode'>
+    <br>
+
+    <button type="submit" >Submit</button>
+    <p class="errMsg">{{promoteErrMsg}}</p>
+    <p>{{promoteSucceedMsg}}</p>
+</form>
+
+
+<div class="navBtnGroup">
+    <button (click)='logOutUser()'>Log Out</button>
+    <br>
+    <a routerLink='/dashboard'>Back To Dashboard</a>
+</div>

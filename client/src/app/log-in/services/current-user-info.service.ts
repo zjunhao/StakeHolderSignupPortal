@@ -4,7 +4,7 @@ import { CurrentUserModel } from '../models/current-user-model';
 @Injectable({
   providedIn: 'root'
 })
-export class CurrentUserService {
+export class CurrentUserInfoService {
 
   constructor() { }
 

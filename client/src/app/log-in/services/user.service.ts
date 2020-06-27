@@ -6,16 +6,19 @@ import { SignupModel } from '../models/signup-model';
 import { LoginModel } from '../models/login-model';
 import { SuccessMessageResponseModel } from 'src/app/shared/models/success-message-response-model';
 import { LoginResponseModel } from '../models/login-response-model';
+import { Router } from '@angular/router';
+import { UserPrivilegeEnum } from '../enums/user-privilege-enum';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class UserService {
 
   private baseUrl = 'http://localhost:3000/api';
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
   signupUser(newUser: SignupModel): Observable<SuccessMessageResponseModel> {
@@ -39,6 +42,23 @@ export class LoginService {
 
     return this.http
       .post<LoginResponseModel>(url, user, {headers: headers})
+      .pipe(catchError(this.handleError));
+  }
+
+  /** Log user out by removing localStorage and navigate user to login page */
+  logOutUser() {
+    localStorage.removeItem('currentUser');
+    this.router.navigate(['/login']);
+  }
+
+  /** Promote user account to be administrator */
+  promoteUser(id: string, passcode: string) {
+    const url = `${this.baseUrl}/user/promoteUser/${id}`;
+    
+    const reqBody = {passcode: passcode};
+
+    return this.http
+      .put<SuccessMessageResponseModel>(url, reqBody)
       .pipe(catchError(this.handleError));
   }
 

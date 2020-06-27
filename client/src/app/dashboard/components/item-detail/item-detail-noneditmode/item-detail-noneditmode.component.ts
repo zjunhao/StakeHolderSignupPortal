@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
-import { CurrentUserService } from 'src/app/dashboard/services/current-user.service';
+import { CurrentUserInfoService } from 'src/app/log-in/services/current-user-info.service';
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
@@ -18,7 +18,7 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
 
   constructor(
     private dashBoardService: DashboardService,
-    private currentUserService: CurrentUserService,
+    private currentUserService: CurrentUserInfoService,
     private route: ActivatedRoute
   ) { }
 

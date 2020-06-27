@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../../models/login-model';
-import { LoginService } from '../../services/login.service';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ export class SignInComponent implements OnInit {
   loginErrorText: string = "";
 
   constructor(
-    private loginService: LoginService,
+    private loginService: UserService,
     private router: Router
   ) { }
 

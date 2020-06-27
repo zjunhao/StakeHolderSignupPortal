@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SignupModel } from '../../models/signup-model';
-import { LoginService } from '../../services/login.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -13,7 +13,7 @@ export class SignUpComponent implements OnInit {
   errorMessage: string;
 
   constructor(
-    private loginService: LoginService,
+    private loginService: UserService,
     private router: Router
   ) { }
 

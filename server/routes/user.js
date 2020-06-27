@@ -58,6 +58,39 @@ route.post('/loginUser', (req, res)=>{
             }
         }
     })
-})
+});
+
+// promote a user to admin
+route.put('/promoteUser/:id', (req, res)=>{
+    // const correctPasscode = 'P@ssc0de4pr0m0t10n';
+    const correctPasscode = 'passcode';
+
+    if (!req.params.id) {
+        return res.json({success: false, message: 'Missing user id in request parameters'});
+    }
+    if (!req.body.passcode) {
+        return res.json({success: false, message: 'Missing passcode property in request body'});
+    }
+    if (req.body.passcode.localeCompare(correctPasscode) !== 0) {
+        return res.json({success: false, message: 'Passcode not correct'});
+    }
+
+    User.findById(req.params.id, (err, user) => {
+        if (err) {
+            res.json({success: false, message: err.message});
+        } else if (user.privilege.localeCompare('administrator') === 0){
+            res.json({success: false, message: 'The account is admistrator already'});
+        } else{
+            user.privilege = 'administrator';
+            user.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Account promotion succeed'});
+                }
+            })
+        }
+    });
+});
 
 module.exports = route;

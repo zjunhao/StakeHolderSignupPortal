@@ -33,9 +33,6 @@ import { ItemDetailNoneditmodeComponent } from './components/item-detail/item-de
     ReactiveFormsModule,
     RouterModule
   ],
-  exports: [
-    ItemListComponent,
-    ItemDetailComponent
-  ]
+  exports: []
 })
 export class DashboardModule { }

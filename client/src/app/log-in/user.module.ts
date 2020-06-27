@@ -8,10 +8,16 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SignUpSucceedMessagePageComponent } from './components/sign-up-succeed-message-page/sign-up-succeed-message-page.component';
+import { PromoteUserComponent } from './components/promote-user/promote-user.component';
 
 
 @NgModule({
-  declarations: [SignInComponent, SignUpComponent, SignUpSucceedMessagePageComponent],
+  declarations: [
+    SignInComponent, 
+    SignUpComponent, 
+    SignUpSucceedMessagePageComponent, 
+    PromoteUserComponent
+  ],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -19,6 +25,7 @@ import { SignUpSucceedMessagePageComponent } from './components/sign-up-succeed-
     FormsModule,
     ReactiveFormsModule,
     RouterModule
-  ]
+  ],
+  exports: []
 })
-export class LogInModule { }
+export class UserModule { }
