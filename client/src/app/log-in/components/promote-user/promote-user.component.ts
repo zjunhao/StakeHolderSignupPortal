@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { CurrentUserInfoService } from '../../services/current-user-info.service';
+import { UserPrivilegeEnum } from '../../enums/user-privilege-enum';
 
 @Component({
   selector: 'app-promote-user',
@@ -11,7 +12,12 @@ import { CurrentUserInfoService } from '../../services/current-user-info.service
 export class PromoteUserComponent implements OnInit {
   promoteErrMsg: string;
   promoteSucceedMsg: string;
+  unAdminErrMsg: string;
+  unAdminSucceedMsg: string;
+
   userInputPasscode: string;
+
+  isUserAdmin: boolean;
 
   constructor(
     private loginService: UserService,
@@ -19,6 +25,7 @@ export class PromoteUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isUserAdmin = this.currentUserService.getPrivilege().localeCompare(UserPrivilegeEnum.admin) === 0;
   }
 
   /** Make current user account as administrator. */ 
@@ -32,6 +39,19 @@ export class PromoteUserComponent implements OnInit {
         this.promoteSucceedMsg = '';
       }
     });
+  }
+
+  /** Remove administrator privilege from current user */
+  removeUserAdmin() {
+    this.loginService.removeUserAdmin(this.currentUserService.getId()).subscribe(res => {
+      if (res.success) {
+        this.unAdminErrMsg = '';
+        this.unAdminSucceedMsg = 'Your account is no longer administrator, please log out and log back in for it to take effect';
+      } else {
+        this.unAdminErrMsg = res.message;
+        this.unAdminSucceedMsg = '';
+      }
+    })
   }
 
   logOutUser() {

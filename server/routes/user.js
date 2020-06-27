@@ -93,4 +93,29 @@ route.put('/promoteUser/:id', (req, res)=>{
     });
 });
 
+// remove the user's admin privilege
+route.put('/removeUserAdmin/:id', (req, res)=>{
+
+    if (!req.params.id) {
+        return res.json({success: false, message: 'Missing user id in request parameters'});
+    }
+
+    User.findById(req.params.id, (err, user) => {
+        if (err) {
+            res.json({success: false, message: err.message});
+        } else if (user.privilege.localeCompare('normal') === 0){
+            res.json({success: false, message: 'Cannot remove administrator privilege since this user is not an administrator'});
+        } else{
+            user.privilege = 'normal';
+            user.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Administrator privilege removed'});
+                }
+            })
+        }
+    });
+});
+
 module.exports = route;

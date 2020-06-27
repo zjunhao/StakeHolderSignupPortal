@@ -62,6 +62,17 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
+  /** Remove user's administrator privilege */
+  removeUserAdmin(id: string) {
+    const url = `${this.baseUrl}/user/removeUserAdmin/${id}`;
+    
+    const reqBody = {privilege: "normal"};
+
+    return this.http
+      .put<SuccessMessageResponseModel>(url, reqBody)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(res: HttpErrorResponse | any) {
     console.error(res.error || res.body.error);
     return observableThrowError(res.error || 'Server error');
