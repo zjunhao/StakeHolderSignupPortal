@@ -1,3 +1,4 @@
+<!-- General fields about sprint review detail -->
 <mat-list role="list">
     <mat-list-item role="listitem">
         <label for="title">Title: </label>
@@ -38,10 +39,10 @@
         <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
         <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
     </mat-list-item>
-
 </mat-list>
 
-<ng-container>
+<!-- List of attendees signed up by themselves -->
+<div>
     <label for="selfSignedAttendees">Attendees Signed Up </label>
     <ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
         <li>
@@ -54,9 +55,10 @@
             </button>
         </li>
     </ul>
-</ng-container>
+</div>
 
-<ng-container>
+<!-- List of attendees added by administrator -->
+<div>
     <label for="adminAddedAttendees">Attendees Added By Administrator</label>
     <ul id="adminAddedAttendees" *ngFor="let user of itemDetail.administratorAddedAttendees">
         <li>
@@ -69,4 +71,7 @@
             </button>
         </li>
     </ul>
-</ng-container>
+</div>
+
+
+<button routerLink="/dashboard">Back</button>
