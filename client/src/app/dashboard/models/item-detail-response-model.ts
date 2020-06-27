@@ -16,7 +16,7 @@ export class DetailItemModel {
     endTime: string;
     description: string;
     selfSignupAttendees?: UserModel[];
-    administratorAddedAttendees?: string[];
+    administratorAddedAttendees?: NameEmailModel[];
     meetingLink?: string; 
 
     constructor() {
@@ -25,9 +25,17 @@ export class DetailItemModel {
     }
 }
 
+// Model info about users who signed up to the app
 class UserModel {
     _id: string;
     name: string;
     email: string;
     privilege: string;
+}
+
+// Model info about name and email added as attendee by administrator, that name email does not have to be signed up to the app
+class NameEmailModel{
+    _id: string;  // mongoose give this object ({name:xx email:xx }) an id when you save new obj into itemDetail.administratorAddedAttendees array
+    name: string;
+    email: string;
 }

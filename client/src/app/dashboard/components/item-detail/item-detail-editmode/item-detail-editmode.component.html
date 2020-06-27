@@ -40,15 +40,33 @@
     </mat-list-item>
 
 </mat-list>
-<label for="selfSignedAttendees">Attendees Signed Up </label>
-<ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
-    <li>
-        <span>Name: </span>
-        <span>{{user.name}}; </span>
-        <span>Email: </span>
-        <span>{{user.email}}</span>
-        <button mat-raised-button matTooltip="Remove user from attending" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeSelfSignupAttendee(user._id)">
-            <span class="material-icons">remove</span>
-        </button>
-    </li>
-</ul>
+
+<ng-container>
+    <label for="selfSignedAttendees">Attendees Signed Up </label>
+    <ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
+        <li>
+            <span>Name: </span>
+            <span>{{user.name}}; </span>
+            <span>Email: </span>
+            <span>{{user.email}}</span>
+            <button mat-raised-button matTooltip="Remove user from attending" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeSelfSignupAttendee(user._id)">
+                <span class="material-icons">remove</span>
+            </button>
+        </li>
+    </ul>
+</ng-container>
+
+<ng-container>
+    <label for="adminAddedAttendees">Attendees Added By Administrator</label>
+    <ul id="adminAddedAttendees" *ngFor="let user of itemDetail.administratorAddedAttendees">
+        <li>
+            <span>Name: </span>
+            <span>{{user.name}}; </span>
+            <span>Email: </span>
+            <span>{{user.email}}</span>
+            <button mat-raised-button matTooltip="Remove user you've added" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeAdminAddedAttendee(user._id)">
+                <span class="material-icons">remove</span>
+            </button>
+        </li>
+    </ul>
+</ng-container>

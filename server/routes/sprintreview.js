@@ -37,12 +37,19 @@ route.get('/getItem/:id', (req, res) => {
         } else {
             // transform self_sign_up_attendees_id array to self_sign_up_attendees_info array and send it with other item detail info back
             const query = {'_id': {$in: itemDetail.self_signup_attendees_id}};
-            User.find(query, (err, attendeesInfo)=>{
+            User.find(query, (err, attendeesInfoRaw)=>{
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
-                    attendeesInfo.forEach(attendeeInfo => {
-                        delete attendeeInfo.password;
+                    let attendeesInfo = [];
+                    attendeesInfoRaw.forEach(attendeeInfoRaw => {
+                        const attendeeInfo = {
+                            _id: attendeeInfoRaw._id,
+                            name: attendeeInfoRaw.name,
+                            email: attendeeInfoRaw.email,
+                            privilege: attendeeInfoRaw.privilege
+                        };
+                        attendeesInfo.push(attendeeInfo);
                     });
 
                     const itemDetailWithAttendeesInfo = {
@@ -54,7 +61,7 @@ route.get('/getItem/:id', (req, res) => {
                         endTime: itemDetail.end_time,
                         description: itemDetail.short_description,
                         selfSignupAttendees: attendeesInfo,
-                        administratorAddedAttendees: itemDetail.administrator_added_attendees_id,
+                        administratorAddedAttendees: itemDetail.administrator_added_attendees,
                         meetingLink: itemDetail.meeting_link
                     };
         
@@ -241,7 +248,7 @@ route.put('/removeSelfSignupAttendee/:itemId', (req, res)=>{
 
     SprintReviewItem.findById(req.params.itemId, (err, item)=>{
         if (err) {
-            res.json({success: false, message: 'Item id does not exist'});
+            res.json({success: false, message: err.message});
         } else if (!item.self_signup_attendees_id.includes(req.body.userId)) {
             res.json({success: false, message: 'Cannot remove attendee since he has not signed up yet'});
         } else {
@@ -258,5 +265,63 @@ route.put('/removeSelfSignupAttendee/:itemId', (req, res)=>{
     });
 });
 
+// admin added attendee to sprint review
+route.put('/adminAddAttendee/:itemId', (req, res)=>{
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: err.message});
+        } else {
+            console.log(req.body);
+            console.log(item.administrator_added_attendees);
+            item.administrator_added_attendees.push({name: req.body.name, email: req.body.email});
+            item.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Attendee added'});
+                }
+            });
+        }
+    });
+});
+
+// admin remove attendee he/she added before from sprint review
+route.put('/removeAdminAddedAttendee/:itemId', (req, res)=>{
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+    if (!'attendeeObjId' in req.body) {
+        res.json({success: false, message: 'Missing attendee object id'});
+        return;
+    }
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: err.message});
+        } else {
+            // remove admin added attendee object by id
+            const idToDelete = req.body.attendeeObjId;
+            const idx = item.administrator_added_attendees.map( attendeeObj => attendeeObj._id ).indexOf(idToDelete);
+            if (idx === -1) {
+                return res.json({succeess: false, message: 'Attendee trying to remove does not exist in attendees added by administrator'});
+            }
+
+            item.administrator_added_attendees.splice(idx, 1);
+
+            item.save((err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Attendee removed'});
+                }
+            });
+        }
+    });
+});
 
 module.exports = route;

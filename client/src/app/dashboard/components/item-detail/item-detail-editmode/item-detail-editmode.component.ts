@@ -48,6 +48,13 @@ export class ItemDetailEditmodeComponent implements OnInit {
     });
   }
 
+  removeAdminAddedAttendee(adminAddedAttendeeObjId: string) {
+    this.dashBoardService.removeAdminAddedAttendee(this.itemDetail._id, adminAddedAttendeeObjId).subscribe(res => {
+      // TODO: delete confirmation and delete error notification
+      this.refreshItemDetail();
+    });
+  }
+
   // event handler for updating sprint review details
   onTotalSlotsUpdate() {
     if (this.itemDetail.totalSlots < this.itemDetail.selfSignupAttendees.length) {

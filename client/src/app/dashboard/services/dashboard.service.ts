@@ -104,11 +104,22 @@ export class DashboardService {
       .pipe(catchError(this.handleError));
   }
 
-  // Admin remove user from sprint review
+  // Admin remove self signed up user from sprint review attendee list
   removeSelfSignupAttendee(sprintReviewId: string, userId: string): Observable<SuccessMessageResponseModel> {
     const url = `${this.baseUrl}/sprintreview/removeSelfSignupAttendee/${sprintReviewId}`;
     
     const reqBody = { userId: userId };
+
+    return this.http
+      .put<SuccessMessageResponseModel>(url, reqBody)
+      .pipe(catchError(this.handleError));
+  }
+
+  // Admin remove user added by himself/herself from sprint review attendee list
+  removeAdminAddedAttendee(sprintReviewId: string, adminAddedAttendeeObjId: string) {
+    const url = `${this.baseUrl}/sprintreview/removeAdminAddedAttendee/${sprintReviewId}`;
+    
+    const reqBody = { attendeeObjId: adminAddedAttendeeObjId };
 
     return this.http
       .put<SuccessMessageResponseModel>(url, reqBody)
