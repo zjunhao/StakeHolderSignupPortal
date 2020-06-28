@@ -6,6 +6,7 @@ import { ItemListResponseModel } from '../models/item-list-response-model';
 import { ItemDetailResponseModel } from '../models/item-detail-response-model';
 import { ItemCreatingModel } from '../models/item-creating-model';
 import { SuccessMessageResponseModel } from 'src/app/shared/models/success-message-response-model';
+import { AdminAddAttendeeModel } from '../models/admin-add-attendee-model';
 
 
 @Injectable({
@@ -116,11 +117,22 @@ export class DashboardService {
   }
 
   // Admin remove user added by himself/herself from sprint review attendee list
-  removeAdminAddedAttendee(sprintReviewId: string, adminAddedAttendeeObjId: string) {
+  removeAdminAddedAttendee(sprintReviewId: string, adminAddedAttendeeObjId: string): Observable<SuccessMessageResponseModel> {
     const url = `${this.baseUrl}/sprintreview/removeAdminAddedAttendee/${sprintReviewId}`;
     
     const reqBody = { attendeeObjId: adminAddedAttendeeObjId };
 
+    return this.http
+      .put<SuccessMessageResponseModel>(url, reqBody)
+      .pipe(catchError(this.handleError));
+  }
+
+  // Admin add attendee to a sprint review
+  addAttendeeFromAdmin(sprintReviewId: string, attendeeInfo: AdminAddAttendeeModel): Observable<SuccessMessageResponseModel> {
+    const url = `${this.baseUrl}/sprintreview/adminAddAttendee/${sprintReviewId}`;
+    
+    const reqBody = { newAttendee: attendeeInfo };
+    console.log(reqBody);
     return this.http
       .put<SuccessMessageResponseModel>(url, reqBody)
       .pipe(catchError(this.handleError));

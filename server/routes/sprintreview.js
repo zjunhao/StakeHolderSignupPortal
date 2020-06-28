@@ -276,9 +276,7 @@ route.put('/adminAddAttendee/:itemId', (req, res)=>{
         if (err) {
             res.json({success: false, message: err.message});
         } else {
-            console.log(req.body);
-            console.log(item.administrator_added_attendees);
-            item.administrator_added_attendees.push({name: req.body.name, email: req.body.email});
+            item.administrator_added_attendees.push({name: req.body.newAttendee.name, email: req.body.newAttendee.email});
             item.save((err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
@@ -310,7 +308,6 @@ route.put('/removeAdminAddedAttendee/:itemId', (req, res)=>{
             if (idx === -1) {
                 return res.json({succeess: false, message: 'Attendee trying to remove does not exist in attendees added by administrator'});
             }
-
             item.administrator_added_attendees.splice(idx, 1);
 
             item.save((err) => {

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { AdminAddAttendeeModel } from 'src/app/dashboard/models/admin-add-attendee-model';
 
 @Component({
   selector: 'app-item-detail-editmode',
@@ -12,9 +13,16 @@ import { FormControl } from '@angular/forms';
 export class ItemDetailEditmodeComponent implements OnInit {
   itemDetail: DetailItemModel = new DetailItemModel();
 
+  // variables related to admin adding attendee
+  newAdminAttendee: AdminAddAttendeeModel = new AdminAddAttendeeModel();
+  nameFC = new FormControl('', [Validators.required]);
+  emailFC = new FormControl('', [Validators.required, Validators.email]);
+
   tooltipAfterPosition = new FormControl('after');
 
   totalSlotsErrMsg: string = '';
+
+  @ViewChild('addAttendeeForm') addAttendeeForm: ElementRef;
 
   constructor(
     private dashBoardService: DashboardService,
@@ -53,6 +61,36 @@ export class ItemDetailEditmodeComponent implements OnInit {
       // TODO: delete confirmation and delete error notification
       this.refreshItemDetail();
     });
+  }
+
+  adminAddingAttendee() {
+    if (this.nameFC.valid && this.emailFC.valid) {
+      this.dashBoardService.addAttendeeFromAdmin(this.itemDetail._id, this.newAdminAttendee).subscribe(res => {
+        console.log(res);
+        if (res.success) {
+          this.refreshItemDetail();
+          this.addAttendeeForm.nativeElement.reset();
+        }
+        // TODO: notify user if failed to add attendee
+      })
+    }
+  }
+
+  getNameErrorMessage() {
+    if (this.nameFC.hasError('required')) 
+      return 'Name cannot be empty';
+    else
+      return '';
+  }
+
+  getEmailErrorMessage() {
+    if (this.emailFC.hasError('email')) {
+      return 'Email not valid';
+    } else if (this.emailFC.hasError('required')) {
+      return 'Email cannot be empty';
+    } else {
+      return '';
+    }
   }
 
   // event handler for updating sprint review details

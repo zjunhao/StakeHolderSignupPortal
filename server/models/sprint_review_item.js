@@ -1,5 +1,16 @@
 const mongoose = require('mongoose');
 
+const AdminAddedAttendeeSchema = mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    }
+})
+
 const SprintReviewItemSchema = mongoose.Schema({
     // title of sprint review
     title: {
@@ -39,10 +50,7 @@ const SprintReviewItemSchema = mongoose.Schema({
     // sprint review attendees add by administrator
     // attendees here does not take total slots
     administrator_added_attendees: {
-        type: [{
-            name: {type: String, required: true},
-            email: {type: String, required: true}
-        }],
+        type: [AdminAddedAttendeeSchema],
         required: false
     },
     // zoom link meeting for this sprint review

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { FormControl, Validators } from '@angular/forms';
 import { ItemCreatingModel } from '../../models/item-creating-model';
@@ -10,6 +10,8 @@ import { ItemCreatingModel } from '../../models/item-creating-model';
 })
 export class ItemCreaterComponent implements OnInit {
   @Output() newItemCreated: EventEmitter<string> = new EventEmitter();
+  
+  @ViewChild('creationForm') creationForm: ElementRef;
 
   newItem = new ItemCreatingModel();
 
@@ -34,7 +36,7 @@ export class ItemCreaterComponent implements OnInit {
       this.dashboardService.addSprintReview(this.newItem).subscribe( res => {
         if (res.success) {
           this.newItemCreated.emit('new item created');
-          // clear form fields
+          this.creationForm.nativeElement.reset();
           // collapse form
         }
         // TODO: maybe notify user if creating sprint review fails

@@ -6,15 +6,6 @@
         <button (click)='onTitleUpdate()'>Save Changes</button>
     </mat-list-item>
     <mat-list-item role="listitem">
-        <label for="totalSlots">Total Slots: </label>
-        <input id="totalSlots" [(ngModel)]="itemDetail.totalSlots">
-        <button (click)='onTotalSlotsUpdate()'>Save Changes</button>
-        <p class="errorMsg">{{totalSlotsErrMsg}}</p>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Slots Remaining: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}
-    </mat-list-item>
-    <mat-list-item role="listitem">
         <label for="organizer">Organizer: </label>
         <textarea id="organizer" [(ngModel)]="itemDetail.organizer"></textarea>
         <button (click)='onOrganzerUpdate()'>Save Changes</button>
@@ -38,6 +29,15 @@
         <label for="meetingLink">Meeting Link: </label>
         <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
         <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        <label for="totalSlots">Total Slots: </label>
+        <input id="totalSlots" [(ngModel)]="itemDetail.totalSlots">
+        <button (click)='onTotalSlotsUpdate()'>Save Changes</button>
+        <p class="errorMsg">{{totalSlotsErrMsg}}</p>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+        Slots Remaining: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}
     </mat-list-item>
 </mat-list>
 
@@ -73,5 +73,23 @@
     </ul>
 </div>
 
+<!-- Form for admin to add attendees -->
+<div style="border: 2px solid greenyellow">
+    <form #addAttendeeForm (submit)="adminAddingAttendee()">
+        <mat-form-field>
+            <mat-label>Name: </mat-label>
+            <input matInput name="name" [(ngModel)]="newAdminAttendee.name" [formControl]="nameFC" required>
+            <mat-error *ngIf="nameFC.invalid">{{getNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Email: </mat-label>
+            <input matInput name="email" [(ngModel)]="newAdminAttendee.email" [formControl]="emailFC" required>
+            <mat-error *ngIf="emailFC.invalid">{{getEmailErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <br>
+        <button type ="submit">Add Attendee</button>
+        <button type="reset">Cancel</button>
+    </form>
+</div>
 
 <button routerLink="/dashboard">Back</button>
