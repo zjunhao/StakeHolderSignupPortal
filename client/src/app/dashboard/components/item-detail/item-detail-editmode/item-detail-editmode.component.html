@@ -1,95 +1,104 @@
-<!-- General fields about sprint review detail -->
-<mat-list role="list">
-    <mat-list-item role="listitem">
-        <label for="title">Title: </label>
-        <textarea id="title" [(ngModel)]="itemDetail.title"></textarea>
-        <button (click)='onTitleUpdate()'>Save Changes</button>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        <label for="organizer">Organizer: </label>
-        <textarea id="organizer" [(ngModel)]="itemDetail.organizer"></textarea>
-        <button (click)='onOrganzerUpdate()'>Save Changes</button>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        <label for="startTime">Start Time: </label>
-        <input type="datetime-local" id="startTime" [(ngModel)]="itemDetail.startTime">
-        <button (click)='onStartTimeUpdate()'>Save Changes</button>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        <label for="endTime">End Time: </label>
-        <input type="datetime-local" id="endTime" [(ngModel)]="itemDetail.endTime">
-        <button (click)='onEndTimeUpdate()'>Save Changes</button>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        <label for="description">Short Description: </label>
-        <textarea id="description" [(ngModel)]="itemDetail.description"></textarea>
-        <button (click)='onDescriptionUpdate()'>Save Changes</button>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        <label for="meetingLink">Meeting Link: </label>
-        <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
-        <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        <label for="totalSlots">Total Slots: </label>
-        <input id="totalSlots" [(ngModel)]="itemDetail.totalSlots">
-        <button (click)='onTotalSlotsUpdate()'>Save Changes</button>
-        <p class="errorMsg">{{totalSlotsErrMsg}}</p>
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Slots Remaining: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}
-    </mat-list-item>
-</mat-list>
+<div class="container-fluid">
+<div class="row">
+    <!-- General fields about sprint review detail -->
+    <div class="col-lg-4 col-md-12">
+        <mat-list role="list">
+            <mat-list-item role="listitem">
+                <label for="title">Title: </label>
+                <textarea id="title" [(ngModel)]="itemDetail.title"></textarea>
+                <button (click)='onTitleUpdate()'>Save Changes</button>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                <label for="organizer">Organizer: </label>
+                <textarea id="organizer" [(ngModel)]="itemDetail.organizer"></textarea>
+                <button (click)='onOrganzerUpdate()'>Save Changes</button>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                <label for="startTime">Start Time: </label>
+                <input type="datetime-local" id="startTime" [(ngModel)]="itemDetail.startTime">
+                <button (click)='onStartTimeUpdate()'>Save Changes</button>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                <label for="endTime">End Time: </label>
+                <input type="datetime-local" id="endTime" [(ngModel)]="itemDetail.endTime">
+                <button (click)='onEndTimeUpdate()'>Save Changes</button>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                <label for="description">Short Description: </label>
+                <textarea id="description" [(ngModel)]="itemDetail.description"></textarea>
+                <button (click)='onDescriptionUpdate()'>Save Changes</button>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                <label for="meetingLink">Meeting Link: </label>
+                <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
+                <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                <label for="totalSlots">Total Slots: </label>
+                <input id="totalSlots" [(ngModel)]="itemDetail.totalSlots">
+                <button (click)='onTotalSlotsUpdate()'>Save Changes</button>
+                <p class="errorMsg">{{totalSlotsErrMsg}}</p>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                Slots Remaining: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <!-- List of attendees signed up by themselves -->
+    <div class="col-lg-4 col-md-12">
+        <label for="selfSignedAttendees">Attendees Signed Up </label>
+        <ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
+            <li>
+                <span>Name: </span>
+                <span>{{user.name}}; </span>
+                <span>Email: </span>
+                <span>{{user.email}}</span>
+                <button mat-raised-button matTooltip="Remove user from attending" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeSelfSignupAttendee(user._id)">
+                    <span class="material-icons">remove</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="col-lg-4 col-md-12">
+        <!-- List of attendees added by administrator -->
+        <div>
+            <label for="adminAddedAttendees">Attendees Added By Administrator</label>
+            <ul id="adminAddedAttendees" *ngFor="let user of itemDetail.administratorAddedAttendees">
+                <li>
+                    <span>Name: </span>
+                    <span>{{user.name}}; </span>
+                    <span>Email: </span>
+                    <span>{{user.email}}</span>
+                    <button mat-raised-button matTooltip="Remove user you've added" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeAdminAddedAttendee(user._id)">
+                        <span class="material-icons">remove</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
 
-<!-- List of attendees signed up by themselves -->
-<div>
-    <label for="selfSignedAttendees">Attendees Signed Up </label>
-    <ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
-        <li>
-            <span>Name: </span>
-            <span>{{user.name}}; </span>
-            <span>Email: </span>
-            <span>{{user.email}}</span>
-            <button mat-raised-button matTooltip="Remove user from attending" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeSelfSignupAttendee(user._id)">
-                <span class="material-icons">remove</span>
-            </button>
-        </li>
-    </ul>
+        <!-- Form for admin to add attendees -->
+        <div style="border: 2px solid greenyellow">
+            <form #addAttendeeForm (submit)="adminAddingAttendee()">
+                <mat-form-field>
+                    <mat-label>Name: </mat-label>
+                    <input matInput name="name" [(ngModel)]="newAdminAttendee.name" [formControl]="nameFC" required>
+                    <mat-error *ngIf="nameFC.invalid">{{getNameErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Email: </mat-label>
+                    <input matInput name="email" [(ngModel)]="newAdminAttendee.email" [formControl]="emailFC" required>
+                    <mat-error *ngIf="emailFC.invalid">{{getEmailErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <br>
+                <button type ="submit">Add Attendee</button>
+                <button type="reset">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
 </div>
 
-<!-- List of attendees added by administrator -->
-<div>
-    <label for="adminAddedAttendees">Attendees Added By Administrator</label>
-    <ul id="adminAddedAttendees" *ngFor="let user of itemDetail.administratorAddedAttendees">
-        <li>
-            <span>Name: </span>
-            <span>{{user.name}}; </span>
-            <span>Email: </span>
-            <span>{{user.email}}</span>
-            <button mat-raised-button matTooltip="Remove user you've added" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeAdminAddedAttendee(user._id)">
-                <span class="material-icons">remove</span>
-            </button>
-        </li>
-    </ul>
-</div>
 
-<!-- Form for admin to add attendees -->
-<div style="border: 2px solid greenyellow">
-    <form #addAttendeeForm (submit)="adminAddingAttendee()">
-        <mat-form-field>
-            <mat-label>Name: </mat-label>
-            <input matInput name="name" [(ngModel)]="newAdminAttendee.name" [formControl]="nameFC" required>
-            <mat-error *ngIf="nameFC.invalid">{{getNameErrorMessage()}}</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Email: </mat-label>
-            <input matInput name="email" [(ngModel)]="newAdminAttendee.email" [formControl]="emailFC" required>
-            <mat-error *ngIf="emailFC.invalid">{{getEmailErrorMessage()}}</mat-error>
-        </mat-form-field>
-        <br>
-        <button type ="submit">Add Attendee</button>
-        <button type="reset">Cancel</button>
-    </form>
-</div>
+
 
 <button routerLink="/dashboard">Back</button>

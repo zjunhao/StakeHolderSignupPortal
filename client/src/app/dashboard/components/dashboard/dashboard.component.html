@@ -1,3 +1,12 @@
 <app-header-bar></app-header-bar>
-<app-item-creater *ngIf='editMode' (newItemCreated)='refreshList()'></app-item-creater>
-<app-item-list [editMode]='editMode'></app-item-list>
+<div class="container-fluid">
+<div class="row">
+<div class="col-lg-2 col-md-12">
+    <app-item-creater *ngIf='editMode' (newItemCreated)='refreshList()'></app-item-creater>
+</div>
+<div class="col-lg-8 col-md-12">
+    <app-item-list [editMode]='editMode'></app-item-list>
+</div>
+<div class="col-lg-2 col-md-12"></div>
+</div>
+</div>
