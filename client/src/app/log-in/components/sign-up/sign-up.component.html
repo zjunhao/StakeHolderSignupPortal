@@ -1,37 +1,44 @@
-<form (submit)="signupUser()" >
-    <!-- Email  -->
-    <mat-form-field appearance="standard">
-        <mat-label>Email</mat-label>
-        <input matInput name="email" [(ngModel)]="signupInfo.email" required>
-        <mat-hint align="end">This will be the email which you accept possible notification about sprint review, so please provide a valid one</mat-hint>
-        <!-- <mat-error *ngIf="titleFC.invalid">{{getTitleErrorMessage()}}</mat-error> -->
-    </mat-form-field>
-    <br>
-    <!-- Password -->
-    <mat-form-field appearance="standard">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" name="pwd" [(ngModel)]="signupInfo.password" required>
-        <!-- <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error> -->
-    </mat-form-field>   
-    <br>
-    <!-- TODO: add verify password -->
-    <mat-form-field appearance="standard">
-        <mat-label>Verify Password</mat-label>
-        <input matInput type="password" name="pwd"  required>
-        <!-- <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error> -->
-    </mat-form-field>   
-    <br>
-    <!-- Real Name -->
-    <mat-form-field appearance="standard">
-        <mat-label>Real Name</mat-label>
-        <input matInput name="name" [(ngModel)]="signupInfo.name" required>
-        <mat-hint align="end">This will be the name shown when you sign up a sprint review</mat-hint>
-        <!-- <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error> -->
-    </mat-form-field>   
-    <br>
-
-    <button type="submit" style="margin-top: 20px">Sign Up!</button>
-    <p id='errorMsg'>{{errorMessage}}</p>
-</form>
-
-<a routerLink="/login">Sign in instead</a>
+<div id="signup-page-container" class="container">
+<div class="row justify-content-center align-items-center">
+    <div class="col-md-6">
+        <form (submit)="signupUser()" >
+            <!-- Email  -->
+            <mat-form-field appearance="standard" class="form-group">
+                <mat-label>Email</mat-label>
+                <input matInput name="email" [(ngModel)]="signupInfo.email" required>
+                <mat-hint align="end">This will be the email which you accept possible notification about sprint review, so please provide a valid one</mat-hint>
+                <!-- <mat-error *ngIf="titleFC.invalid">{{getTitleErrorMessage()}}</mat-error> -->
+            </mat-form-field>
+            <br>
+            <!-- Password -->
+            <mat-form-field appearance="standard" class="form-group">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" name="pwd" [(ngModel)]="signupInfo.password" required>
+                <!-- <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error> -->
+            </mat-form-field>   
+            <br>
+            <!-- TODO: add verify password -->
+            <mat-form-field appearance="standard" class="form-group">
+                <mat-label>Verify Password</mat-label>
+                <input matInput type="password" name="pwd"  required>
+                <!-- <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error> -->
+            </mat-form-field>   
+            <br>
+            <!-- Real Name -->
+            <mat-form-field appearance="standard" class="form-group">
+                <mat-label>Real Name</mat-label>
+                <input matInput name="name" [(ngModel)]="signupInfo.name" required>
+                <mat-hint align="end">This will be the name shown when you sign up a sprint review</mat-hint>
+                <!-- <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error> -->
+            </mat-form-field>   
+            <br>
+        
+            <button type="submit" class="btn btn-info btn-sm">Sign Up!</button>
+            <p id='errorMsg'>{{errorMessage}}</p>
+            <a routerLink="/login" class="text-info">Sign in instead</a>
+        </form>
+        
+        
+    </div>
+</div>
+</div>
