@@ -1,3 +1,23 @@
 .errorMsg {
   color: red;
+  font-size: medium;
+  margin-left: 12px;
+  height:20px;
+}
+
+#detail-table th, #detail-table td { 
+  border-top: none !important; 
+}
+
+.form-group {
+  margin-right: 8px;
+}
+
+#add-attendee-btn {
+  margin-right: 5px;
+}
+
+#back-btn {
+  margin-left: 30px;
+  width: 80px;
 }

@@ -2,96 +2,125 @@
 <div class="row">
     <!-- General fields about sprint review detail -->
     <div class="col-lg-4 col-md-12">
-        <mat-list role="list">
-            <mat-list-item role="listitem">
-                <label for="title">Title: </label>
-                <textarea id="title" [(ngModel)]="itemDetail.title"></textarea>
-                <button (click)='onTitleUpdate()'>Save Changes</button>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-                <label for="organizer">Organizer: </label>
-                <textarea id="organizer" [(ngModel)]="itemDetail.organizer"></textarea>
-                <button (click)='onOrganzerUpdate()'>Save Changes</button>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-                <label for="startTime">Start Time: </label>
-                <input type="datetime-local" id="startTime" [(ngModel)]="itemDetail.startTime">
-                <button (click)='onStartTimeUpdate()'>Save Changes</button>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-                <label for="endTime">End Time: </label>
-                <input type="datetime-local" id="endTime" [(ngModel)]="itemDetail.endTime">
-                <button (click)='onEndTimeUpdate()'>Save Changes</button>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-                <label for="description">Short Description: </label>
-                <textarea id="description" [(ngModel)]="itemDetail.description"></textarea>
-                <button (click)='onDescriptionUpdate()'>Save Changes</button>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-                <label for="meetingLink">Meeting Link: </label>
-                <textarea id="meetingLink" [(ngModel)]="itemDetail.meetingLink"></textarea>
-                <button (click)='onMeetingLinkUpdate()'>Save Changes</button>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-                <label for="totalSlots">Total Slots: </label>
-                <input id="totalSlots" [(ngModel)]="itemDetail.totalSlots">
-                <button (click)='onTotalSlotsUpdate()'>Save Changes</button>
-                <p class="errorMsg">{{totalSlotsErrMsg}}</p>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-                Slots Remaining: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}
-            </mat-list-item>
-        </mat-list>
+        <h2 class="text-info">Sprint Review Details </h2>
+        <table id="detail-table" class="table">
+            <tbody>
+              <tr>
+                <th scope="row">Title</th>
+                <td><textarea id="title" class="form-control" [(ngModel)]="itemDetail.title"></textarea></td>
+                <td><button class="btn btn-outline-info btn-sm" (click)='onTitleUpdate()'>Save Changes</button></td>
+              </tr>
+              <tr>
+                <th scope="row">Organizer</th>
+                <td><textarea id="organizer" class="form-control" [(ngModel)]="itemDetail.organizer"></textarea></td>
+                <td><button class="btn btn-outline-info btn-sm" (click)='onOrganzerUpdate()'>Save Changes</button></td>
+              </tr>
+              <tr>
+                <th scope="row">Start Time</th>
+                <td><input type="datetime-local" id="startTime" class="form-control" [(ngModel)]="itemDetail.startTime"></td>
+                <td><button class="btn btn-outline-info btn-sm" (click)='onStartTimeUpdate()'>Save Changes</button></td>
+              </tr>
+              <tr>
+                <th scope="row">End Time</th>
+                <td><input type="datetime-local" id="endTime" class="form-control" [(ngModel)]="itemDetail.endTime"></td>
+                <td><button class="btn btn-outline-info btn-sm" (click)='onEndTimeUpdate()'>Save Changes</button></td>
+              </tr>
+              <tr>
+                <th scope="row">Short Description</th>
+                <td><textarea id="description" class="form-control" [(ngModel)]="itemDetail.description"></textarea></td>
+                <td><button class="btn btn-outline-info btn-sm" (click)='onDescriptionUpdate()'>Save Changes</button></td>
+              </tr>
+              <tr>
+                <th scope="row">Meeting Link</th>
+                <td><textarea id="meetingLink" class="form-control" [(ngModel)]="itemDetail.meetingLink"></textarea></td>
+                <td><button class="btn btn-outline-info btn-sm" (click)='onMeetingLinkUpdate()'>Save Changes</button></td>
+              </tr>
+              <tr>
+                <th scope="row">Total Slots</th>
+                <td><input id="totalSlots" class="form-control" [(ngModel)]="itemDetail.totalSlots"></td>
+                <td><button class="btn btn-outline-info btn-sm" (click)='onTotalSlotsUpdate()'>Save Changes</button></td>
+              </tr>
+              <tr>
+                <th scope="row">Slots Remaining</th>
+                <td>{{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}</td>
+              </tr>
+            </tbody>
+        </table>
+        <!-- TODO: need change -->
+        <p class="errorMsg">{{totalSlotsErrMsg}}</p>
     </div>
+
     <!-- List of attendees signed up by themselves -->
     <div class="col-lg-4 col-md-12">
-        <label for="selfSignedAttendees">Attendees Signed Up </label>
-        <ul id="selfSignedAttendees" *ngFor="let user of itemDetail.selfSignupAttendees">
-            <li>
-                <span>Name: </span>
-                <span>{{user.name}}; </span>
-                <span>Email: </span>
-                <span>{{user.email}}</span>
-                <button mat-raised-button matTooltip="Remove user from attending" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeSelfSignupAttendee(user._id)">
-                    <span class="material-icons">remove</span>
-                </button>
-            </li>
-        </ul>
+        <h2 class="text-info">Attendees Signed Up </h2>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of itemDetail.selfSignupAttendees; let idx=index">
+                <th scope="row">{{idx+1}}</th>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>
+                    <button class="btn btn-outline-danger btn-sm" matTooltip="Remove user from attending" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeSelfSignupAttendee(user._id)">
+                        <span class="material-icons">remove</span>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
     </div>
+
     <div class="col-lg-4 col-md-12">
         <!-- List of attendees added by administrator -->
         <div>
-            <label for="adminAddedAttendees">Attendees Added By Administrator</label>
-            <ul id="adminAddedAttendees" *ngFor="let user of itemDetail.administratorAddedAttendees">
-                <li>
-                    <span>Name: </span>
-                    <span>{{user.name}}; </span>
-                    <span>Email: </span>
-                    <span>{{user.email}}</span>
-                    <button mat-raised-button matTooltip="Remove user you've added" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeAdminAddedAttendee(user._id)">
-                        <span class="material-icons">remove</span>
-                    </button>
-                </li>
-            </ul>
+            <h2 class="text-info">Attendees Added By Administrator</h2>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of itemDetail.administratorAddedAttendees; let idx = index">
+                    <th scope="row">{{idx+1}}</th>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>
+                        <button class="btn btn-outline-danger btn-sm" matTooltip="Remove user you've added" [matTooltipPosition]="tooltipAfterPosition.value" (click)="removeAdminAddedAttendee(user._id)">
+                            <span class="material-icons">remove</span>
+                        </button>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
         </div>
 
         <!-- Form for admin to add attendees -->
-        <div style="border: 2px solid greenyellow">
+        <div class="container">
             <form #addAttendeeForm (submit)="adminAddingAttendee()">
-                <mat-form-field>
+                <mat-form-field class="form-group">
                     <mat-label>Name: </mat-label>
                     <input matInput name="name" [(ngModel)]="newAdminAttendee.name" [formControl]="nameFC" required>
                     <mat-error *ngIf="nameFC.invalid">{{getNameErrorMessage()}}</mat-error>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field class="form-group">
                     <mat-label>Email: </mat-label>
                     <input matInput name="email" [(ngModel)]="newAdminAttendee.email" [formControl]="emailFC" required>
                     <mat-error *ngIf="emailFC.invalid">{{getEmailErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <br>
-                <button type ="submit">Add Attendee</button>
-                <button type="reset">Cancel</button>
+                <button id="add-attendee-btn" class="btn btn-sm btn-outline-info" type="submit">Add Attendee</button>
+                <button class="btn btn-sm btn-outline-secondary" type="reset">Cancel</button>
             </form>
         </div>
     </div>
@@ -100,5 +129,5 @@
 
 
 
-
-<button routerLink="/dashboard">Back</button>
+<!-- TODO: need change -->
+<button id="back-btn" class="btn btn-secondary btn-md" routerLink="/dashboard">Back</button>
