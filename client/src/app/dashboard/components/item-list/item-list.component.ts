@@ -43,7 +43,9 @@ export class ItemListComponent implements OnInit {
     this.router.navigate(link, navigationExtras);
   }
 
-  deleteSprintReview(id:string) {
+  deleteSprintReview($event, id:string) {
+    // prevent click event from bubbling up to <tr>
+    $event.stopPropagation();
     // TODO: promp user to confirm delete
     this.dashBoardService.deleteSprintReview(id).subscribe(res => {
       if (res.success) {

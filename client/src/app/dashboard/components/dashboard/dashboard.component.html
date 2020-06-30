@@ -1,10 +1,10 @@
 <app-header-bar></app-header-bar>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-4 col-md-12">
+        <div class="col-lg-3 col-md-12">
             <app-item-creater *ngIf='editMode' (newItemCreated)='refreshList()'></app-item-creater>
         </div>
-        <div class="col-lg-8 col-md-12">
+        <div class="col-lg-9 col-md-12">
             <app-item-list [editMode]='editMode'></app-item-list>
         </div>
     </div>

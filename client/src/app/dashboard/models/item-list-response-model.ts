@@ -12,4 +12,5 @@ export class ListItemModel {
     endTime: string;
     remainingSlots: number;
     description: string;
+    organizer: string;
 }
