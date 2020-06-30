@@ -21,9 +21,10 @@ import { ItemCreaterComponent } from './components/item-creater/item-creater.com
 import { ItemDetailEditmodeComponent } from './components/item-detail/item-detail-editmode/item-detail-editmode.component';
 import { ItemDetailNoneditmodeComponent } from './components/item-detail/item-detail-noneditmode/item-detail-noneditmode.component';
 import { HeaderBarComponent } from './components/header-bar/header-bar.component';
+import { DateTimeFormatterPipe } from './pipes/date-time-formatter.pipe';
 
 @NgModule({
-  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent, ItemDetailEditmodeComponent, ItemDetailNoneditmodeComponent, HeaderBarComponent],
+  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent, ItemDetailEditmodeComponent, ItemDetailNoneditmodeComponent, HeaderBarComponent, DateTimeFormatterPipe],
   imports: [
     CommonModule,
     FormsModule,

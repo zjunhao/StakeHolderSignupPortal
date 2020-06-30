@@ -16,7 +16,7 @@
         <td>{{listItem.title}}</td>
         <td>{{listItem.description}}</td>
         <td>{{listItem.organizer}}</td>
-        <td>{{listItem.startTime}} - {{listItem.endTime}}</td>
+        <td>{{listItem.startTime | dateTimeFormatter}} - {{listItem.endTime | dateTimeFormatter}}</td>
         <td>{{listItem.remainingSlots}}</td>
         <td *ngIf="editMode">
           <button class="btn btn-sm btn-outline-danger" (click)='deleteSprintReview($event, listItem._id)'>Delete</button>

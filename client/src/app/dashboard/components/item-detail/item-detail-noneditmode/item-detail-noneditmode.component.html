@@ -16,7 +16,7 @@
           </tr>
           <tr>
             <th scope="row">Time</th>
-            <td>{{itemDetail.startTime}} - {{itemDetail.endTime}}</td>
+            <td>{{itemDetail.startTime | dateTimeFormatter}} - {{itemDetail.endTime | dateTimeFormatter}}</td>
           </tr>
           <tr>
             <th scope="row">Description</th>
@@ -45,6 +45,6 @@
     
     <!-- Routing button -->
     <br>
-    <button class="btn btn-md btn-info" routerLink="/dashboard">Back</button>
+    <button class="btn btn-md btn-secondary" routerLink="/dashboard">Back</button>
 
 </div>
