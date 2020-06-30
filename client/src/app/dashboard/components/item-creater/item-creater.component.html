@@ -1,54 +1,57 @@
-<form #creationForm (submit)="createSprintReview()" style="border-color: aquamarine; border-style: solid; padding: 10px 10px">
-    <!-- Title  -->
-    <mat-form-field appearance="standard">
-      <mat-label>Title</mat-label>
-      <input matInput name="eventtitle" [(ngModel)]="newItem.title" [formControl]="titleFC" required>
-      <mat-error *ngIf="titleFC.invalid">{{getTitleErrorMessage()}}</mat-error>
-    </mat-form-field>
-    <br>
-    <!-- Short Description -->
-    <mat-form-field appearance="standard">
-      <mat-label>Short Description</mat-label>
-      <textarea matInput name="description" [(ngModel)]="newItem.description" [formControl]="descriptionFC" required></textarea>
-      <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error>
-    </mat-form-field>   
-    <br>
-    <!-- Start Time -->
-    <div>
-      <label for="startTime">Start Time *</label>
-      <input type="datetime-local" name="startTime" [(ngModel)]="newItem.startTime" [formControl]="startTimeFC" required>
-      <mat-error *ngIf="startTimeFC.invalid">{{getStartTimeErrorMessage()}}</mat-error>
-    </div>
-    <br>
-    <!-- End Time -->
-    <div>
-      <label for="endTime">End Time *</label>
-      <input type="datetime-local" name="endTime" [(ngModel)]="newItem.endTime" [formControl]="endTimeFC" required>
-      <mat-error *ngIf="endTimeFC.invalid">{{getEndTimeErrorMessage()}}</mat-error>
-    </div>
-    <br>
-    <!-- Organizer -->
-    <mat-form-field appearance="standard">
-      <mat-label>Event Organizer</mat-label>
-      <input matInput name="organizer" [(ngModel)]="newItem.organizer" [formControl]="organizerFC" required>
-      <mat-error *ngIf="organizerFC.invalid">{{getOrganizerErrorMessage()}}</mat-error>
-    </mat-form-field>   
-    <br>
-    <!-- Total Slots -->
-    <mat-form-field appearance="standard">
-      <mat-label>Total Slots</mat-label>
-      <input matInput name="slots" [(ngModel)]="newItem.totalSlots" [formControl]="totalSlotFC" required>
-      <mat-error *ngIf="totalSlotFC.invalid">{{getTotalSlotsErrorMessage()}}</mat-error>
-    </mat-form-field>   
-    <br>
-    <!-- Meeting Link -->
-    <mat-form-field appearance="standard">
-      <mat-label>Meeting Link (Optional)</mat-label>
-      <input matInput name="slots" [(ngModel)]="newItem.meetingLink">
-    </mat-form-field>   
-    <br>
-
-
-    <button type ="submit">Submit</button>
-    <button type="reset">Cancel</button>
-</form>
+<div class="container jumbotron">
+  <form #creationForm (submit)="createSprintReview()">
+      <h3 class="text-info">Create New Sprint Review</h3>
+      <!-- Title  -->
+      <mat-form-field appearance="standard" class="form-group">
+        <mat-label>Title</mat-label>
+        <input matInput name="eventtitle" [(ngModel)]="newItem.title" [formControl]="titleFC" required>
+        <mat-error *ngIf="titleFC.invalid">{{getTitleErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <br>
+      <!-- Short Description -->
+      <mat-form-field appearance="standard" class="form-group">
+        <mat-label>Short Description</mat-label>
+        <textarea matInput name="description" [(ngModel)]="newItem.description" [formControl]="descriptionFC" required></textarea>
+        <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error>
+      </mat-form-field>   
+      <br>
+      <!-- Start Time -->
+      <div class="form-group">
+        <label for="startTime">Start Time *</label>
+        <input type="datetime-local" name="startTime" class="form-control time-input" [(ngModel)]="newItem.startTime" [formControl]="startTimeFC" required>
+        <mat-error *ngIf="startTimeFC.invalid">{{getStartTimeErrorMessage()}}</mat-error>
+      </div>
+      <br>
+      <!-- End Time -->
+      <div class="form-group">
+        <label for="endTime">End Time *</label>
+        <input type="datetime-local" name="endTime" class="form-control time-input" [(ngModel)]="newItem.endTime" [formControl]="endTimeFC" required>
+        <mat-error *ngIf="endTimeFC.invalid">{{getEndTimeErrorMessage()}}</mat-error>
+      </div>
+      <br>
+      <!-- Organizer -->
+      <mat-form-field appearance="standard" class="form-group">
+        <mat-label>Event Organizer</mat-label>
+        <input matInput name="organizer" [(ngModel)]="newItem.organizer" [formControl]="organizerFC" required>
+        <mat-error *ngIf="organizerFC.invalid">{{getOrganizerErrorMessage()}}</mat-error>
+      </mat-form-field>   
+      <br>
+      <!-- Total Slots -->
+      <mat-form-field appearance="standard" class="form-group">
+        <mat-label>Total Slots</mat-label>
+        <input matInput name="slots" [(ngModel)]="newItem.totalSlots" [formControl]="totalSlotFC" required>
+        <mat-error *ngIf="totalSlotFC.invalid">{{getTotalSlotsErrorMessage()}}</mat-error>
+      </mat-form-field>   
+      <br>
+      <!-- Meeting Link -->
+      <mat-form-field appearance="standard" class="form-group">
+        <mat-label>Meeting Link (Optional)</mat-label>
+        <input matInput name="slots" [(ngModel)]="newItem.meetingLink">
+      </mat-form-field>   
+      <br>
+  
+  
+      <button type ="submit" class="btn btn-outline-primary btn-md">Create</button>
+      <button type="reset" class="btn btn-outline-secondary btn-md">Cancel</button>
+  </form>
+</div>

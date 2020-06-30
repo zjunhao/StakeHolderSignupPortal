@@ -11,8 +11,6 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./item-list.component.scss']
 })
 export class ItemListComponent implements OnInit {
-  // // position control for tooltip
-  // tooltipAfterPosition = new FormControl('after');
 
   listItems: ListItemModel[];
 
@@ -27,17 +25,6 @@ export class ItemListComponent implements OnInit {
     this.refreshList();
   }
 
-  onSelectionChange(selectedOptions: MatListOption[]) {
-    // we don't support multiple selection, so selectedOptions will only have 1 element.
-    const selectedItemId = selectedOptions[0].value;
-    const link = ['/itemdetail', selectedItemId];
-    let navigationExtras: NavigationExtras = {
-      queryParams: { 'editMode': this.editMode }
-    };
-    
-    this.router.navigate(link, navigationExtras);
-  }
-
   refreshList() {
     this.dashBoardService.getSprintReviewList().subscribe(res => {
       if (res.success) {
@@ -47,11 +34,18 @@ export class ItemListComponent implements OnInit {
     });
   }
 
-  deleteSprintReview($event, _id:string) {
+  navigateToSprintReviewDetail(id: string) {
+    const link = ['/itemdetail', id];
+    let navigationExtras: NavigationExtras = {
+      queryParams: { 'editMode': this.editMode }
+    };
+    
+    this.router.navigate(link, navigationExtras);
+  }
+
+  deleteSprintReview(id:string) {
     // TODO: promp user to confirm delete
-    // prevent event from bubbling up to <mat-selection-list> in template
-    $event.stopPropagation();
-    this.dashBoardService.deleteSprintReview(_id).subscribe(res => {
+    this.dashBoardService.deleteSprintReview(id).subscribe(res => {
       if (res.success) {
         this.refreshList();
       }

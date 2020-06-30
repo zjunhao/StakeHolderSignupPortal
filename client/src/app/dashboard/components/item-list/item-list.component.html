@@ -1,17 +1,22 @@
-<mat-selection-list #itemList [multiple]="false" (selectionChange)="onSelectionChange(itemList.selectedOptions.selected)">
-  <mat-list-option *ngFor="let listItem of listItems" [value]="listItem._id">
-    <div>
-      <span>{{listItem.title}}</span>
-      <span>{{listItem.description}}</span>
-      <span>Available Slots: {{listItem.remainingSlots}}</span>
-      <ng-container *ngIf='editMode'>
-        <!-- <button mat-raised-button  matTooltip="Delete"  [matTooltipPosition]="tooltipAfterPosition.value" (click)='deleteSprintReview($event, listItem._id)'>
-          <span class="material-icons">
-            delete_outline
-          </span>
-        </button> -->
-        <button (click)='deleteSprintReview($event, listItem._id)'>Delete</button>
-      </ng-container>
-    </div>
-  </mat-list-option>
-</mat-selection-list>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Short Description</th>
+      <th scope="col">Avaliable Slots</th>
+      <th scope="col" *ngIf="editMode">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let listItem of listItems">
+      <tr (click)='navigateToSprintReviewDetail(listItem._id)'>
+        <td>{{listItem.title}}</td>
+        <td>{{listItem.description}}</td>
+        <td>{{listItem.remainingSlots}}</td>
+        <td *ngIf="editMode">
+          <button class="btn btn-sm btn-outline-danger" (click)='deleteSprintReview(listItem._id)'>Delete</button>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
