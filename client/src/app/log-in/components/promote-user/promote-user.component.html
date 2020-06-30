@@ -1,26 +1,29 @@
-<ng-container *ngIf='!isUserAdmin'>
-    <form (submit)="promoteUser()" >
-        <label>Please enter passcode to promote the account as administrator</label>
-        <br>
-        <input name="passcode" type="password" [(ngModel)]="userInputPasscode">
-        <br>
+<div id="account-promote-container" class="container jumbotron">
+    <ng-container *ngIf='!isUserAdmin'>
+        <form (submit)="promoteUser()" >
+            <label class="label-info">Please enter passcode to promote the account as administrator</label>
+            <br>
+            <input name="passcode" type="password" class="form-control form-input" [(ngModel)]="userInputPasscode">
+            <br>
+        
+            <button type="submit" class="btn btn-md btn-info" >Submit</button>
+            <p class="errMsg">{{promoteErrMsg}}</p>
+            <p class="succeedMsg">{{promoteSucceedMsg}}</p>
+        </form>
+    </ng-container>    
     
-        <button type="submit" >Submit</button>
-        <p class="errMsg">{{promoteErrMsg}}</p>
-        <p>{{promoteSucceedMsg}}</p>
-    </form>
-</ng-container>    
+    <ng-container *ngIf='isUserAdmin'>
+        <label class="label-info">Your account has administrator privilege, click button to REMOVE administrator privilege.</label>
+        <br>
+        <button id="remove-admin-btn" class="btn btn-md btn-danger" (click)='removeUserAdmin()'>Remove administrator privilege</button>
+        <p class="errMsg">{{unAdminErrMsg}}</p>
+        <p class="succeedMsg">{{unAdminSucceedMsg}}</p>
+    </ng-container>  
+    
+    <div>
+        <button id="logout-btn" class="btn btn-md btn-outline-info" (click)='logOutUser()'>Log Out</button>
+        <br>
+        <a class="text-info" routerLink='/dashboard'>Back To Dashboard</a>
+    </div>
 
-<ng-container *ngIf='isUserAdmin'>
-    <label>Your account has administrator privilege, click button to REMOVE administrator privilege</label>
-    <br>
-    <button (click)='removeUserAdmin()'>Remove administrator privilege</button>
-    <p class="errMsg">{{unAdminErrMsg}}</p>
-    <p>{{unAdminSucceedMsg}}</p>
-</ng-container>  
-
-<div class="navBtnGroup">
-    <button (click)='logOutUser()'>Log Out</button>
-    <br>
-    <a routerLink='/dashboard'>Back To Dashboard</a>
 </div>

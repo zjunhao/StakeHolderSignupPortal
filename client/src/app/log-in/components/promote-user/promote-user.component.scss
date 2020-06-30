@@ -1,7 +1,32 @@
-.navBtnGroup {
-    margin-top: 2em;
-}
-
 .errMsg {
     color: red;
+    margin-top: 8px;
+    height: 5px;
+    font-size: medium;
+}
+
+.succeedMsg {
+    height:5px;
+    font-size: medium;
+}
+
+#account-promote-container {
+    margin-top: 200px;
+}
+
+#logout-btn {
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+.label-info {
+    font-size: large;
+}
+
+.form-input {
+    width: 500px;
+}
+
+#remove-admin-btn {
+    margin-top: 10px;
 }
