@@ -1,31 +1,50 @@
-<mat-list role="list">
-    <mat-list-item role="listitem">
-        Title: {{itemDetail.title}}
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Available Slots: {{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Organizor: {{itemDetail.organizer}}
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Time: {{itemDetail.startTime}} - {{itemDetail.endTime}}
-    </mat-list-item>
-    <mat-list-item role="listitem">
-        Description: {{itemDetail.description}}
-    </mat-list-item>
-    <mat-list-item *ngIf='userSignedUp' role="listitem">
-        Meeting Link: {{itemDetail.meetingLink}}
-    </mat-list-item> 
-</mat-list> 
-<ng-container *ngIf='!userSignedUp'>
-    <p>You've not signed up yet.</p>
-    <button class="signunsignbtn" (click)='attendeeSignUp()'>Sign me up!</button>
-</ng-container>
-<ng-container *ngIf='userSignedUp'>
-    <p>You've already signed up to this event.</p>
-    <button class="signunsignbtn" (click)='attendeeUnregister()'>Remove me from attending</button>
-</ng-container>
+<div class="container">
+    <!-- Sprint Review Detail -->
+    <table class="table">
+        <tbody>
+          <tr>
+            <th scope="row">Title</th>
+            <td>{{itemDetail.title}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Available Slots</th>
+            <td>{{itemDetail.totalSlots - itemDetail.selfSignupAttendees.length}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Organizer</th>
+            <td>{{itemDetail.organizer}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Time</th>
+            <td>{{itemDetail.startTime}} - {{itemDetail.endTime}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Description</th>
+            <td>{{itemDetail.description}}</td>
+          </tr>
+          <tr *ngIf='userSignedUp'>
+            <th scope="row">Meeting Link</th>
+            <td>{{itemDetail.meetingLink}}</td>
+          </tr>
+    
+        </tbody>
+    </table>
+    
+    <!-- Register action -->
+    <ng-container *ngIf='!userSignedUp'>
+        <label class="info-label">You've not signed up yet.</label>
+        <br>
+        <button class="signunsignbtn btn btn-md btn-outline-info" (click)='attendeeSignUp()'>Sign me up!</button>
+    </ng-container>
+    <!-- Unregister action -->
+    <ng-container *ngIf='userSignedUp'>
+        <label class="info-label">You've already signed up to this event.</label>
+        <br>
+        <button class="signunsignbtn btn btn-md btn-outline-info" (click)='attendeeUnregister()'>Remove me from attending</button>
+    </ng-container>
+    
+    <!-- Routing button -->
+    <br>
+    <button class="btn btn-md btn-info" routerLink="/dashboard">Back</button>
 
-<br>
-<button routerLink="/dashboard">Back</button>
+</div>
