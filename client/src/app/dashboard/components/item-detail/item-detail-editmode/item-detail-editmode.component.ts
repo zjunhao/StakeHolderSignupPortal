@@ -94,11 +94,18 @@ export class ItemDetailEditmodeComponent implements OnInit {
         console.log(res);
         if (res.success) {
           this.refreshItemDetail();
-          this.addAttendeeForm.nativeElement.reset();
+          this.resetAddAttendeeForm();
         }
         // TODO: notify user if failed to add attendee
       })
     }
+  }
+
+  resetAddAttendeeForm() {
+    this.newAdminAttendee = new AdminAddAttendeeModel();
+    this.nameFC.reset();
+    this.emailFC.reset();
+    this.addAttendeeForm.nativeElement.reset();
   }
 
   getNameErrorMessage() {

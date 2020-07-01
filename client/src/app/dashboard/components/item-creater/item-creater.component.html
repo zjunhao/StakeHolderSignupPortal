@@ -1,5 +1,5 @@
 <div class="container jumbotron">
-  <form (submit)="createSprintReview()">
+  <form #creationForm (submit)="createSprintReview()">
       <h3 class="text-info">Create New Sprint Review</h3>
       <!-- Title  -->
       <mat-form-field appearance="standard" class="form-group">
@@ -18,15 +18,15 @@
       <!-- Start Time -->
       <div class="form-group">
         <label for="startTime">Start Time *</label>
-        <input type="datetime-local" name="startTime" class="form-control time-input" (change)="onStartTimeChange()" [(ngModel)]="newItem.startTime" required>
-        <label class="datetime-err-msg">{{startTimeErr}}</label>
+        <input type="datetime-local" name="startTime" class="form-control time-input" [(ngModel)]="newItem.startTime" [formControl]="startTimeFC" required>
+        <mat-error *ngIf="startTimeFC.invalid">{{getStartTimeErrorMessage()}}</mat-error>
       </div>
       <br>
       <!-- End Time -->
       <div class="form-group">
         <label for="endTime">End Time *</label>
-        <input type="datetime-local" name="endTime" class="form-control time-input" (change)="onEndTimeChange()" [(ngModel)]="newItem.endTime" required>
-        <label class="datetime-err-msg">{{endTimeErr}}</label>
+        <input type="datetime-local" name="endTime" class="form-control time-input" [(ngModel)]="newItem.endTime" [formControl]="endTimeFC" required>
+        <mat-error *ngIf="endTimeFC.invalid">{{getEndTimeErrorMessage()}}</mat-error>
       </div>
       <br>
       <!-- Organizer -->
@@ -49,7 +49,6 @@
         <input matInput name="slots" [(ngModel)]="newItem.meetingLink">
       </mat-form-field>   
       <br>
-  
   
       <button id="create-btn" type="submit" class="btn btn-outline-primary btn-md">Create</button>
       <button (click)="resetForm()" class="btn btn-outline-secondary btn-md">Cancel</button>

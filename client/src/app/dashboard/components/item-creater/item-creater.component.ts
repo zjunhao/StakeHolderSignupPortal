@@ -11,8 +11,7 @@ import { ItemCreatingModel } from '../../models/item-creating-model';
 export class ItemCreaterComponent implements OnInit {
   @Output() newItemCreated: EventEmitter<string> = new EventEmitter();
 
-  startTimeErr: string;
-  endTimeErr: string;
+  @ViewChild('creationForm') creationForm: ElementRef;
 
   newItem = new ItemCreatingModel();
 
@@ -21,6 +20,8 @@ export class ItemCreaterComponent implements OnInit {
   descriptionFC = new FormControl('', [Validators.required]);
   organizerFC = new FormControl('', [Validators.required]);
   totalSlotFC = new FormControl('', [Validators.required, Validators.pattern('\\d+')]);
+  startTimeFC = new FormControl('', [Validators.required, Validators.pattern('\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d')]);	
+  endTimeFC = new FormControl('', [Validators.required, Validators.pattern('\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d')]);
 
   constructor(
     private dashboardService: DashboardService
@@ -30,7 +31,8 @@ export class ItemCreaterComponent implements OnInit {
   }
 
   createSprintReview() {
-    if (this.validateDateTime() && this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid && this.totalSlotFC.valid) {
+    if (this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid 
+      && this.totalSlotFC.valid &&this.startTimeFC.valid && this.endTimeFC.valid ) {
       this.dashboardService.addSprintReview(this.newItem).subscribe( res => {
         if (res.success) {
           this.newItemCreated.emit('new item created');
@@ -44,52 +46,15 @@ export class ItemCreaterComponent implements OnInit {
 
   resetForm() {
     this.newItem = new ItemCreatingModel();
-  }
-
-  /**
-   * Validate Start Time and End Time, show error message if format not correct, clear error message if correct; 
-   * If Start Time and End Time are all valid return true, else false.
-   */
-  private validateDateTime(): boolean {
-    let dateTimeValid = true;
-
-    const dateTimeRegex = RegExp('^\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d$');
-
-    // check start time format
-    if (dateTimeRegex.test(this.newItem.startTime)) { 
-      this.startTimeErr = "";
-    } else {
-      this.startTimeErr = "Start Time format not correct";
-      dateTimeValid = false;
-    }
-
-    // check end time format
-    if (dateTimeRegex.test(this.newItem.endTime)) { 
-      this.endTimeErr = "";
-    } else {
-      this.endTimeErr = "End Time format not correct";
-      dateTimeValid = false;
-    }
-
-    return dateTimeValid;
-  }
-
-  onStartTimeChange() {
-    const dateTimeRegex = RegExp('^\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d$');
-    if (dateTimeRegex.test(this.newItem.startTime)) { 
-      this.startTimeErr = "";
-    } else {
-      this.startTimeErr = "Start Time format not correct";
-    }
-  }
-
-  onEndTimeChange() {
-    const dateTimeRegex = RegExp('^\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d$');
-    if (dateTimeRegex.test(this.newItem.endTime)) { 
-      this.endTimeErr = "";
-    } else {
-      this.endTimeErr = "End Time format not correct";
-    }
+    
+    this.titleFC.reset();
+    this.descriptionFC.reset();  
+    this.organizerFC.reset();  
+    this.totalSlotFC.reset();  
+    this.startTimeFC.reset();  
+    this.endTimeFC.reset();  
+  
+    this.creationForm.nativeElement.reset();
   }
 
   // error messages for each form field
@@ -110,5 +75,23 @@ export class ItemCreaterComponent implements OnInit {
     } else {
       return '';
     }
+  }
+  getStartTimeErrorMessage() {	
+    if (this.startTimeFC.hasError('required')) {	
+      return 'Start time cannot be empty';	
+    } else if (this.startTimeFC.hasError('pattern')){	
+      return 'Date time format not correct';	
+    } else {	
+      return '';	
+    }	
+  }	
+  getEndTimeErrorMessage() {	
+    if (this.endTimeFC.hasError('required')) {	
+      return 'End time cannot be empty';	
+    } else if (this.endTimeFC.hasError('pattern')){	
+      return 'Date time format not correct';	
+    } else {	
+      return '';	
+    }	
   }
 }
