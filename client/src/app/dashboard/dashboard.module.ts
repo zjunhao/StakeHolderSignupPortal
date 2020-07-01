@@ -10,6 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
@@ -22,6 +23,7 @@ import { ItemDetailEditmodeComponent } from './components/item-detail/item-detai
 import { ItemDetailNoneditmodeComponent } from './components/item-detail/item-detail-noneditmode/item-detail-noneditmode.component';
 import { HeaderBarComponent } from './components/header-bar/header-bar.component';
 import { DateTimeFormatterPipe } from './pipes/date-time-formatter.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent, ItemDetailEditmodeComponent, ItemDetailNoneditmodeComponent, HeaderBarComponent, DateTimeFormatterPipe],
@@ -40,8 +42,10 @@ import { DateTimeFormatterPipe } from './pipes/date-time-formatter.pipe';
     MatIconModule,
     MatMenuModule,
     MatTooltipModule,
+    MatDialogModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    SharedModule
   ],
   exports: []
 })

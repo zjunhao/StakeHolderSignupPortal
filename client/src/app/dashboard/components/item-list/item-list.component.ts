@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatListOption } from '@angular/material/list'
 import { Router, NavigationExtras } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
 import { ListItemModel } from '../../models/item-list-response-model';
-import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'app-item-list',
@@ -18,7 +18,8 @@ export class ItemListComponent implements OnInit {
 
   constructor(
     private dashBoardService: DashboardService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -46,12 +47,23 @@ export class ItemListComponent implements OnInit {
   deleteSprintReview($event, id:string) {
     // prevent click event from bubbling up to <tr>
     $event.stopPropagation();
-    // TODO: promp user to confirm delete
-    this.dashBoardService.deleteSprintReview(id).subscribe(res => {
-      if (res.success) {
-        this.refreshList();
+
+    // prompt user to confirm delete
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {  
+      data: {
+        message: "This sprint review will be permanently deleted, are you sure?"
       }
-      // TODO: maybe display error message when fail to delete sprint review
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) { // if result is true from delete confirmation dialog, delete the sprint review
+        this.dashBoardService.deleteSprintReview(id).subscribe(res => {
+          if (res.success) {
+            this.refreshList();
+          }
+          // TODO: maybe display error message when fail to delete sprint review
+        });
+      }
     });
   }
 }
