@@ -16,12 +16,6 @@ export class DateTimeFormatterPipe implements PipeTransform {
     const hour = match[4];
     const minute = match[5];
 
-    console.log('year: ' + year);
-    console.log('month: ' + month);
-    console.log('day: ' + day);
-    console.log('hr: ' + hour);
-    console.log('min: ' + minute);
-
     const formattedStr = `${month}/${day}/${year} ${hour}:${minute}`;
 
     return formattedStr;
