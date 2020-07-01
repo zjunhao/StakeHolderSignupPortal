@@ -1,7 +1,7 @@
 <div id="signup-page-container" class="container">
 <div class="row justify-content-center align-items-center">
     <div class="col-md-6">
-        <form (submit)="signupUser()" >
+        <form (submit)="signupUser()">
             <!-- Email  -->
             <mat-form-field appearance="standard" class="form-group">
                 <mat-label>Email</mat-label>
@@ -33,9 +33,9 @@
             </mat-form-field>   
             <br>
         
-            <button type="submit" class="btn btn-info btn-sm">Sign Up!</button>
+            <button type="submit" id="signup-btn" class="btn btn-info btn-md">Sign Up!</button>
             <p id='errorMsg'>{{errorMessage}}</p>
-            <a routerLink="/login" class="text-info">Sign in instead</a>
+            <a routerLink="/login" id="back-btn" class="text-info">Sign in instead</a>
         </form>
         
         

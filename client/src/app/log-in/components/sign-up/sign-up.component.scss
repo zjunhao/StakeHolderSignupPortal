@@ -1,8 +1,32 @@
 #errorMsg {
     color: red;
     height: 28px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 #signup-page-container {
     margin-top: 120px;
+}
+
+#back-btn {
+    font-size: medium;
+}
+
+#signup-btn {
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-top: 15px;
+    width: 300px;
+}
+
+
+mat-label {
+    font-size: medium;
+}
+
+mat-hint {
+    font-size: small;
 }
