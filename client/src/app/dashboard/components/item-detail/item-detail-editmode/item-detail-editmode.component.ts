@@ -4,6 +4,8 @@ import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-m
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 import { FormControl, Validators } from '@angular/forms';
 import { AdminAddAttendeeModel } from 'src/app/dashboard/models/admin-add-attendee-model';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'app-item-detail-editmode',
@@ -26,7 +28,8 @@ export class ItemDetailEditmodeComponent implements OnInit {
 
   constructor(
     private dashBoardService: DashboardService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -50,16 +53,38 @@ export class ItemDetailEditmodeComponent implements OnInit {
   }
 
   removeSelfSignupAttendee(attendeeId: string) {
-    this.dashBoardService.removeSelfSignupAttendee(this.itemDetail._id, attendeeId).subscribe(res => {
-      // TODO: delete confirmation and delete error notification
-      this.refreshItemDetail();
+    // prompt user to confirm removal
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {  
+      data: {
+        message: "Are you sure to remove this attendee?"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) { // if result is true from delete confirmation dialog, remove the attendee
+        this.dashBoardService.removeSelfSignupAttendee(this.itemDetail._id, attendeeId).subscribe(res => {
+          // TODO: delete error notification
+          this.refreshItemDetail();
+        });
+      }
     });
   }
 
   removeAdminAddedAttendee(adminAddedAttendeeObjId: string) {
-    this.dashBoardService.removeAdminAddedAttendee(this.itemDetail._id, adminAddedAttendeeObjId).subscribe(res => {
-      // TODO: delete confirmation and delete error notification
-      this.refreshItemDetail();
+    // prompt user to confirm removal
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {  
+      data: {
+        message: "Are you sure to remove this attendee?"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) { // if result is true from delete confirmation dialog, remove the attendee
+        this.dashBoardService.removeAdminAddedAttendee(this.itemDetail._id, adminAddedAttendeeObjId).subscribe(res => {
+          // TODO: delete confirmation and delete error notification
+          this.refreshItemDetail();
+        });
+      }
     });
   }
 
