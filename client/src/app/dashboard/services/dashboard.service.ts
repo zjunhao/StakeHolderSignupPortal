@@ -132,7 +132,6 @@ export class DashboardService {
     const url = `${this.baseUrl}/sprintreview/adminAddAttendee/${sprintReviewId}`;
     
     const reqBody = { newAttendee: attendeeInfo };
-    console.log(reqBody);
     return this.http
       .put<SuccessMessageResponseModel>(url, reqBody)
       .pipe(catchError(this.handleError));

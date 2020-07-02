@@ -148,22 +148,27 @@ route.put('/updateItem/:id',  (req, res)=>{
 // update total slots for sprintreview
 route.put('/updateTotalSlots/:itemId', (req, res) => {
     if (!req.params.itemId) {
-        res.json({success: false, message: 'Missing item id'});
-        return;
+        return res.json({success: false, message: 'Missing item id'});
+    } else if (!("totalSlots" in req.body)) {
+        return res.json({success: false, message: 'Missing totalSlots in request body'});
     } 
-    if (!("totalSlots" in req.body)) {
-        res.json({success: false, message: 'Missing totalSlots in request body'});
-        return;
+    
+    const newTotalSlots = Number(req.body.totalSlots);
+    if (!Number.isInteger(newTotalSlots)) {
+        return res.json({success: false, message: 'Total slots should be an integer'});
+    } else if (newTotalSlots < 0) {
+        return res.json({success: false, message: 'Total slots should be no less than 0'});
     }
+
     SprintReviewItem.findById(req.params.itemId, (err, item)=>{
         if (err) {
             res.json({success: false, message: err.message});
         } else if (!item) {
             res.json({success: false, message: 'Cannot find sprint review using provided id'});
-        } else if (item.self_signup_attendees_id.length > req.body.totalSlots) {
+        } else if (item.self_signup_attendees_id.length > newTotalSlots) {
             res.json({success: false, message: 'Total slots cannot be less than number of attendees already signed up'});
         } else {
-            item.total_slots = req.body.totalSlots;
+            item.total_slots = newTotalSlots;
             item.save((err) => {
                 if (err) {
                     res.json({success: false, message: err.message});

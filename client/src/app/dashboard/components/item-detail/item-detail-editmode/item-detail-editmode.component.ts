@@ -101,7 +101,6 @@ export class ItemDetailEditmodeComponent implements OnInit {
   adminAddingAttendee() {
     if (this.nameFC.valid && this.emailFC.valid) {
       this.dashBoardService.addAttendeeFromAdmin(this.itemDetail._id, this.newAdminAttendee).subscribe(res => {
-        console.log(res);
         if (res.success) {
           this.refreshItemDetail();
           this.resetAddAttendeeForm();
@@ -137,9 +136,12 @@ export class ItemDetailEditmodeComponent implements OnInit {
 
   // event handler for updating sprint review details
   onTotalSlotsUpdate() {
-    if (this.itemDetailOriginal.totalSlots === this.itemDetail.totalSlots) return;
-
-    if (this.itemDetail.totalSlots < this.itemDetail.selfSignupAttendees.length) {
+    if (this.itemDetailOriginal.totalSlots === this.itemDetail.totalSlots) {
+      return;
+    } else if (!Number.isInteger(Number(this.itemDetail.totalSlots))) {
+      this.totalSlotsErrMsg = 'Total slots should be an integer';
+      return;
+    } else if (this.itemDetail.totalSlots < this.itemDetail.selfSignupAttendees.length) {
       this.totalSlotsErrMsg = 'Total slots cannot be less than number of attendees signed up already';
       return;
     } 

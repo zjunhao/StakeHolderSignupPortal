@@ -8,37 +8,30 @@
               <tr>
                 <th scope="row">Title</th>
                 <td><textarea id="title" class="form-control" (blur)="onTitleUpdate()" [(ngModel)]="itemDetail.title"></textarea></td>
-                <!-- <td><button class="btn btn-outline-info btn-sm" (click)='onTitleUpdate()'>Save Changes</button></td> -->
               </tr>
               <tr>
                 <th scope="row">Organizer</th>
                 <td><textarea id="organizer" class="form-control" (blur)="onOrganzerUpdate()" [(ngModel)]="itemDetail.organizer"></textarea></td>
-                <!-- <td><button class="btn btn-outline-info btn-sm" (click)='onOrganzerUpdate()'>Save Changes</button></td> -->
               </tr>
               <tr>
                 <th scope="row">Start Time</th>
                 <td><input type="datetime-local" id="startTime" class="form-control" (blur)="onStartTimeUpdate()"  [(ngModel)]="itemDetail.startTime"></td>
-                <!-- <td><button class="btn btn-outline-info btn-sm" (click)='onStartTimeUpdate()'>Save Changes</button></td> -->
               </tr>
               <tr>
                 <th scope="row">End Time</th>
                 <td><input type="datetime-local" id="endTime" class="form-control" (blur)="onEndTimeUpdate()" [(ngModel)]="itemDetail.endTime"></td>
-                <!-- <td><button class="btn btn-outline-info btn-sm" (click)='onEndTimeUpdate()'>Save Changes</button></td> -->
               </tr>
               <tr>
                 <th scope="row">Short Description</th>
                 <td><textarea id="description" class="form-control" (blur)="onDescriptionUpdate()" [(ngModel)]="itemDetail.description"></textarea></td>
-                <!-- <td><button class="btn btn-outline-info btn-sm" (click)='onDescriptionUpdate()'>Save Changes</button></td> -->
               </tr>
               <tr>
                 <th scope="row">Meeting Link</th>
                 <td><textarea id="meetingLink" class="form-control" (blur)="onMeetingLinkUpdate()" [(ngModel)]="itemDetail.meetingLink"></textarea></td>
-                <!-- <td><button class="btn btn-outline-info btn-sm" (click)='onMeetingLinkUpdate()'>Save Changes</button></td> -->
               </tr>
               <tr>
                 <th scope="row">Total Slots</th>
                 <td><input id="totalSlots" class="form-control" (blur)="onTotalSlotsUpdate()" [(ngModel)]="itemDetail.totalSlots"></td>
-                <!-- <td><button class="btn btn-outline-info btn-sm" (click)='onTotalSlotsUpdate()'>Save Changes</button></td> -->
               </tr>
               <tr>
                 <th scope="row">Slots Remaining</th>
