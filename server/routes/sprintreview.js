@@ -85,6 +85,9 @@ route.post('/addItem', (req, res)=>{
         start_time: req.body.startTime,
         end_time: req.body.endTime
     });
+    
+    if (req.body.meetingLink) 
+        newItem.meeting_link = req.body.meetingLink;
 
     newItem.save((err, item)=>{
         if(err){
