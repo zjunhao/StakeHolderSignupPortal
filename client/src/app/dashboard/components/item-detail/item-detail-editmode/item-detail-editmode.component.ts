@@ -13,7 +13,11 @@ import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/del
   styleUrls: ['./item-detail-editmode.component.scss']
 })
 export class ItemDetailEditmodeComponent implements OnInit {
+  // item detail subject to user's change
   itemDetail: DetailItemModel = new DetailItemModel();
+
+  // original item detail without user making any changes
+  itemDetailOriginal: DetailItemModel = new DetailItemModel();
 
   // variables related to admin adding attendee
   newAdminAttendee: AdminAddAttendeeModel = new AdminAddAttendeeModel();
@@ -45,6 +49,12 @@ export class ItemDetailEditmodeComponent implements OnInit {
         this.dashBoardService.getSprintReview(id).subscribe(res => {
           if(res.success) {
             this.itemDetail = res.itemDetail;
+            // deep copy every field into iteDetailOriginal
+            this.itemDetailOriginal = {
+              ...this.itemDetail, 
+              selfSignupAttendees: {...this.itemDetail.selfSignupAttendees},
+              administratorAddedAttendees: {...this.itemDetail.administratorAddedAttendees},
+            };
           }
           // TODO: notice user when get item detail fails
         });
@@ -127,6 +137,8 @@ export class ItemDetailEditmodeComponent implements OnInit {
 
   // event handler for updating sprint review details
   onTotalSlotsUpdate() {
+    if (this.itemDetailOriginal.totalSlots === this.itemDetail.totalSlots) return;
+
     if (this.itemDetail.totalSlots < this.itemDetail.selfSignupAttendees.length) {
       this.totalSlotsErrMsg = 'Total slots cannot be less than number of attendees signed up already';
       return;
@@ -143,6 +155,8 @@ export class ItemDetailEditmodeComponent implements OnInit {
   }
 
   onTitleUpdate() {
+    if (this.itemDetailOriginal.title.localeCompare(this.itemDetail.title) === 0) return;
+
     const itemId = this.itemDetail._id;
     this.dashBoardService.updateSprintReview(itemId, "title", this.itemDetail.title).subscribe(()=>{
       this.refreshItemDetail();
@@ -150,34 +164,45 @@ export class ItemDetailEditmodeComponent implements OnInit {
 
   }
   onOrganzerUpdate() {
+    if (this.itemDetailOriginal.organizer.localeCompare(this.itemDetail.organizer) === 0) return;
+
     const itemId = this.itemDetail._id;
     this.dashBoardService.updateSprintReview(itemId, "organizer", this.itemDetail.organizer).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onStartTimeUpdate() {
+    if (this.itemDetailOriginal.startTime.localeCompare(this.itemDetail.startTime) === 0) return;
+
     const itemId = this.itemDetail._id;
     this.dashBoardService.updateSprintReview(itemId, "startTime", this.itemDetail.startTime).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onEndTimeUpdate() {
+    if (this.itemDetailOriginal.endTime.localeCompare(this.itemDetail.endTime) === 0) return;
+
     const itemId = this.itemDetail._id;
     this.dashBoardService.updateSprintReview(itemId, "endTime", this.itemDetail.endTime).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onDescriptionUpdate() {
+    if (this.itemDetailOriginal.description.localeCompare(this.itemDetail.description) === 0) return;
+
     const itemId = this.itemDetail._id;
     this.dashBoardService.updateSprintReview(itemId, "description", this.itemDetail.description).subscribe(()=>{
       this.refreshItemDetail();
     });
   }
   onMeetingLinkUpdate() {
-    const itemId = this.itemDetail._id;
-    this.dashBoardService.updateSprintReview(itemId, "meetingLink", this.itemDetail.meetingLink).subscribe(()=>{
-      this.refreshItemDetail();
-    });
+    if (this.itemDetail.meetingLink !== undefined && this.itemDetail.meetingLink.localeCompare(this.itemDetailOriginal.meetingLink)!==0 ) {
+      const itemId = this.itemDetail._id;
+      this.dashBoardService.updateSprintReview(itemId, "meetingLink", this.itemDetail.meetingLink).subscribe(()=>{
+        this.refreshItemDetail();
+      });
+    }
+
   }
 
 }

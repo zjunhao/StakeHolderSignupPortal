@@ -109,12 +109,7 @@ route.delete('/deleteItem/:id', (req,res)=>{
 // update field of a sprint review
 route.put('/updateItem/:id',  (req, res)=>{
     function getUpdateFromRequest(request) {
-        var keys = Object.keys(request.body);
-        if (keys.length !== 1) {
-            return res.json({success: false, message: 'Cannot update multiple fields at one request'});
-        }
-
-        switch (keys[0]) {
+        switch (Object.keys(request.body)[0]) {
             case "title": 
                 return {$set: { title: request.body.title}};
             case "organizer":
@@ -132,13 +127,17 @@ route.put('/updateItem/:id',  (req, res)=>{
         }
     }
 
-    var condition = {_id: req.params.id};
-    var update = getUpdateFromRequest(req);
+    if (Object.keys(req.body).length !== 1) {
+        return res.json({success: false, message: 'Only 1 field is allowed to update at one request'});
+    }
 
-    SprintReviewItem.updateOne(condition, update, function(err, _) {
+    var condition = {_id: req.params.id};
+    var updateCondition = getUpdateFromRequest(req);
+
+    SprintReviewItem.updateOne(condition, updateCondition, function(err, _) {
         if (err) {
             res.json({success: false, message: err.message});
-        } else if (update === null) {
+        } else if (updateCondition === null) {
             res.json({success: false, message: 'Nothing being updated, please make sure your request body has the correct key name'});
         } else {
             res.json({success: true, message: 'Sprint review detail updated'});
