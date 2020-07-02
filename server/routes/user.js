@@ -78,6 +78,8 @@ route.put('/promoteUser/:id', (req, res)=>{
     User.findById(req.params.id, (err, user) => {
         if (err) {
             res.json({success: false, message: err.message});
+        } else if (!user) {
+            res.json({success: false, message: 'Cannot find user using provided user id'});
         } else if (user.privilege.localeCompare('administrator') === 0){
             res.json({success: false, message: 'The account is admistrator already'});
         } else{
@@ -103,6 +105,8 @@ route.put('/removeUserAdmin/:id', (req, res)=>{
     User.findById(req.params.id, (err, user) => {
         if (err) {
             res.json({success: false, message: err.message});
+        } else if (!user) {
+            res.json({success: false, message: 'Cannot find user using provided user id'});
         } else if (user.privilege.localeCompare('normal') === 0){
             res.json({success: false, message: 'Cannot remove administrator privilege since this user is not an administrator'});
         } else{
