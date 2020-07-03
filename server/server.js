@@ -1,30 +1,22 @@
 // importing modules
+require('./config/config');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 
-const sprintreview = require('./routes/sprintreview');
-const user = require('./routes/user');
-
 // set up app
 const app = express();
 
 // connect to mongodb
-mongoose.connect('mongodb://localhost:27017/stakeholdersignupportal');
-mongoose.connection.on('connected', ()=>{
-    console.log('Connect to database mongodb @ 27017');
-});
-mongoose.connection.on('error', (err)=>{
-    if (err) {
-        console.log('Error in database connection: ' + err);
+mongoose.connect(process.env.MONGODB_URI, (err) => {
+    if (!err) { 
+        console.log('MongoDB connection succeeded.'); 
+    } else { 
+        console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)); 
     }
-    console.log('Connect to database mongodb @ 27017');
 });
-
-
-
 
 // add middleware
 app.use(cors());
@@ -32,11 +24,14 @@ app.use(bodyparser.json());
 app.use('/public', express.static(path.join(__dirname, 'static')));
 
 // add routes
-app.use('/api/sprintreview', sprintreview);
+const user = require('./routes/user');
+const sprintreview = require('./routes/sprintreview');
+
 app.use('/api/user', user);
+app.use('/api/sprintreview', sprintreview);
 
 
-const portNum = 3000;
-app.listen(portNum,()=>{
-    console.log('Server started at port: ' + portNum);
+
+app.listen(process.env.PORT,()=>{
+    console.log('Server started at port: ' + process.env.PORT);
 });
