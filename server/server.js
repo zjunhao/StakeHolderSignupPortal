@@ -1,10 +1,13 @@
-// importing modules
 require('./config/config');
+require('./config/passportConfig');
+
+// importing modules
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const passport = require('passport');
 
 // set up app
 const app = express();
@@ -22,6 +25,7 @@ mongoose.connect(process.env.MONGODB_URI, (err) => {
 app.use(cors());
 app.use(bodyparser.json());
 app.use('/public', express.static(path.join(__dirname, 'static')));
+app.use(passport.initialize());
 
 // add routes
 const user = require('./routes/user');

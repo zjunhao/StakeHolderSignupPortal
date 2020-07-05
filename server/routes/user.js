@@ -1,7 +1,10 @@
 const express = require('express');
+const passport = require('passport');
 const route = express.Router();
 
+const jwtHelper = require('../config/jwtHelper');
 const User = require('../models/user');
+
 
 // signUp a user
 route.post('/createUser', (req, res)=>{
@@ -25,48 +28,27 @@ route.post('/createUser', (req, res)=>{
 
 // login a user
 route.post('/loginUser', (req, res)=>{
-    if (!req.body.email || !req.body.password) {
-        res.json({success: false, message: 'Missing email or password'});
-        return;
-    }
-    User.find({email: req.body.email}, (err, user) => {
-        if (err) {
-            res.json({success: false, message: err.message});
-        } else if (user.length > 1){
-            res.json({success: false, message: 'More than one user use the same email'});
-        } else if (user.length === 0) {
-            res.json({success: false, message: 'Email does not exist'});
+    // call for passport authentication defined inside passportConfig.js
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {          // error when finding document
+            return res.status(400).json({success: false, message: err.message});
+        } else if (!user) { // email does not exist or wrong password
+            return res.status(404).json({success: false, message: info.message});
         } else {
-            if (req.body.password !== user[0].password) {
-                res.json({success: false, message: 'Password not correct'});
-            } else {
-                res.json({
-                    success: true, 
-                    message: 'Login succeed',
-                    user: {
-                        _id: user[0]._id,
-                        email: user[0].email,
-                        name: user[0].name,
-                        privilege: user[0].privilege
-                    }
-                });
-            }
+            return res.status(200).json({success: true, message: 'Login succeed', token: user.generateJwt()});
         }
-    })
+    })(req, res);
 });
 
 // promote a user to admin
-route.put('/promoteUser/:id', (req, res)=>{
-    // const correctPasscode = 'P@ssc0de4pr0m0t10n';
-    const correctPasscode = 'passcode';
-
+route.put('/promoteUser/:id', jwtHelper.verifyJwtToken, (req, res)=>{
     if (!req.params.id) {
         return res.json({success: false, message: 'Missing user id in request parameters'});
     }
     if (!req.body.passcode) {
         return res.json({success: false, message: 'Missing passcode in request'});
     }
-    if (req.body.passcode.localeCompare(correctPasscode) !== 0) {
+    if (req.body.passcode.localeCompare(process.env.ACCOUNT_PROMOTION_PASSCODE) !== 0) {
         return res.json({success: false, message: 'Passcode not correct'});
     }
 
@@ -91,7 +73,7 @@ route.put('/promoteUser/:id', (req, res)=>{
 });
 
 // remove the user's admin privilege
-route.put('/removeUserAdmin/:id', (req, res)=>{
+route.put('/removeUserAdmin/:id', jwtHelper.verifyJwtToken, (req, res)=>{
 
     if (!req.params.id) {
         return res.json({success: false, message: 'Missing user id in request parameters'});
