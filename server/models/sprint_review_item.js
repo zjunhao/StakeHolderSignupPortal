@@ -60,4 +60,4 @@ const SprintReviewItemSchema = mongoose.Schema({
     }
 });
 
-const SprintReview = module.exports = mongoose.model('SprintReview', SprintReviewItemSchema);
+module.exports = mongoose.model('SprintReview', SprintReviewItemSchema);

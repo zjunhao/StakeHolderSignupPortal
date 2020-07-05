@@ -11,21 +11,16 @@ route.post('/createUser', (req, res)=>{
         name: req.body.name,
     });
 
-    User.find({email: req.body.email}, (err, user) => {
-        if (err) {
-            res.json({success: false, message: err.message});
-        } else if (user.length > 0) {
-            res.json({success: false, message: 'email already exists'});
-        } else {
-            newUser.save((err, user)=>{
-                if(err){
-                    res.json({success: false, message: err.message});
-                } else {
-                    res.json({success: true, message: 'New user created successfully'});
-                }
-            });
+    newUser.save((err, user) => {
+        if (!err)
+            res.json({success: true, message: 'New user created successfully'});
+        else {
+            if (err.code == 11000)
+                res.json({success: false, message: 'Email already exists'});
+            else
+                res.json({success: false, message: err.message});
         }
-    })
+    });
 });
 
 // login a user
