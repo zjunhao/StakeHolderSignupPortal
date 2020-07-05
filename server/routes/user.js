@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const _ = require('lodash');
 const route = express.Router();
 
 const jwtHelper = require('../config/jwtHelper');
@@ -38,6 +39,19 @@ route.post('/loginUser', (req, res)=>{
             return res.status(200).json({success: true, message: 'Login succeed', token: user.generateJwt()});
         }
     })(req, res);
+});
+
+// get basic user infomation
+route.get('/getUserInfo/:id', jwtHelper.verifyJwtToken, (req, res)=> {
+    User.findById(req.params.id, (err, user)=> {
+        if (err) {
+            return res.status(400).json({success: false, message: err.message});
+        } else if (!user) {
+            return res.status(404).json({success: false, message: 'User not found.' });
+        } else {
+            return res.status(200).json({success: true, user: _.pick(user, ['email', 'name', 'privilege'])})
+        }
+    })
 });
 
 // promote a user to admin
