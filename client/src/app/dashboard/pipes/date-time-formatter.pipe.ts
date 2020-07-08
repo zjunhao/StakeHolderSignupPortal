@@ -9,16 +9,20 @@ export class DateTimeFormatterPipe implements PipeTransform {
   transform(dateTimeStr: string): string {
     var regexParser = /(\d+)-(\d\d)-(\d\d)T(\d\d):(\d\d)/g
     var match = regexParser.exec(dateTimeStr);
-    
-    const year = match[1];
-    const month = match[2];
-    const day = match[3];
-    const hour = match[4];
-    const minute = match[5];
 
-    const formattedStr = `${month}/${day}/${year} ${hour}:${minute}`;
-
-    return formattedStr;
+    if (match) {
+      const year = match[1];
+      const month = match[2];
+      const day = match[3];
+      const hour = match[4];
+      const minute = match[5];
+  
+      const formattedStr = `${month}/${day}/${year} ${hour}:${minute}`;
+  
+      return formattedStr;
+    } else {
+      return dateTimeStr;
+    }
   }
 
 }
