@@ -171,6 +171,7 @@ route.put('/updateTotalSlots/:itemId', (req, res) => {
         } else if (item.self_signup_attendees_id.length > newTotalSlots) {
             res.json({success: false, message: 'Total slots cannot be less than number of attendees already signed up'});
         } else {
+            // TODO: change these item.save to use findbyidandupdate(query {$set{total_slots:newtotalslots}}) pattern, and other save in this file if applicable
             item.total_slots = newTotalSlots;
             item.save((err) => {
                 if (err) {

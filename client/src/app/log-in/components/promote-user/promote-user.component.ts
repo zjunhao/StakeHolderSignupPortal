@@ -63,7 +63,11 @@ export class PromoteUserComponent implements OnInit {
   }
 
   isUserAdmin(): boolean {
-    return this.currentUser.privilege.localeCompare(UserPrivilegeEnum.admin) === 0;
+    if (this.currentUser.privilege) {
+      return this.currentUser.privilege.localeCompare(UserPrivilegeEnum.admin) === 0;
+    } else {
+      return false;
+    }
   }
   
 }
