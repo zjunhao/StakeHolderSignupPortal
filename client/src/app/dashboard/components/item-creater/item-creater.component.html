@@ -20,6 +20,7 @@
         <label for="startTime">Start Time *</label>
         <input type="datetime-local" name="startTime" class="form-control time-input" [(ngModel)]="newItem.startTime" [formControl]="startTimeFC" required>
         <mat-error *ngIf="startTimeFC.invalid">{{getStartTimeErrorMessage()}}</mat-error>
+        <!-- [ngClass]="{'error-message-css': creationForm.submitted && startTimeFC.invalid}" -->
       </div>
       <br>
       <!-- End Time -->

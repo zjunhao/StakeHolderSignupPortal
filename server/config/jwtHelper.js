@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+// if succeed, this middleware will add _id extracted from jwt into req._id
 module.exports.verifyJwtToken = (req, res, next) => {
     var token;
     // header: {authorization: Bearer jwt-token-here}

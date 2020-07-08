@@ -34,7 +34,7 @@ route.post('/loginUser', (req, res)=>{
         if (err) {          // error when finding document
             return res.status(400).json({success: false, message: err.message});
         } else if (!user) { // email does not exist or wrong password
-            return res.status(404).json({success: false, message: info.message});
+            return res.status(401).json({success: false, message: info.message});
         } else {
             return res.status(200).json({success: true, message: 'Login succeed', token: user.generateJwt()});
         }
@@ -42,14 +42,15 @@ route.post('/loginUser', (req, res)=>{
 });
 
 // get basic user infomation
-route.get('/getUserInfo/:id', jwtHelper.verifyJwtToken, (req, res)=> {
-    User.findById(req.params.id, (err, user)=> {
+route.get('/getCurrentUserInfo', jwtHelper.verifyJwtToken, (req, res)=> {
+    // req._id added from middleware jwtHelper.verifyJwtToken
+    User.findById(req._id, (err, user)=> {
         if (err) {
             return res.status(400).json({success: false, message: err.message});
         } else if (!user) {
-            return res.status(404).json({success: false, message: 'User not found.' });
+            return res.status(400).json({success: false, message: 'User not found.' });
         } else {
-            return res.status(200).json({success: true, user: _.pick(user, ['email', 'name', 'privilege'])})
+            return res.status(200).json({success: true, message:'User info found', user: _.pick(user, ['_id', 'email', 'name', 'privilege'])})
         }
     })
 });

@@ -4,13 +4,5 @@
 export class LoginResponseModel {
     success: boolean;
     message: string;
-    user?: UserModel;
-}
-
-class UserModel {
-    _id: string;
-    email: string;
-    name: string;
-    privilege: string;
-
+    token?: string;
 }

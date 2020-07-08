@@ -8,6 +8,8 @@ import { SuccessMessageResponseModel } from 'src/app/shared/models/success-messa
 import { LoginResponseModel } from '../models/login-response-model';
 import { Router } from '@angular/router';
 import { UserPrivilegeEnum } from '../enums/user-privilege-enum';
+import { LocalstorageTokenService } from './localstorage-token.service';
+import { GetCurrentUserInfoResponseModel } from '../models/get-current-user-response-model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +20,14 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
+    private localstorageTokenService: LocalstorageTokenService,
     private router: Router
   ) { }
 
   signupUser(newUser: SignupModel): Observable<SuccessMessageResponseModel> {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
+    headers.append('NoAuth', 'True');
 
     const url = `${this.baseUrl}/user/createUser`;
 
@@ -37,6 +41,7 @@ export class UserService {
   loginUser(user: LoginModel): Observable<LoginResponseModel> {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
+    headers.append('NoAuth', 'True');
 
     const url = `${this.baseUrl}/user/loginUser`;
 
@@ -47,8 +52,20 @@ export class UserService {
 
   /** Log user out by removing localStorage and navigate user to login page */
   logOutUser() {
-    localStorage.removeItem('currentUser');
+    this.localstorageTokenService.removeToken();
     this.router.navigate(['/login']);
+  }
+
+  /**
+   * Get user info about user signed in,
+   * We didn't provide an id here, since it is extracted from jwt token.
+   */
+  getCurrentUserInfo(): Observable<GetCurrentUserInfoResponseModel> {
+    const url = `${this.baseUrl}/user/getCurrentUserInfo`;
+
+    return this.http
+      .get<GetCurrentUserInfoResponseModel>(url)
+      .pipe(catchError(this.handleError));
   }
 
   /** Promote user account to be administrator */

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
-import { CurrentUserInfoService } from 'src/app/log-in/services/current-user-info.service';
 import { ActivatedRoute, Params } from '@angular/router';
+import { CurrentUserModel } from 'src/app/log-in/models/get-current-user-response-model';
+import { UserService } from 'src/app/log-in/services/user.service';
 
 @Component({
   selector: 'app-item-detail-noneditmode',
@@ -12,18 +13,29 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class ItemDetailNoneditmodeComponent implements OnInit {
 
   itemDetail: DetailItemModel = new DetailItemModel();
+  currentUser: CurrentUserModel = new CurrentUserModel();
+
+  userSignedUp: boolean;
+
   signupResultMessage: string = '';
   unregisterResultMessage: string = '';
-  userSignedUp: boolean;
+
 
   constructor(
     private dashBoardService: DashboardService,
-    private currentUserService: CurrentUserInfoService,
+    private userService: UserService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.refreshItemDetail();
+    this.userService.getCurrentUserInfo().subscribe(res => {
+      if (res.success) {
+        this.currentUser = res.user;
+        this.refreshItemDetail();
+      } else {
+        console.error('Fail to load current user information');
+      }
+    })
   }
 
   refreshItemDetail() {
@@ -36,22 +48,23 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
           if (res.success) {
             this.itemDetail = res.itemDetail;
             this.userSignedUp = this.currentUserSignedUp();
+          } else {
+            console.error('Fail to load sprint review detail');
           }
-          //TODO: Notice user when fail to get item detail
         });
       } 
     });
   }
 
   attendeeSignUp() {
-    this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUserService.getId()).subscribe(res => {
+    this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUser._id).subscribe(res => {
       alert(res.message);
       this.refreshItemDetail();
     });
   }
 
   attendeeUnregister() {
-    this.dashBoardService.attendeeUnregister(this.itemDetail._id, this.currentUserService.getId()).subscribe(res => {
+    this.dashBoardService.attendeeUnregister(this.itemDetail._id, this.currentUser._id).subscribe(res => {
       alert(res.message);
       this.refreshItemDetail();
     });
@@ -59,7 +72,7 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
 
   // determine whether current user has signed up
   private currentUserSignedUp(): boolean {
-    const currentUserId = this.currentUserService.getId();
+    const currentUserId = this.currentUser._id;
     const signedUpUsers = this.itemDetail.selfSignupAttendees;
     for (var i = 0; i < signedUpUsers.length; i++) {
       if (signedUpUsers[i]._id.localeCompare(currentUserId) === 0){

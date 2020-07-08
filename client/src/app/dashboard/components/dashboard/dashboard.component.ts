@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemListComponent } from '../item-list/item-list.component';
-import { CurrentUserInfoService } from '../../../log-in/services/current-user-info.service';
 import { UserPrivilegeEnum } from 'src/app/log-in/enums/user-privilege-enum';
+import { UserService } from 'src/app/log-in/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,14 +14,20 @@ export class DashboardComponent implements OnInit {
   @ViewChild(ItemListComponent) itemList: ItemListComponent;
   
   constructor(
-    private currentUserService: CurrentUserInfoService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    if (this.currentUserService.getPrivilege().localeCompare(UserPrivilegeEnum.admin) === 0) {
-      this.editMode = true;
-    }
     // this.editMode = true;
+
+    this.userService.getCurrentUserInfo().subscribe(res => {
+      if (res.success) {
+        const currUserPrivilege = res.user.privilege;
+        this.editMode = currUserPrivilege.localeCompare(UserPrivilegeEnum.admin)===0 ? true : false;
+      } else {
+        console.error('Fail to get current user privilege');
+      }
+    })
   }
 
   refreshList() {

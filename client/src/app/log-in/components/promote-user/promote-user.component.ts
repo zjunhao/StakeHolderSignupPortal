@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { CurrentUserInfoService } from '../../services/current-user-info.service';
 import { UserPrivilegeEnum } from '../../enums/user-privilege-enum';
+import { CurrentUserModel } from '../../models/get-current-user-response-model';
+
 
 @Component({
   selector: 'app-promote-user',
@@ -17,20 +18,23 @@ export class PromoteUserComponent implements OnInit {
 
   userInputPasscode: string;
 
-  isUserAdmin: boolean;
+  currentUser: CurrentUserModel = new CurrentUserModel();
 
   constructor(
-    private loginService: UserService,
-    private currentUserService: CurrentUserInfoService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    this.isUserAdmin = this.currentUserService.getPrivilege().localeCompare(UserPrivilegeEnum.admin) === 0;
+    this.userService.getCurrentUserInfo().subscribe(res => {
+      if (res.success) {
+        this.currentUser = res.user;
+      }
+    })
   }
 
   /** Make current user account as administrator. */ 
   promoteUser() {
-    this.loginService.promoteUser(this.currentUserService.getId(), this.userInputPasscode).subscribe(res => {
+    this.userService.promoteUser(this.currentUser._id, this.userInputPasscode).subscribe(res => {
       if (res.success) {
         this.promoteErrMsg = '';
         this.promoteSucceedMsg = 'Your account has been promoted to administrator, please log out and log back in for it to take effect';
@@ -43,7 +47,7 @@ export class PromoteUserComponent implements OnInit {
 
   /** Remove administrator privilege from current user */
   removeUserAdmin() {
-    this.loginService.removeUserAdmin(this.currentUserService.getId()).subscribe(res => {
+    this.userService.removeUserAdmin(this.currentUser._id).subscribe(res => {
       if (res.success) {
         this.unAdminErrMsg = '';
         this.unAdminSucceedMsg = 'Your account is no longer administrator, please log out and log back in for it to take effect';
@@ -55,6 +59,11 @@ export class PromoteUserComponent implements OnInit {
   }
 
   logOutUser() {
-    this.loginService.logOutUser();
+    this.userService.logOutUser();
   }
+
+  isUserAdmin(): boolean {
+    return this.currentUser.privilege.localeCompare(UserPrivilegeEnum.admin) === 0;
+  }
+  
 }

@@ -48,7 +48,7 @@ UserSchema.methods.verifyPassword = function(password) {
 }
 
 UserSchema.methods.generateJwt = function() {
-    return jwt.sign({ _id: this._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXP});
+    return jwt.sign({ _id: this._id, email: this.email, name: this.name, privilege: this.privilege}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXP});
 }
 
 module.exports = mongoose.model('User', UserSchema);

@@ -1,5 +1,5 @@
 <div id="account-promote-container" class="container jumbotron">
-    <ng-container *ngIf='!isUserAdmin'>
+    <ng-container *ngIf='!isUserAdmin()'>
         <form (submit)="promoteUser()" >
             <label class="label-info">Please enter passcode to promote the account as administrator</label>
             <br>
@@ -12,7 +12,7 @@
         </form>
     </ng-container>    
     
-    <ng-container *ngIf='isUserAdmin'>
+    <ng-container *ngIf='isUserAdmin()'>
         <label class="label-info">Your account has administrator privilege, click button to REMOVE administrator privilege.</label>
         <br>
         <button id="remove-admin-btn" class="btn btn-md btn-danger" (click)='removeUserAdmin()'>Remove administrator privilege</button>
