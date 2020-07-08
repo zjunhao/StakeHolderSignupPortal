@@ -13,7 +13,8 @@ const passport = require('passport');
 const app = express();
 
 // connect to mongodb
-mongoose.connect(process.env.MONGODB_URI, (err) => {
+const connectOptions = {useUnifiedTopology: true, useNewUrlParser: true}
+mongoose.connect(process.env.MONGODB_URI, connectOptions, (err) => {
     if (!err) { 
         console.log('MongoDB connection succeeded.'); 
     } else { 

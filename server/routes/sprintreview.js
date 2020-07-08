@@ -163,6 +163,7 @@ route.put('/updateTotalSlots/:itemId', (req, res) => {
         return res.json({success: false, message: 'Total slots should be no less than 0'});
     }
 
+    // TODO: user that is not admin cannot update total slots
     SprintReviewItem.findById(req.params.itemId, (err, item)=>{
         if (err) {
             res.json({success: false, message: err.message});
@@ -171,9 +172,7 @@ route.put('/updateTotalSlots/:itemId', (req, res) => {
         } else if (item.self_signup_attendees_id.length > newTotalSlots) {
             res.json({success: false, message: 'Total slots cannot be less than number of attendees already signed up'});
         } else {
-            // TODO: change these item.save to use findbyidandupdate(query {$set{total_slots:newtotalslots}}) pattern, and other save in this file if applicable
-            item.total_slots = newTotalSlots;
-            item.save((err) => {
+            item.updateOne({$set: {total_slots : newTotalSlots}}, (err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
@@ -207,8 +206,7 @@ route.put('/attendeeSignup/:itemId', (req, res)=>{
         } else if (item.self_signup_attendees_id.length >= item.total_slots) {
             res.json({success: false, message: 'No open slots available'});
         } else {
-            item.self_signup_attendees_id.push(req.body.userId);
-            item.save((err) => {
+            item.updateOne({$push: {self_signup_attendees_id: req.body.userId }}, (err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
@@ -239,9 +237,7 @@ route.put('/attendeeUnregister/:itemId', (req, res)=>{
         } else if (!item.self_signup_attendees_id.includes(req.body.userId)) {
             res.json({success: false, message: 'Cannot unregister since you have not signed up yet'});
         } else {
-            const idx = item.self_signup_attendees_id.indexOf(req.body.userId);
-            item.self_signup_attendees_id.splice(idx, 1);
-            item.save((err) => {
+            item.updateOne({$pull: {self_signup_attendees_id: req.body.userId}}, (err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
@@ -271,9 +267,7 @@ route.put('/removeSelfSignupAttendee/:itemId', (req, res)=>{
         }  else if (!item.self_signup_attendees_id.includes(req.body.userId)) {
             res.json({success: false, message: 'Cannot remove attendee since he has not signed up yet'});
         } else {
-            const idx = item.self_signup_attendees_id.indexOf(req.body.userId);
-            item.self_signup_attendees_id.splice(idx, 1);
-            item.save((err) => {
+            item.updateOne({$pull: {self_signup_attendees_id: req.body.userId}}, (err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
@@ -297,8 +291,8 @@ route.put('/adminAddAttendee/:itemId', (req, res)=>{
         } else if (!item) {
             res.json({success: false, message: 'Cannot find sprint review using provided id'});
         } else {
-            item.administrator_added_attendees.push({name: req.body.newAttendee.name, email: req.body.newAttendee.email});
-            item.save((err) => {
+            const newAttendee = {name: req.body.newAttendee.name, email: req.body.newAttendee.email};
+            item.updateOne({$push: {administrator_added_attendees: newAttendee}}, (err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
@@ -315,27 +309,23 @@ route.put('/removeAdminAddedAttendee/:itemId', (req, res)=>{
         res.json({success: false, message: 'Missing item id'});
         return;
     } 
-    if (!'attendeeObjId' in req.body) {
+    if (!('attendeeObjId' in req.body)) {
         res.json({success: false, message: 'Missing attendee object id'});
         return;
     }
+
     SprintReviewItem.findById(req.params.itemId, (err, item)=>{
         if (err) {
             res.json({success: false, message: err.message});
         } else if (!item) {
             res.json({success: false, message: 'Cannot find sprint review using provided id'});
         } else {
-            // remove admin added attendee object by id
-            const idToDelete = req.body.attendeeObjId;
-            const idx = item.administrator_added_attendees.map( attendeeObj => attendeeObj._id ).indexOf(idToDelete);
-            if (idx === -1) {
-                return res.json({succeess: false, message: 'Attendee trying to remove does not exist in attendees added by administrator'});
-            }
-            item.administrator_added_attendees.splice(idx, 1);
-
-            item.save((err) => {
+            const query = {$pull: {administrator_added_attendees: {_id: req.body.attendeeObjId}}};
+            item.updateOne(query, (err, raw)=>{
                 if (err) {
                     res.json({success: false, message: err.message});
+                } else if (raw.nModified === 0){
+                    res.json({success: false, message: 'Cannot find administrator added attendees using id in request body'});
                 } else {
                     res.json({success: true, message: 'Attendee removed'});
                 }

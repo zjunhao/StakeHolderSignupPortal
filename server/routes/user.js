@@ -75,7 +75,7 @@ route.put('/promoteUser/:id', jwtHelper.verifyJwtToken, (req, res)=>{
         } else if (user.privilege.localeCompare('administrator') === 0){
             res.json({success: false, message: 'The account is admistrator already'});
         } else{
-            user.update({$set: {privilege: 'administrator'}}, (err) => {
+            user.updateOne({$set: {privilege: 'administrator'}}, (err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
@@ -101,7 +101,7 @@ route.put('/removeUserAdmin/:id', jwtHelper.verifyJwtToken, (req, res)=>{
         } else if (user.privilege.localeCompare('normal') === 0){
             res.json({success: false, message: 'Cannot remove administrator privilege since this user is not an administrator'});
         } else{
-            user.update({$set: {privilege: 'normal'}}, (err) => {
+            user.updateOne({$set: {privilege: 'normal'}}, (err) => {
                 if (err) {
                     res.json({success: false, message: err.message});
                 } else {
