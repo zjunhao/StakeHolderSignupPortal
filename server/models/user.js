@@ -51,8 +51,4 @@ UserSchema.methods.generateJwt = function() {
     return jwt.sign({ _id: this._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXP});
 }
 
-UserSchema.methods.isUserAdmin = function() {
-    return this.privilege && (this.privilege.localeCompare('administrator') === 0);
-}
-
 module.exports = mongoose.model('User', UserSchema);

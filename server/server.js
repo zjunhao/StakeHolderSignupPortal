@@ -23,9 +23,9 @@ mongoose.connect(process.env.MONGODB_URI, connectOptions, (err) => {
 });
 
 // add middleware
+app.use('/public', express.static(path.join(__dirname, 'static')));
 app.use(cors());
 app.use(bodyparser.json());
-app.use('/public', express.static(path.join(__dirname, 'static')));
 app.use(passport.initialize());
 
 // add routes

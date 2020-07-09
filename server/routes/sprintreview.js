@@ -1,11 +1,14 @@
 const express = require('express');
 const route = express.Router();
 
+const jwtHelper = require('../config/jwtHelper');
+const userIdentityHelper = require('../config/userIdentityHelper');
 const SprintReviewItem = require('../models/sprint_review_item');
 const User = require('../models/user');
 
+// --------------------------------- api that all users can call -----------------------------------------
 // get a list of all sprint reviews
-route.get('/getItemList', (req, res) => {
+route.get('/getItemList', [jwtHelper.verifyJwtToken], (req, res) => {
     // TODO: get list group by group
     SprintReviewItem.find(function(err, itemList){
         if (err) {
@@ -31,7 +34,7 @@ route.get('/getItemList', (req, res) => {
 });
 
 // get all detail about a specific sprint review
-route.get('/getItem/:id', (req, res) => {
+route.get('/getItem/:id', [jwtHelper.verifyJwtToken], (req, res) => {
     SprintReviewItem.findById(req.params.id, function(err, itemDetail){
         if (err) { 
             res.json({success: false, message: err.message});
@@ -75,8 +78,73 @@ route.get('/getItem/:id', (req, res) => {
     })
 });
 
+// sign up attendee for sprint review
+route.put('/attendeeSignup/:itemId', [jwtHelper.verifyJwtToken], (req, res)=>{
+
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+    if (!req.body.userId) {
+        res.json({success: false, message: 'Missing user id'});
+        return;
+    }
+
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: 'Item id does not exist'});
+        } else if (!item) {
+            res.json({success: false, message: 'Cannot find sprint review using provided id'});
+        } else if (item.self_signup_attendees_id.includes(req.body.userId)) {
+            res.json({success: false, message: 'You have already signed up'});
+        } else if (item.self_signup_attendees_id.length >= item.total_slots) {
+            res.json({success: false, message: 'No open slots available'});
+        } else {
+            item.updateOne({$push: {self_signup_attendees_id: req.body.userId }}, (err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Sign up succeed'});
+                }
+            });
+        }
+    });
+});
+
+// attendee unregister for sprint review
+route.put('/attendeeUnregister/:itemId', [jwtHelper.verifyJwtToken], (req, res)=>{
+
+    if (!req.params.itemId) {
+        res.json({success: false, message: 'Missing item id'});
+        return;
+    } 
+    if (!req.body.userId) {
+        res.json({success: false, message: 'Missing user id'});
+        return;
+    }
+
+    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
+        if (err) {
+            res.json({success: false, message: 'Item id does not exist'});
+        } else if (!item) {
+            res.json({success: false, message: 'Cannot find sprint review using provided id'});
+        } else if (!item.self_signup_attendees_id.includes(req.body.userId)) {
+            res.json({success: false, message: 'Cannot unregister since you have not signed up yet'});
+        } else {
+            item.updateOne({$pull: {self_signup_attendees_id: req.body.userId}}, (err) => {
+                if (err) {
+                    res.json({success: false, message: err.message});
+                } else {
+                    res.json({success: true, message: 'Unregister succeed'});
+                }
+            });
+        }
+    });
+});
+
+// --------------------------------------------- api that only admin can call ------------------------------------
 // create a new sprint review
-route.post('/addItem', (req, res)=>{
+route.post('/addItem', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
     var newItem = new SprintReviewItem({
         title: req.body.title,
         total_slots: req.body.totalSlots,
@@ -99,7 +167,7 @@ route.post('/addItem', (req, res)=>{
 });
 
 // delete a sprint review
-route.delete('/deleteItem/:id', (req,res)=>{
+route.delete('/deleteItem/:id', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
     SprintReviewItem.remove({_id: req.params.id}, function(err, result){
         if (err) { 
             res.json({success: false, message: err.message});
@@ -110,7 +178,7 @@ route.delete('/deleteItem/:id', (req,res)=>{
 });
 
 // update field of a sprint review
-route.put('/updateItem/:id',  (req, res)=>{
+route.put('/updateItem/:id',  [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
     function getUpdateFromRequest(request) {
         switch (Object.keys(request.body)[0]) {
             case "title": 
@@ -149,7 +217,7 @@ route.put('/updateItem/:id',  (req, res)=>{
 });
 
 // update total slots for sprintreview
-route.put('/updateTotalSlots/:itemId', (req, res) => {
+route.put('/updateTotalSlots/:itemId', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res) => {
     if (!req.params.itemId) {
         return res.json({success: false, message: 'Missing item id'});
     } else if (!("totalSlots" in req.body)) {
@@ -183,73 +251,8 @@ route.put('/updateTotalSlots/:itemId', (req, res) => {
     }); 
 })
 
-
-// sign up attendee for sprint review
-route.put('/attendeeSignup/:itemId', (req, res)=>{
-
-    if (!req.params.itemId) {
-        res.json({success: false, message: 'Missing item id'});
-        return;
-    } 
-    if (!req.body.userId) {
-        res.json({success: false, message: 'Missing user id'});
-        return;
-    }
-
-    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
-        if (err) {
-            res.json({success: false, message: 'Item id does not exist'});
-        } else if (!item) {
-            res.json({success: false, message: 'Cannot find sprint review using provided id'});
-        } else if (item.self_signup_attendees_id.includes(req.body.userId)) {
-            res.json({success: false, message: 'You have already signed up'});
-        } else if (item.self_signup_attendees_id.length >= item.total_slots) {
-            res.json({success: false, message: 'No open slots available'});
-        } else {
-            item.updateOne({$push: {self_signup_attendees_id: req.body.userId }}, (err) => {
-                if (err) {
-                    res.json({success: false, message: err.message});
-                } else {
-                    res.json({success: true, message: 'Sign up succeed'});
-                }
-            });
-        }
-    });
-});
-
-// attendee unregister for sprint review
-route.put('/attendeeUnregister/:itemId', (req, res)=>{
-
-    if (!req.params.itemId) {
-        res.json({success: false, message: 'Missing item id'});
-        return;
-    } 
-    if (!req.body.userId) {
-        res.json({success: false, message: 'Missing user id'});
-        return;
-    }
-
-    SprintReviewItem.findById(req.params.itemId, (err, item)=>{
-        if (err) {
-            res.json({success: false, message: 'Item id does not exist'});
-        } else if (!item) {
-            res.json({success: false, message: 'Cannot find sprint review using provided id'});
-        } else if (!item.self_signup_attendees_id.includes(req.body.userId)) {
-            res.json({success: false, message: 'Cannot unregister since you have not signed up yet'});
-        } else {
-            item.updateOne({$pull: {self_signup_attendees_id: req.body.userId}}, (err) => {
-                if (err) {
-                    res.json({success: false, message: err.message});
-                } else {
-                    res.json({success: true, message: 'Unregister succeed'});
-                }
-            });
-        }
-    });
-});
-
 // Admin remove a attendee signed up by themself from sprint review
-route.put('/removeSelfSignupAttendee/:itemId', (req, res)=>{
+route.put('/removeSelfSignupAttendee/:itemId', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
     if (!req.params.itemId) {
         res.json({success: false, message: 'Missing item id'});
         return;
@@ -279,11 +282,16 @@ route.put('/removeSelfSignupAttendee/:itemId', (req, res)=>{
 });
 
 // admin added attendee to sprint review
-route.put('/adminAddAttendee/:itemId', (req, res)=>{
+route.put('/adminAddAttendee/:itemId', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
     if (!req.params.itemId) {
-        res.json({success: false, message: 'Missing item id'});
-        return;
-    } 
+        return res.json({success: false, message: 'Missing item id'});
+    } else if (!('newAttendee' in req.body)) {
+        return res.json({success: false, message: 'Missing newAttendee in request body'});
+    } else if (Array.isArray(req.body.newAttendee)) {
+        return res.json({success: false, message: 'Value of newAttendee should not be array'});
+    } else if (!req.body.newAttendee.name || !req.body.newAttendee.email) {
+        return res.json({success: false, message: 'Name or email cannot be empty'});
+    }
 
     SprintReviewItem.findById(req.params.itemId, (err, item)=>{
         if (err) {
@@ -304,7 +312,7 @@ route.put('/adminAddAttendee/:itemId', (req, res)=>{
 });
 
 // admin remove attendee he/she added before from sprint review
-route.put('/removeAdminAddedAttendee/:itemId', (req, res)=>{
+route.put('/removeAdminAddedAttendee/:itemId', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
     if (!req.params.itemId) {
         res.json({success: false, message: 'Missing item id'});
         return;
