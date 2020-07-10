@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
       return true;
     } else {
       this.localstorageTokenService.removeToken();
+      alert('Jwt token is invalid, try re-login to the app.');
       this.router.navigateByUrl('/login');
       return false;
     }
