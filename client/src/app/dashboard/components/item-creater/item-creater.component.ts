@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, NgForm } from '@angular/forms';
 import { ItemCreatingModel } from '../../models/item-creating-model';
 
 @Component({
@@ -12,6 +12,12 @@ export class ItemCreaterComponent implements OnInit {
   @Output() newItemCreated: EventEmitter<string> = new EventEmitter();
 
   @ViewChild('creationForm') creationForm: ElementRef;
+
+  /** 
+   * Returns true only when submit button is clicked but form is not submitted due to invalid form data,
+   * return false in all other scenarios.
+   **/
+  formSubmitted: boolean = false;
 
   newItem = new ItemCreatingModel();
 
@@ -31,6 +37,8 @@ export class ItemCreaterComponent implements OnInit {
   }
 
   createSprintReview() {
+    this.formSubmitted = true;
+
     if (this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid 
       && this.totalSlotFC.valid &&this.startTimeFC.valid && this.endTimeFC.valid ) {
       this.dashboardService.addSprintReview(this.newItem).subscribe( res => {
@@ -46,7 +54,8 @@ export class ItemCreaterComponent implements OnInit {
 
   resetForm() {
     this.newItem = new ItemCreatingModel();
-    
+    this.formSubmitted = false;
+
     this.titleFC.reset();
     this.descriptionFC.reset();  
     this.organizerFC.reset();  

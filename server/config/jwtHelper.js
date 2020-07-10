@@ -16,7 +16,7 @@ module.exports.verifyJwtToken = (req, res, next) => {
     } else {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(500).send({success: false, message: 'Invalid token'});
+                return res.status(403).send({success: false, message: 'Invalid token'});
             } else {
                 req._id = decoded._id;
                 next();

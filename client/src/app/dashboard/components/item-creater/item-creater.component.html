@@ -19,15 +19,14 @@
       <div class="form-group">
         <label for="startTime">Start Time *</label>
         <input type="datetime-local" name="startTime" class="form-control time-input" [(ngModel)]="newItem.startTime" [formControl]="startTimeFC" required>
-        <mat-error *ngIf="startTimeFC.invalid">{{getStartTimeErrorMessage()}}</mat-error>
-        <!-- [ngClass]="{'error-message-css': creationForm.submitted && startTimeFC.invalid}" -->
+        <mat-error *ngIf="formSubmitted && startTimeFC.invalid" class="datetime-err-msg">{{getStartTimeErrorMessage()}}</mat-error>
       </div>
       <br>
       <!-- End Time -->
       <div class="form-group">
         <label for="endTime">End Time *</label>
         <input type="datetime-local" name="endTime" class="form-control time-input" [(ngModel)]="newItem.endTime" [formControl]="endTimeFC" required>
-        <mat-error *ngIf="endTimeFC.invalid">{{getEndTimeErrorMessage()}}</mat-error>
+        <mat-error *ngIf="formSubmitted && endTimeFC.invalid" class="datetime-err-msg">{{getEndTimeErrorMessage()}}</mat-error>
       </div>
       <br>
       <!-- Organizer -->
