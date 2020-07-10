@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -13,8 +13,8 @@ import { UserService } from 'src/app/log-in/services/user.service';
 export class ItemDetailNoneditmodeComponent implements OnInit {
 
   itemDetail: DetailItemModel = new DetailItemModel();
-  currentUser: CurrentUserModel = new CurrentUserModel();
-
+  
+  @Input() currentUserId: string;
   userSignedUp: boolean;
 
   signupResultMessage: string = '';
@@ -28,14 +28,7 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userService.getCurrentUserInfo().subscribe(res => {
-      if (res.success) {
-        this.currentUser = res.user;
-        this.refreshItemDetail();
-      } else {
-        console.error('Fail to load current user information');
-      }
-    })
+    this.refreshItemDetail();
   }
 
   refreshItemDetail() {
@@ -57,14 +50,14 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
   }
 
   attendeeSignUp() {
-    this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUser._id).subscribe(res => {
+    this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUserId).subscribe(res => {
       alert(res.message);
       this.refreshItemDetail();
     });
   }
 
   attendeeUnregister() {
-    this.dashBoardService.attendeeUnregister(this.itemDetail._id, this.currentUser._id).subscribe(res => {
+    this.dashBoardService.attendeeUnregister(this.itemDetail._id, this.currentUserId).subscribe(res => {
       alert(res.message);
       this.refreshItemDetail();
     });
@@ -72,7 +65,7 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
 
   // determine whether current user has signed up
   private currentUserSignedUp(): boolean {
-    const currentUserId = this.currentUser._id;
+    const currentUserId = this.currentUserId;
     const signedUpUsers = this.itemDetail.selfSignupAttendees;
     for (var i = 0; i < signedUpUsers.length; i++) {
       if (signedUpUsers[i]._id.localeCompare(currentUserId) === 0){

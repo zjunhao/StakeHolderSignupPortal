@@ -3,5 +3,5 @@
     <app-item-detail-editmode></app-item-detail-editmode>
 </ng-container>
 <ng-container *ngIf="!editMode">
-    <app-item-detail-noneditmode></app-item-detail-noneditmode>
+    <app-item-detail-noneditmode [currentUserId]="currentUser._id"></app-item-detail-noneditmode>
 </ng-container>

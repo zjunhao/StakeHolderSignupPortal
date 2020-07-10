@@ -37,11 +37,7 @@ export class ItemListComponent implements OnInit {
 
   navigateToSprintReviewDetail(id: string) {
     const link = ['/itemdetail', id];
-    let navigationExtras: NavigationExtras = {
-      queryParams: { 'editMode': this.editMode }
-    };
-    
-    this.router.navigate(link, navigationExtras);
+    this.router.navigate(link);
   }
 
   deleteSprintReview($event, id:string) {
