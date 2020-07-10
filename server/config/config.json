@@ -4,13 +4,13 @@
         "MONGODB_URI": "mongodb://localhost:27017/stakeholdersignupportal",
         "ACCOUNT_PROMOTION_PASSCODE": "passcode",
         "JWT_SECRET": "IAaI!O3msCjE#j$amV",
-        "JWT_EXP": "15m"
+        "JWT_EXP": "8h"
     },
     "production": {
         "PORT": 80,
         "MONGODB_URI": "mongodb://xxxxx/DB_Name",
         "ACCOUNT_PROMOTION_PASSCODE": "passcode",
         "JWT_SECRET": "IAaI!O3msCjE#j$amV",
-        "JWT_EXP": "15m"
+        "JWT_EXP": "8h"
     }
 }
