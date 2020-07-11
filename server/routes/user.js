@@ -1,5 +1,8 @@
 const express = require('express');
 const passport = require('passport');
+const nodemailer = require('nodemailer');
+const async = require('async');
+const crypto = require('crypto');
 const _ = require('lodash');
 const route = express.Router();
 
@@ -110,6 +113,124 @@ route.put('/removeUserAdmin/:id', jwtHelper.verifyJwtToken, (req, res)=>{
             })
         }
     });
+});
+
+// ----------------------------- password reset ------------------------------------------
+route.post('/sendPasswordResetEmail', (req, res)=>{
+    if (!("passwordResetPageBaseUri" in req.body)) {
+        return res.status(400).json({success: false, message: 'Missing passwordResetPageBaseUri in request body'});
+    }
+    async.waterfall([
+        // generate password reset token
+        function(done) {
+            crypto.randomBytes(20, function(err, buf) {
+                var token = buf.toString('hex');
+                done(err, token);
+            });
+        },
+        // save token and token expire time to user account
+        function(token, done) {
+            User.findOne({ email: req.body.email }, function(err, user) {
+                if (!user) {
+                  return res.json({success: false, message: "Email does not exist"})
+                }
+            
+                user.resetPasswordToken = token;
+                user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+            
+                user.save(function(err) {
+                  done(err, token, user);
+                });
+            });
+        },
+        // send password reset email out
+        function(token, user, done) {
+            const transporter  = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: process.env.SENDGRID_USERNAME,
+                  pass: process.env.SENDGRID_PASSWORD
+                }
+            });
+            const mailOptions = {
+                to: user.email,
+                from: 'verify@stakeholdersignupportal.com',
+                subject: 'Password reset request',
+                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account in stakeholder signup portal.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                     req.body.passwordResetPageBaseUri + '/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            };
+            transporter.sendMail(mailOptions, function(err) {
+                done(err, 'done');
+            });
+        }], 
+        function(err) {
+            if (err) {
+                return res.json({success:false, messsage: err.message});
+            }
+            else {
+                return res.json({success:true, message: 'Password reset email sent!'});
+            }
+        }
+    );
+});
+
+route.put('/resetPassword/:token', (req, res)=>{
+    async.waterfall([
+        // update password
+        function(done) {
+            User.findOne({ email: req.body.email }, (err, user) => {
+                if (err) {
+                    return res.status(500).json({success: false, message: err.message});
+                } else if (!('password' in req.body)) {
+                    return res.status(400).json({success: false, message: 'missing password in request body'});
+                } else if (!user) {
+                    return res.status(400).json({success: false, message: 'email does not exist'});
+                } else if (!user.resetPasswordToken || !user.resetPasswordExpires) {
+                    return res.status(500).json({success: false, message: 'no reset password token or expire time found, try resend password reset email'});
+                } else if (req.params.token.localeCompare(user.resetPasswordToken) !== 0) {
+                    return res.status(400).json({success: false, message: 'token for reset password not correct'});
+                } else if (user.resetPasswordExpires < Date.now()) {
+                    return res.status(500).json({success: false, message: 'password reset token expires, try resend password reset email'});
+                } else {
+                    user.password = req.body.password;
+                    user.resetPasswordToken = null;
+                    user.resetPasswordExpires = null;
+                    user.save((err, updatedUser)=>{
+                        done(err, updatedUser);
+                    })
+                }
+            })
+        },
+        // send out email notice
+        function(user, done) {
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.SENDGRID_USERNAME,
+                    pass: process.env.SENDGRID_PASSWORD
+                }
+            });
+            var mailOptions = {
+                to: user.email,
+                from: 'verify@stakeholdersignupportal.com',
+                subject: 'Your password has been changed',
+                text: 'Hello,\n\n' +
+                  'This is a confirmation that the password for your account ' + user.email + ' in stake holder signup portal has just been changed.\n'
+            };
+            transporter.sendMail(mailOptions, function(err) {
+                done(err);
+            });
+        }], 
+        function(err) {
+            if (err) {
+                return res.status(500).json({success: false, message: err.message});
+            } else {
+                return res.status(200).json({success: true, message: 'Password reset succeed!'});
+            }
+        }
+    );
 });
 
 module.exports = route;

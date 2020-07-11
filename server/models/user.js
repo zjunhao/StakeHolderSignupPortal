@@ -22,7 +22,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         default: 'normal'
     },
-    saltSecret: String
+    saltSecret: String,
+    resetPasswordToken: String,
+    // Expires in number of milliseconds since January 1, 1970 00:00:00 UTC.
+    resetPasswordExpires: Number,
 });
 
 // validate email address
