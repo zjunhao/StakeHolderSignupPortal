@@ -119,6 +119,8 @@ route.put('/removeUserAdmin/:id', jwtHelper.verifyJwtToken, (req, res)=>{
 route.post('/sendPasswordResetEmail', (req, res)=>{
     if (!("passwordResetPageBaseUri" in req.body)) {
         return res.status(400).json({success: false, message: 'Missing passwordResetPageBaseUri in request body'});
+    } else if (!("email" in req.body)) {
+        return res.status(400).json({success: false, message: 'Missing email address in request body'});
     }
     async.waterfall([
         // generate password reset token
@@ -132,7 +134,7 @@ route.post('/sendPasswordResetEmail', (req, res)=>{
         function(token, done) {
             User.findOne({ email: req.body.email }, function(err, user) {
                 if (!user) {
-                  return res.json({success: false, message: "Email does not exist"})
+                  return res.status(400).json({success: false, message: "Email does not exist"})
                 }
             
                 user.resetPasswordToken = token;
@@ -167,10 +169,10 @@ route.post('/sendPasswordResetEmail', (req, res)=>{
         }], 
         function(err) {
             if (err) {
-                return res.json({success:false, messsage: err.message});
+                return res.status(500).json({success:false, messsage: err.message});
             }
             else {
-                return res.json({success:true, message: 'Password reset email sent!'});
+                return res.status(200).json({success:true, message: 'Password reset email sent!'});
             }
         }
     );
@@ -180,19 +182,14 @@ route.put('/resetPassword/:token', (req, res)=>{
     async.waterfall([
         // update password
         function(done) {
-            User.findOne({ email: req.body.email }, (err, user) => {
+            const query = {resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() }};
+            User.findOne( query, (err, user) => {
                 if (err) {
                     return res.status(500).json({success: false, message: err.message});
                 } else if (!('password' in req.body)) {
-                    return res.status(400).json({success: false, message: 'missing password in request body'});
+                    return res.status(400).json({success: false, message: 'Missing password in request body'});
                 } else if (!user) {
-                    return res.status(400).json({success: false, message: 'email does not exist'});
-                } else if (!user.resetPasswordToken || !user.resetPasswordExpires) {
-                    return res.status(500).json({success: false, message: 'no reset password token or expire time found, try resend password reset email'});
-                } else if (req.params.token.localeCompare(user.resetPasswordToken) !== 0) {
-                    return res.status(400).json({success: false, message: 'token for reset password not correct'});
-                } else if (user.resetPasswordExpires < Date.now()) {
-                    return res.status(500).json({success: false, message: 'password reset token expires, try resend password reset email'});
+                    return res.status(400).json({success: false, message: 'Password reset token is invalid or has expired, please try resend password reset email.'});
                 } else {
                     user.password = req.body.password;
                     user.resetPasswordToken = null;

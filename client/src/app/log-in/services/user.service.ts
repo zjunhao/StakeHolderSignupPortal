@@ -90,6 +90,35 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
+  /** Send email to user for resetting password  */
+  sendPasswordResetEmail(email: string) {
+    const url = `${this.baseUrl}/user/sendPasswordResetEmail`;
+
+    const reqHeader = new HttpHeaders();
+    reqHeader.append('Content-Type', 'application/json');
+    reqHeader.append('NoAuth', 'True');
+    
+    const reqBody = {
+      email: email,
+      // TODO: put this in config file
+      passwordResetPageBaseUri: 'http://localhost:4200/reset_password'
+    }
+
+    return this.http
+      .post(url, reqBody, {headers: reqHeader})
+      .pipe(catchError(this.handleError));
+  }
+
+  resetPassword(pwdResetToken: string, newPwd: string) {
+    const url = `${this.baseUrl}/user/resetPassword/`+ pwdResetToken;
+    
+    const reqBody = {password: newPwd};
+
+    return this.http
+      .put(url, reqBody)
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(res: HttpErrorResponse | any) {
     console.error(res.error || res.body.error);
     return observableThrowError(res.error || 'Server error');
