@@ -1,20 +1,23 @@
-#login-error {
-    color: red;
-    height: 30px;
-}
 #login-page-container {
     background-image: url('../../../../assets/images/loginbackground2.png');
     height: 100vh;
     padding-top: 160px;
-
+    padding-left: 20px;
+    padding-right: 20px;   
 }
 #login {
     border: 1px solid #9C9C9C;
     background-color: #D9D9D9;
     max-width: 600px;
-    height: 340px;
+    height: 360px;
     padding: 20px;
 }
-// .helper-link {
-//     // margin-left: 60px;
-// }
+#login-error {
+    color: red;
+    height: 30px;
+}
+#helper-link {
+    margin-top: 10px;
+    padding: 0 120px;
+}
+    

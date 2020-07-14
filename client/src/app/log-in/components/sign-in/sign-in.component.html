@@ -1,26 +1,24 @@
 <div id="login-page-container">
   <div id="login" class="container">
-    <div class="row justify-content-center align-items-center">
-      <div class="col-md-8">
-          <form (submit)="signIn()">
-              <h2 class="text-center text-info">Login to Stakeholder Signup Portal</h2>
-              <div class="form-group">
-                <label for="email" class="text-info">Email</label>
-                <br>
-                <input id="email" name="email" class="form-control" [(ngModel)]="loginInfo.email" required>
-              </div>
-              <div class="form-group">
-                <label for="pwd" class="text-info">Password</label>
-                <br>
-                <input id="pwd" name="pwd" class="form-control" type="password" [(ngModel)]="loginInfo.password" required>
-              </div>
-              <div id="login-error">{{loginErrorText}}</div>
-          
-              <button type ="submit" class="btn btn-info btn-md col-md-12">Log In</button>
-            </form>
-            <a routerLink="/signup" class="text-info helper-link">Sign Up</a>
-            <a routerLink="/begin_password_reset" class="text-info helper-link">Forgot Password?</a>
+    <form (submit)="signIn()">
+        <h2 class="text-center text-info">Login to Stakeholder Signup Portal</h2>
+        <div class="form-group">
+          <label for="email" class="text-info">Email</label>
+          <br>
+          <input id="email" name="email" class="form-control" [(ngModel)]="loginInfo.email" required>
+        </div>
+        <div class="form-group">
+          <label for="pwd" class="text-info">Password</label>
+          <br>
+          <input id="pwd" name="pwd" class="form-control" type="password" [(ngModel)]="loginInfo.password" required>
+        </div>
+        <div id="login-error">{{loginErrorText}}</div>
+    
+        <button type ="submit" class="btn btn-info btn-md col-md-12">Log In</button>
+      </form>
+      <div id="helper-link">
+        <a routerLink="/signup" class="text-info float-left">Sign Up</a>
+        <a routerLink="/begin_password_reset" class="text-info float-right">Forgot Password?</a>
       </div>
-    </div>
   </div>
 </div>
