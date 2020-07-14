@@ -51,7 +51,12 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
 
   attendeeSignUp() {
     this.dashBoardService.attendeeSignUp(this.itemDetail._id, this.currentUserId).subscribe(res => {
-      alert(res.message);
+      if (res.success) {
+        const succeedMsg = "Sign up succeed. You will receive a email invite from event organizer, please allow a couple days for it to happen.";
+        alert(succeedMsg);
+      } else {
+        alert(res.message);
+      }
       this.refreshItemDetail();
     });
   }

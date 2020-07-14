@@ -19,6 +19,9 @@ export class ItemDetailEditmodeComponent implements OnInit {
   // original item detail without user making any changes
   itemDetailOriginal: DetailItemModel = new DetailItemModel();
 
+  // A string attaching all attendees emails.
+  emailRecipients: string = '';
+
   // variables related to admin adding attendee
   newAdminAttendee: AdminAddAttendeeModel = new AdminAddAttendeeModel();
   nameFC = new FormControl('', [Validators.required]);
@@ -117,6 +120,21 @@ export class ItemDetailEditmodeComponent implements OnInit {
     this.addAttendeeForm.nativeElement.reset();
   }
 
+  generateEmailRecipients() {
+    console.log('called');
+    let res = '';
+    
+    this.itemDetail.selfSignupAttendees.forEach(attendee => {
+      res += (attendee.email + '; ');
+    });
+
+    this.itemDetail.administratorAddedAttendees.forEach(attendee => {
+      res += (attendee.email + '; ');
+    });
+
+    this.emailRecipients = res;
+  }
+
   getNameErrorMessage() {
     if (this.nameFC.hasError('required')) 
       return 'Name cannot be empty';
@@ -134,7 +152,7 @@ export class ItemDetailEditmodeComponent implements OnInit {
     }
   }
 
-  // event handler for updating sprint review details
+  //------------------ event handler for updating sprint review details ------------------------------------------------
   onTotalSlotsUpdate() {
     if (this.itemDetailOriginal.totalSlots === this.itemDetail.totalSlots) {
       return;
