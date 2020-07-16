@@ -44,13 +44,13 @@ route.post('/getFilteredItemList', [jwtHelper.verifyJwtToken], (req, res) => {
             return res.status(400).json({success: false, message: 'minTime must be a number'});
     if ('maxTime' in req.body)
         if (Number.isInteger(req.body.maxTime))
-            query.start_time = { $lte: req.body.maxTime };
+            query.end_time = { $lte: req.body.maxTime };
         else 
             return res.status(400).json({success: false, message: 'maxTime must be a number'});
     if ('organizedBy' in req.body && req.body.organizedBy) { // organizedBy in request body and its value is not null or empty
         query.event_organizer = req.body.organizedBy;
     }
-    
+
     SprintReviewItem.find(query, function(err, itemList){
         if (err) {
             res.status(500).json({success: false, message: err.message})

@@ -1,1 +1,15 @@
-<p>filtered-item-list works!</p>
+<form (submit)="searchSprintReviews()" >
+    <span>Starts between</span>
+    <input name="minTime" type="datetime-local"  [(ngModel)]="filterCondition.minTime">
+    <span>and</span>
+    <input name="maxTime" type="datetime-local"  [(ngModel)]="filterCondition.maxTime">
+    <span>Organized by</span>
+    <input name="organizedBy"  [(ngModel)]="filterCondition.organizedBy">
+
+    <button type="submit" class="btn btn-sm btn-info" >Find</button>
+</form>
+<app-item-display [editMode]='editMode' 
+                [listItems]='listItems' 
+                (delete)='deleteSprintReview($event)'
+                (navigate)='navigateToSprintReviewDetail($event)'>
+</app-item-display>
