@@ -37,6 +37,7 @@ export class ItemCreaterComponent implements OnInit {
   }
 
   createSprintReview() {
+    console.log(this.newItem.startTime);
     this.formSubmitted = true;
 
     if (this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid 
@@ -66,7 +67,7 @@ export class ItemCreaterComponent implements OnInit {
     this.creationForm.nativeElement.reset();
   }
 
-  // error messages for each form field
+  //-------------------- error messages for each form field -----------------------------
   getTitleErrorMessage() {
     return 'Title cannot be empty';
   }

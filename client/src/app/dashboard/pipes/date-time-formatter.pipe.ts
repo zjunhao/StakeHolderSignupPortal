@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DateTimeFormatterPipe implements PipeTransform {
 
-  // example dateTimeStr: 2020-08-12T16:23
+  // 2020-08-12T16:23 (string) -> 08/12/2020 16:23 (string)
   transform(dateTimeStr: string): string {
     var regexParser = /(\d+)-(\d\d)-(\d\d)T(\d\d):(\d\d)/g
     var match = regexParser.exec(dateTimeStr);

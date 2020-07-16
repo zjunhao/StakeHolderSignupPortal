@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
-import { ListItemModel } from '../../models/item-list-response-model';
+import { ApiListItemModel, ListItemModel } from '../../models/item-list-response-model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
@@ -27,12 +27,14 @@ export class ItemListComponent implements OnInit {
   }
 
   refreshList() {
-    this.dashBoardService.getSprintReviewList().subscribe(res => {
-      if (res.success) {
-        this.listItems = res.itemList;
+    this.dashBoardService.getSprintReviewList().subscribe(
+      listItems => {
+        this.listItems = listItems;
+      }, 
+      err => {
+        // TODO: maybe display error messsage if retrieve sprint review list fails
       }
-      // TODO: maybe display error messsage if retrieve sprint review list fails
-    });
+    );
   }
 
   navigateToSprintReviewDetail(id: string) {

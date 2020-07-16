@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
-import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
+import { ApiDetailItemModel, DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 import { FormControl, Validators } from '@angular/forms';
 import { AdminAddAttendeeModel } from 'src/app/dashboard/models/admin-add-attendee-model';
@@ -49,18 +49,20 @@ export class ItemDetailEditmodeComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         const id = params['id'];
-        this.dashBoardService.getSprintReview(id).subscribe(res => {
-          if(res.success) {
-            this.itemDetail = res.itemDetail;
+        this.dashBoardService.getSprintReview(id).subscribe(
+          itemDetail => {
+            this.itemDetail = itemDetail;
             // deep copy every field into iteDetailOriginal
             this.itemDetailOriginal = {
               ...this.itemDetail, 
               selfSignupAttendees: {...this.itemDetail.selfSignupAttendees},
               administratorAddedAttendees: {...this.itemDetail.administratorAddedAttendees},
             };
+          },
+          err => {
+            // TODO: notice user when get item detail fails
           }
-          // TODO: notice user when get item detail fails
-        });
+        );
       } 
     });
   }

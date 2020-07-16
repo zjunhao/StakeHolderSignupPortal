@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
+import { ApiDetailItemModel, DetailItemModel } from 'src/app/dashboard/models/item-detail-response-model';
 import { DashboardService } from 'src/app/dashboard/services/dashboard.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { CurrentUserModel } from 'src/app/log-in/models/get-current-user-response-model';
@@ -37,14 +37,15 @@ export class ItemDetailNoneditmodeComponent implements OnInit {
     this.route.params.forEach((params: Params) => {
       if (params['id'] !== undefined) {
         const id = params['id'];
-        this.dashBoardService.getSprintReview(id).subscribe(res => {
-          if (res.success) {
-            this.itemDetail = res.itemDetail;
+        this.dashBoardService.getSprintReview(id).subscribe(
+          itemDetail => {
+            this.itemDetail = itemDetail;
             this.userSignedUp = this.currentUserSignedUp();
-          } else {
+          },
+          err => {
             console.error('Fail to load sprint review detail');
           }
-        });
+        );
       } 
     });
   }

@@ -1,8 +1,12 @@
 /** Model for item shown on item list */
-export class ItemListResponseModel {
-    success: boolean;
-    message: string;
-    itemList?: ListItemModel[];
+export class ApiListItemModel {
+    _id: string;
+    title: string;
+    startTime: number;
+    endTime: number;
+    remainingSlots: number;
+    description: string;
+    organizer: string;
 }
 
 export class ListItemModel {

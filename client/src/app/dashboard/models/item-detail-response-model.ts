@@ -1,10 +1,18 @@
 /** 
  * Model for sprint review detail retrived from server.
  */
-export class ItemDetailResponseModel {
-    success: boolean;
-    message: string;
-    itemDetail?: DetailItemModel;
+
+export class ApiDetailItemModel {
+    _id: string;
+    title: string;
+    totalSlots: number;
+    organizer: string;
+    startTime: number;
+    endTime: number;
+    description: string;
+    selfSignupAttendees?: UserModel[];
+    administratorAddedAttendees?: NameEmailModel[];
+    meetingLink?: string; 
 }
 
 export class DetailItemModel {

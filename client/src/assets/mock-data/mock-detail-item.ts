@@ -1,12 +1,12 @@
-import { DetailItemModel } from '../../app/dashboard/models/item-detail-response-model'
+import { ApiDetailItemModel } from '../../app/dashboard/models/item-detail-response-model'
 
-export const DETAILITEM: DetailItemModel = {
+export const DETAILITEM: ApiDetailItemModel = {
     _id: '3',
     title: 'Sprint Review 3.2',
     totalSlots: 10,
     organizer: 'Tom Green',
-    startTime: '2020-06-15T14:00',
-    endTime: '2020-06-15T14:45',
+    startTime: 123456789,
+    endTime: 123456789,
     description: 'Demo on notes functionality',
     selfSignupAttendees:[],
     administratorAddedAttendees: [],

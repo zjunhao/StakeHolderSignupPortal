@@ -12,7 +12,7 @@ route.get('/getItemList', [jwtHelper.verifyJwtToken], (req, res) => {
     // TODO: get list group by group
     SprintReviewItem.find(function(err, itemList){
         if (err) {
-            res.json({success: false, message: err.message})
+            res.status(500).json({success: false, message: err.message})
         } else {
             var trimItemList = [];
             itemList.forEach(item => {
@@ -27,22 +27,22 @@ route.get('/getItemList', [jwtHelper.verifyJwtToken], (req, res) => {
                 }
                 trimItemList.push(trimItem);
             })
-            trimItemList.sort((a, b) => (b.startTime.localeCompare(a.startTime)));
-            res.json({success: true, message: 'Sprint review list retrieved successfully', itemList: trimItemList});
+            trimItemList.sort((a, b) => (b.startTime - a.startTime));
+            res.status(200).json(trimItemList);
         }
     });
 });
 
 // get all detail about a specific sprint review
 route.get('/getItem/:id', [jwtHelper.verifyJwtToken], (req, res) => {
-    SprintReviewItem.findById(req.params.id, function(err, itemDetail){
+    SprintReviewItem.findById(req.params.id, function(err, itemDetailRaw){
         if (err) { 
-            res.json({success: false, message: err.message});
-        } else if (!itemDetail) {
-            res.json({success: false, message: 'Cannot find sprint review using the provided id'});
+            res.status(500).json({success: false, message: err.message});
+        } else if (!itemDetailRaw) {
+            res.status(400).json({success: false, message: 'Cannot find sprint review using the provided id'});
         } else {
             // transform self_sign_up_attendees_id array to self_sign_up_attendees_info array and send it with other item detail info back
-            const query = {'_id': {$in: itemDetail.self_signup_attendees_id}};
+            const query = {'_id': {$in: itemDetailRaw.self_signup_attendees_id}};
             User.find(query, (err, attendeesInfoRaw)=>{
                 if (err) {
                     res.json({success: false, message: err.message});
@@ -58,20 +58,20 @@ route.get('/getItem/:id', [jwtHelper.verifyJwtToken], (req, res) => {
                         attendeesInfo.push(attendeeInfo);
                     });
 
-                    const itemDetailWithAttendeesInfo = {
-                        _id: itemDetail._id,
-                        title: itemDetail.title,
-                        totalSlots: itemDetail.total_slots,
-                        organizer: itemDetail.event_organizer,
-                        startTime: itemDetail.start_time,
-                        endTime: itemDetail.end_time,
-                        description: itemDetail.short_description,
+                    const itemDetail = {
+                        _id: itemDetailRaw._id,
+                        title: itemDetailRaw.title,
+                        totalSlots: itemDetailRaw.total_slots,
+                        organizer: itemDetailRaw.event_organizer,
+                        startTime: itemDetailRaw.start_time,
+                        endTime: itemDetailRaw.end_time,
+                        description: itemDetailRaw.short_description,
                         selfSignupAttendees: attendeesInfo,
-                        administratorAddedAttendees: itemDetail.administrator_added_attendees,
-                        meetingLink: itemDetail.meeting_link
+                        administratorAddedAttendees: itemDetailRaw.administrator_added_attendees,
+                        meetingLink: itemDetailRaw.meeting_link
                     };
         
-                    res.json({success: true, message: 'Sprint review detail retrieved successfully', itemDetail: itemDetailWithAttendeesInfo});
+                    res.status(200).json(itemDetail);
                 }
             })
         }
@@ -145,6 +145,10 @@ route.put('/attendeeUnregister/:itemId', [jwtHelper.verifyJwtToken], (req, res)=
 // --------------------------------------------- api that only admin can call ------------------------------------
 // create a new sprint review
 route.post('/addItem', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
+    if (!Number.isInteger(req.body.startTime) || !Number.isInteger(req.body.endTime)) {
+        return res.json({success: false, message: 'Start time and end time must be an Integer.'})
+    }
+
     var newItem = new SprintReviewItem({
         title: req.body.title,
         total_slots: req.body.totalSlots,
@@ -153,7 +157,7 @@ route.post('/addItem', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserA
         start_time: req.body.startTime,
         end_time: req.body.endTime
     });
-    
+
     if (req.body.meetingLink) 
         newItem.meeting_link = req.body.meetingLink;
 
@@ -198,8 +202,14 @@ route.put('/updateItem/:id',  [jwtHelper.verifyJwtToken, userIdentityHelper.veri
         }
     }
 
+    // return error if trying to update more than one field
     if (Object.keys(req.body).length !== 1) {
         return res.json({success: false, message: 'Only 1 field is allowed to update at one request'});
+    }
+    // return error if trying to update startTime/endTime but the value is not a number
+    if (    (('startTime' in req.body) && !Number.isInteger(req.body.startTime)) ||
+            (('endTime' in req.body) && !Number.isInteger(req.body.endTime))    ) {
+        return res.json({success: false, message: 'Start time and end time must be an Integer.'})
     }
 
     var condition = {_id: req.params.id};

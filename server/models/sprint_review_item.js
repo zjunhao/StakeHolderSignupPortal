@@ -27,14 +27,14 @@ const SprintReviewItemSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    // what time this sprint review starts
+    // what time this sprint review starts represented in UNIX timestamp (Unique representation of some moment in history)
     start_time: {
-        type: String,
+        type: Number,
         required: true
     },
-    // what time this sprint review ends
+    // what time this sprint review ends represented in UNIX timestamp
     end_time: {
-        type: String,
+        type: Number,
         required: true
     },
     // short description about this sprint review
