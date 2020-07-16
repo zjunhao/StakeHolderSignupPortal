@@ -1,27 +1,8 @@
-<h2 class="text-info text-center">Upcomming Sprint Reviews</h2>
-<table class="table table-hover table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Short Description</th>
-      <th>Organizer</th>
-      <th>Time</th>
-      <th>Avaliable Slots</th>
-      <th *ngIf="editMode">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let listItem of listItems">
-      <tr (click)='navigateToSprintReviewDetail(listItem._id)'>
-        <td>{{listItem.title}}</td>
-        <td>{{listItem.description}}</td>
-        <td>{{listItem.organizer}}</td>
-        <td>{{listItem.startTime | dateTimeFormatter}} - {{listItem.endTime | dateTimeFormatter}}</td>
-        <td>{{listItem.remainingSlots}}</td>
-        <td *ngIf="editMode">
-          <button class="btn btn-sm btn-outline-danger" (click)='deleteSprintReview($event, listItem._id)'>Delete</button>
-        </td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Upcomming Sprint Reviews">
+    <app-upcomming-item-list [editMode]='editMode'></app-upcomming-item-list>
+  </mat-tab>
+  <mat-tab label="Filtered Sprint Reviews">
+    <app-filtered-item-list [editMode]='editMode'></app-filtered-item-list>
+  </mat-tab>
+</mat-tab-group>

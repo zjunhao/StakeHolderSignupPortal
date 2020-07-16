@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
@@ -24,9 +25,12 @@ import { ItemDetailNoneditmodeComponent } from './components/item-detail/item-de
 import { HeaderBarComponent } from './components/header-bar/header-bar.component';
 import { DateTimeFormatterPipe } from './pipes/date-time-formatter.pipe';
 import { SharedModule } from '../shared/shared.module';
+import { UpcommingItemListComponent } from './components/item-list/upcomming-item-list/upcomming-item-list.component';
+import { FilteredItemListComponent } from './components/item-list/filtered-item-list/filtered-item-list.component';
+import { ItemDisplayComponent } from './components/item-list/item-display/item-display.component';
 
 @NgModule({
-  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent, ItemDetailEditmodeComponent, ItemDetailNoneditmodeComponent, HeaderBarComponent, DateTimeFormatterPipe],
+  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent, ItemDetailEditmodeComponent, ItemDetailNoneditmodeComponent, HeaderBarComponent, DateTimeFormatterPipe, UpcommingItemListComponent, FilteredItemListComponent, ItemDisplayComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -43,6 +47,7 @@ import { SharedModule } from '../shared/shared.module';
     MatMenuModule,
     MatTooltipModule,
     MatDialogModule,
+    MatTabsModule,
     ReactiveFormsModule,
     RouterModule,
     SharedModule
