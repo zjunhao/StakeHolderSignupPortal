@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, filter } from 'rxjs/operators';
 import { Observable, throwError as observableThrowError } from 'rxjs';
 import { ListItemModel, ApiListItemModel } from '../models/item-list-response-model';
 import { ApiDetailItemModel, DetailItemModel } from '../models/item-detail-response-model';
@@ -8,6 +8,7 @@ import { ItemCreatingModel } from '../models/item-creating-model';
 import { SuccessMessageResponseModel } from 'src/app/shared/models/success-message-response-model';
 import { AdminAddAttendeeModel } from '../models/admin-add-attendee-model';
 import { DatetimeFormattingService } from './datetime-formatting.service';
+import { ItemListQueryModel } from '../models/item-list-query-model';
 
 
 @Injectable({
@@ -29,9 +30,29 @@ export class DashboardService {
     return this.http
       .get<ApiListItemModel[]>(url)
       .pipe(
-        // tap(listItems => console.log(listItems)),
         map(listItems => this.toClientListItems(listItems)), 
+        catchError(this.handleError)
+      );
+  }
+
+  // get a list of sprint review based on filter
+  getFilteredSprintReviewList(filterCondition: ItemListQueryModel) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+
+    const url = `${this.baseUrl}/sprintreview/getFilteredItemList`;
+
+    // strip out null or empty key value pairs from filterCondition and convert time from string to UNIX timestamp
+    let refinedFilterCondition = {};
+    if (filterCondition.maxTime) refinedFilterCondition['maxTime'] = this.dateTimeFormattingService.toUNIXTimestamp(filterCondition.maxTime);
+    if (filterCondition.minTime) refinedFilterCondition['minTime'] = this.dateTimeFormattingService.toUNIXTimestamp(filterCondition.minTime);
+    if (filterCondition.organizedBy) refinedFilterCondition['organizedBy'] = filterCondition.organizedBy;
+
+    return this.http
+      .post<ApiListItemModel[]>(url, refinedFilterCondition, {headers: headers})
+      .pipe(
         tap(listItems => console.log(listItems)),
+        map(listItems => this.toClientListItems(listItems)), 
         catchError(this.handleError)
       );
   }

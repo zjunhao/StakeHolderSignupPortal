@@ -34,6 +34,46 @@ route.get('/getItemList', [jwtHelper.verifyJwtToken], (req, res) => {
     });
 });
 
+// get a list of sprint reviews filtered by conditions in request body
+route.post('/getFilteredItemList', [jwtHelper.verifyJwtToken], (req, res) => {
+    const query = {};
+    if ('minTime' in req.body)
+        if (Number.isInteger(req.body.minTime)) 
+            query.start_time = { $gte: req.body.minTime };
+        else 
+            return res.status(400).json({success: false, message: 'minTime must be a number'});
+    if ('maxTime' in req.body)
+        if (Number.isInteger(req.body.maxTime))
+            query.start_time = { $lte: req.body.maxTime };
+        else 
+            return res.status(400).json({success: false, message: 'maxTime must be a number'});
+    if ('organizedBy' in req.body && req.body.organizedBy) { // organizedBy in request body and its value is not null or empty
+        query.event_organizer = req.body.organizedBy;
+    }
+    
+    SprintReviewItem.find(query, function(err, itemList){
+        if (err) {
+            res.status(500).json({success: false, message: err.message})
+        } else {
+            var trimItemList = [];
+            itemList.forEach(item => {
+                var trimItem = {
+                    _id: item._id,
+                    title: item.title,
+                    startTime: item.start_time,
+                    endTime: item.end_time,
+                    remainingSlots: item.total_slots - item.self_signup_attendees_id.length,
+                    description: item.short_description,
+                    organizer: item.event_organizer
+                }
+                trimItemList.push(trimItem);
+            })
+            trimItemList.sort((a, b) => (b.startTime - a.startTime));
+            res.status(200).json(trimItemList);
+        }
+    });
+});
+
 // get all detail about a specific sprint review
 route.get('/getItem/:id', [jwtHelper.verifyJwtToken], (req, res) => {
     SprintReviewItem.findById(req.params.id, function(err, itemDetailRaw){
