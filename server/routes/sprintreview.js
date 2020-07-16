@@ -9,8 +9,9 @@ const User = require('../models/user');
 // --------------------------------- api that all users can call -----------------------------------------
 // get a list of all sprint reviews
 route.get('/getItemList', [jwtHelper.verifyJwtToken], (req, res) => {
-    // TODO: get list group by group
-    SprintReviewItem.find(function(err, itemList){
+    const dateNow = Date.now();
+    const query = {start_time: { $gt: dateNow }};
+    SprintReviewItem.find(query, function(err, itemList){
         if (err) {
             res.status(500).json({success: false, message: err.message})
         } else {
