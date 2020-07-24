@@ -1,22 +1,28 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2 col-sm-12">
-            <div class="text-center">
+        <div class="col-md-3 col-sm-12 text-center">
+            <form (submit)="searchSprintReviews()" >
+                <label>Starts between</label>
+                <br>
+                <input name="minTime" type="datetime-local"  [(ngModel)]="filterCondition.minTime">
+                <br>
+                <label>and</label>
+                <br>
+                <input name="maxTime" type="datetime-local"  [(ngModel)]="filterCondition.maxTime">
+                <br>
+                <label>Organized by</label>
+                <br>
+                <input name="organizedBy"  [(ngModel)]="filterCondition.organizedBy">
+                <br>
+            
+                <button type="submit" class="btn btn-md btn-info">Find</button>
+                <br>
                 <button routerLink="/dashboard" id="back-btn" class="btn btn-md btn-outline-secondary">Back To Dashboard</button>
-            </div>
+            </form>
         </div>
         <div class="col-md-8 col-sm-12">
             <h2 class="text-info text-center" id="title">Filtering Sprint Review</h2>
-            <form (submit)="searchSprintReviews()" >
-                <span>Starts between</span>
-                <input name="minTime" type="datetime-local"  [(ngModel)]="filterCondition.minTime">
-                <span>and</span>
-                <input name="maxTime" type="datetime-local"  [(ngModel)]="filterCondition.maxTime">
-                <span>Organized by</span>
-                <input name="organizedBy"  [(ngModel)]="filterCondition.organizedBy">
-            
-                <button type="submit" class="btn btn-sm btn-info" >Find</button>
-            </form>
+           
             <app-item-list [editMode]='editMode' 
                             [listItems]='listItems' 
                             (delete)='deleteSprintReview($event)'

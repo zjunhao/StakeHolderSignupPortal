@@ -2,14 +2,25 @@
     margin-top: 5px;
 }
 
-#back-btn {
+form {
+    margin-top: 20px;
+}
+
+form > button {
+    margin-right: 5px;
     margin-top: 10px;
+    width: 200px;
+}
+
+form > label {
+    font-size: medium;
 }
 
 form > input {
-    margin: 5px;
-}
-
-form > span {
+    width: 250px;
+    height: 40px;
+    padding-left: 8px;
+    padding-right: 8px;
     font-size: medium;
+    margin-bottom: 10px;
 }

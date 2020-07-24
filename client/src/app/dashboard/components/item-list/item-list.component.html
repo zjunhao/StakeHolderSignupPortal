@@ -12,11 +12,11 @@
     <tbody>
       <ng-container *ngFor="let listItem of listItems">
         <tr (click)='onListItemClick(listItem._id)'>
-          <td>{{listItem.title}}</td>
-          <td>{{listItem.description}}</td>
-          <td>{{listItem.organizer}}</td>
-          <td>{{listItem.startTime | dateTimeFormatter}} - {{listItem.endTime | dateTimeFormatter}}</td>
-          <td>{{listItem.remainingSlots}}</td>
+          <td class="td-text">{{listItem.title}}</td>
+          <td class="td-text">{{listItem.description}}</td>
+          <td class="td-text">{{listItem.organizer}}</td>
+          <td class="td-text">{{listItem.startTime | dateTimeFormatter}} - {{listItem.endTime | dateTimeFormatter}}</td>
+          <td class="td-text">{{listItem.remainingSlots}}</td>
           <td *ngIf="editMode">
             <button class="btn btn-sm btn-outline-danger" (click)='onListItemDelete($event, listItem._id)'>Delete</button>
           </td>
