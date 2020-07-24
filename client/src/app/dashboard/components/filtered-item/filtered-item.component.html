@@ -4,11 +4,11 @@
     <div class="row">
         <div class="col-md-3 col-sm-12 text-center">
             <form (submit)="searchSprintReviews()" >
-                <label>Starts between</label>
+                <label>Sprint review starts later than</label>
                 <br>
                 <input name="minTime" type="datetime-local"  [(ngModel)]="filterCondition.minTime">
                 <br>
-                <label>and</label>
+                <label>before</label>
                 <br>
                 <input name="maxTime" type="datetime-local"  [(ngModel)]="filterCondition.maxTime">
                 <br>
