@@ -11,6 +11,7 @@ import { PasswordResetEmailSentComponent } from './log-in/components/reset-passw
 import { ResetPasswordSucceedComponent } from './log-in/components/reset-password/reset-password-succeed/reset-password-succeed.component';
 import { BeginPasswordResetComponent } from './log-in/components/reset-password/begin-password-reset/begin-password-reset.component';
 import { ResetPasswordComponent } from './log-in/components/reset-password/reset-password/reset-password.component';
+import { FilteredItemComponent } from './dashboard/components/filtered-item/filtered-item.component';
 
 
 const routes: Routes = [
@@ -33,9 +34,14 @@ const routes: Routes = [
   // set user as administrator
   { path:'accountpromote', component: PromoteUserComponent, canActivate:[AuthGuard] },
 
-  // sprint review board and detail board
+  // upcomming sprint review dashboard
   { path:'dashboard', component:DashboardComponent, canActivate:[AuthGuard] },
+
+  // sprint detail board
   { path:'itemdetail/:id', component:ItemDetailComponent, canActivate:[AuthGuard] },
+
+  // filtered sprint review board
+  { path:'itemfilter', component: FilteredItemComponent, canActivate:[AuthGuard] },
 ];
 
 @NgModule({
