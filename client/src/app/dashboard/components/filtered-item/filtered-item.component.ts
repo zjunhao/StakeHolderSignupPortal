@@ -21,6 +21,9 @@ export class FilteredItemComponent implements OnInit {
 
   filterCondition: ItemListQueryModel = new ItemListQueryModel();
 
+  errorMessage: string;
+  itemListEmptyMessage: string;
+
   constructor(
     private dashboardService: DashboardService,
     private userService: UserService,
@@ -39,16 +42,26 @@ export class FilteredItemComponent implements OnInit {
   }
 
   searchSprintReviews() {
-    if (this.filterCondition.maxTime || this.filterCondition.minTime || this.filterCondition.organizedBy) {
-      this.dashboardService.getFilteredSprintReviewList(this.filterCondition).subscribe(
-        listItems => {
-          this.listItems = listItems;
-        },
-        err => {
-  
-        }
-      )
+    if (!this.filterCondition.maxTime && !this.filterCondition.minTime && !this.filterCondition.organizedBy) {
+      this.errorMessage = "Conditions cannot all be empty."
+      return;
     }
+
+    this.dashboardService.getFilteredSprintReviewList(this.filterCondition).subscribe(
+      listItems => {
+        this.listItems = listItems;
+        this.errorMessage = "";
+        if (listItems.length === 0) {
+          this.itemListEmptyMessage = "No sprint review matches your search."
+        } else {
+          this.itemListEmptyMessage = "";
+        }
+      },
+      err => {
+        this.errorMessage = err.message;
+      }
+    );
+
   }
 
   navigateToSprintReviewDetail($event) {

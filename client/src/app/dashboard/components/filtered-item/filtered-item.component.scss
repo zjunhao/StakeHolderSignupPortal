@@ -24,3 +24,13 @@ form > input {
     font-size: medium;
     margin-bottom: 10px;
 }
+
+#emptystate-message {
+    font-size: large;
+}
+
+#error-message {
+    color: red;
+    font-size: medium;
+    margin-top: 8px;
+}
