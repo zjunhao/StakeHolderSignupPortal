@@ -51,7 +51,6 @@ export class DashboardService {
     return this.http
       .post<ApiListItemModel[]>(url, refinedFilterCondition, {headers: headers})
       .pipe(
-        tap(listItems => console.log(listItems)),
         map(listItems => this.toClientListItems(listItems)), 
         catchError(this.handleError)
       );
@@ -190,7 +189,6 @@ export class DashboardService {
   private toClientListItems(apiItems: ApiListItemModel[]): ListItemModel[] {
     let items: ListItemModel[] = [];
     apiItems.forEach(apiItem => {
-      console.log(apiItem);
       let item = {
         _id: apiItem._id,
         title: apiItem.title,

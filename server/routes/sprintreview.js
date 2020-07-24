@@ -37,18 +37,26 @@ route.get('/getItemList', [jwtHelper.verifyJwtToken], (req, res) => {
 // get a list of sprint reviews filtered by conditions in request body
 route.post('/getFilteredItemList', [jwtHelper.verifyJwtToken], (req, res) => {
     const query = {};
-    if ('minTime' in req.body)
-        if (Number.isInteger(req.body.minTime)) 
-            query.start_time = { $gte: req.body.minTime };
+    const minTime = req.body.minTime;
+    const maxTime = req.body.maxTime;
+    const organizedBy = req.body.organizedBy;
+
+    if (!minTime && !maxTime && !organizedBy) {
+        return res.status(400).json({success: false, message: 'filter condition cannot all be empty'});
+    }
+
+    if (minTime)
+        if (Number.isInteger(minTime)) 
+            query.start_time = { $gte: minTime };
         else 
             return res.status(400).json({success: false, message: 'minTime must be a number'});
-    if ('maxTime' in req.body)
-        if (Number.isInteger(req.body.maxTime))
-            query.end_time = { $lte: req.body.maxTime };
+    if (maxTime)
+        if (Number.isInteger(maxTime))
+            query.end_time = { $lte: maxTime };
         else 
             return res.status(400).json({success: false, message: 'maxTime must be a number'});
-    if ('organizedBy' in req.body && req.body.organizedBy) { // organizedBy in request body and its value is not null or empty
-        query.event_organizer = req.body.organizedBy;
+    if (organizedBy) { 
+        query.event_organizer = { $regex: new RegExp("^"+organizedBy+"$", "i") };
     }
 
     SprintReviewItem.find(query, function(err, itemList){

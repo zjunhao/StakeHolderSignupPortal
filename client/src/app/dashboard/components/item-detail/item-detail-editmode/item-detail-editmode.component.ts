@@ -123,7 +123,6 @@ export class ItemDetailEditmodeComponent implements OnInit {
   }
 
   generateEmailRecipients() {
-    console.log('called');
     let res = '';
     
     this.itemDetail.selfSignupAttendees.forEach(attendee => {

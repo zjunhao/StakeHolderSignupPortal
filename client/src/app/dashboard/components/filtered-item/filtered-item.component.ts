@@ -39,14 +39,16 @@ export class FilteredItemComponent implements OnInit {
   }
 
   searchSprintReviews() {
-    this.dashboardService.getFilteredSprintReviewList(this.filterCondition).subscribe(
-      listItems => {
-        this.listItems = listItems;
-      },
-      err => {
-
-      }
-    )
+    if (this.filterCondition.maxTime || this.filterCondition.minTime || this.filterCondition.organizedBy) {
+      this.dashboardService.getFilteredSprintReviewList(this.filterCondition).subscribe(
+        listItems => {
+          this.listItems = listItems;
+        },
+        err => {
+  
+        }
+      )
+    }
   }
 
   navigateToSprintReviewDetail($event) {

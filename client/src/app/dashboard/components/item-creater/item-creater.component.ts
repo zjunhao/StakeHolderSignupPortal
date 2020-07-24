@@ -37,7 +37,6 @@ export class ItemCreaterComponent implements OnInit {
   }
 
   createSprintReview() {
-    console.log(this.newItem.startTime);
     this.formSubmitted = true;
 
     if (this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid 
