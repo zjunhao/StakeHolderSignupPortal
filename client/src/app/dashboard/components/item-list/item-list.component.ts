@@ -1,9 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import { DashboardService } from '../../services/dashboard.service';
-import { ApiListItemModel, ListItemModel } from '../../models/item-list-response-model';
-import { MatDialog } from '@angular/material/dialog';
-import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ListItemModel } from 'src/app/dashboard/models/item-list-response-model';
 
 @Component({
   selector: 'app-item-list',
@@ -12,14 +8,26 @@ import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/del
 })
 export class ItemListComponent implements OnInit {
 
-
   @Input() editMode: boolean;
+  @Input() listItems: ListItemModel[];
 
-  constructor(
-  ) { }
+  // emit item id to navigate to
+  @Output() navigate: EventEmitter<{itemId: string}> = new EventEmitter();
+  // emit item id to delete
+  @Output() delete: EventEmitter<{itemId: string}> = new EventEmitter();
+ 
+  constructor() { }
 
   ngOnInit(): void {
-
   }
 
+  onListItemClick(id: string) {
+    this.navigate.emit({itemId: id});
+  }
+
+  onListItemDelete($event, id:string) {
+    // prevent click event from bubbling up to <tr>
+    $event.stopPropagation();
+    this.delete.emit({itemId: id});
+  }
 }

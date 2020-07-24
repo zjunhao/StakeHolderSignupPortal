@@ -5,7 +5,7 @@
             <app-item-creater *ngIf='editMode' (newItemCreated)='refreshList()'></app-item-creater>
         </div>
         <div class="col-lg-9 col-md-12">
-            <app-item-list [editMode]='editMode'></app-item-list>
+            <app-upcomming-item [editMode]='editMode'></app-upcomming-item>
         </div>
     </div>
 </div>

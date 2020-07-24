@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemListComponent } from '../item-list/item-list.component';
 import { UserPrivilegeEnum } from 'src/app/log-in/enums/user-privilege-enum';
 import { UserService } from 'src/app/log-in/services/user.service';
+import { UpcommingItemComponent } from '../upcomming-item/upcomming-item.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,7 @@ import { UserService } from 'src/app/log-in/services/user.service';
 
 export class DashboardComponent implements OnInit {
   editMode: boolean = false;
-  @ViewChild(ItemListComponent) itemList: ItemListComponent;
+  @ViewChild(UpcommingItemComponent) upcommingItem: UpcommingItemComponent;
   
   constructor(
     private userService: UserService
@@ -31,6 +32,6 @@ export class DashboardComponent implements OnInit {
   }
 
   refreshList() {
-    this.itemList.refreshList();
+    this.upcommingItem.refreshList();
   }
 }

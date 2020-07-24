@@ -17,7 +17,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ItemListComponent } from './components/item-list/item-list.component';
 import { ItemDetailComponent } from './components/item-detail/item-detail.component';
 import { ItemCreaterComponent } from './components/item-creater/item-creater.component';
 import { ItemDetailEditmodeComponent } from './components/item-detail/item-detail-editmode/item-detail-editmode.component';
@@ -25,12 +24,24 @@ import { ItemDetailNoneditmodeComponent } from './components/item-detail/item-de
 import { HeaderBarComponent } from './components/header-bar/header-bar.component';
 import { DateTimeFormatterPipe } from './pipes/date-time-formatter.pipe';
 import { SharedModule } from '../shared/shared.module';
-import { UpcommingItemListComponent } from './components/item-list/upcomming-item-list/upcomming-item-list.component';
-import { FilteredItemListComponent } from './components/item-list/filtered-item-list/filtered-item-list.component';
-import { ItemDisplayComponent } from './components/item-list/item-display/item-display.component';
+import { UpcommingItemComponent } from './components/upcomming-item/upcomming-item.component';
+import { FilteredItemComponent } from './components/filtered-item/filtered-item.component';
+import { ItemListComponent } from './components/item-list/item-list.component';
+
 
 @NgModule({
-  declarations: [ItemListComponent, ItemDetailComponent, DashboardComponent, ItemCreaterComponent, ItemDetailEditmodeComponent, ItemDetailNoneditmodeComponent, HeaderBarComponent, DateTimeFormatterPipe, UpcommingItemListComponent, FilteredItemListComponent, ItemDisplayComponent],
+  declarations: [
+    ItemListComponent, 
+    ItemDetailComponent, 
+    DashboardComponent, 
+    ItemCreaterComponent, 
+    ItemDetailEditmodeComponent, 
+    ItemDetailNoneditmodeComponent, 
+    HeaderBarComponent, 
+    DateTimeFormatterPipe, 
+    UpcommingItemComponent, 
+    FilteredItemComponent, 
+    ItemListComponent],
   imports: [
     CommonModule,
     FormsModule,
