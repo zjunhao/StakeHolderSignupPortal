@@ -18,7 +18,7 @@
           <td class="td-text">{{listItem.startTime | dateTimeFormatter}} - {{listItem.endTime | dateTimeFormatter}}</td>
           <td class="td-text">{{listItem.remainingSlots}}</td>
           <td *ngIf="editMode">
-            <button class="btn btn-sm btn-outline-danger" (click)='onListItemDelete($event, listItem._id)'>Delete</button>
+            <button class="btn btn-sm btn-outline-danger" id="delete-item-btn" (click)='onListItemDelete($event, listItem._id)'>Delete</button>
           </td>
         </tr>
       </ng-container>
