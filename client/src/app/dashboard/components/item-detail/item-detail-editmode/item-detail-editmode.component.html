@@ -41,7 +41,7 @@
         </table>
         <p class="errorMsg">{{totalSlotsErrMsg}}</p>
         <div>
-          <button class="btn btn-outline-info btn-md" (click)="generateEmailRecipients()">Generate email recipients for the event</button>
+          <button class="btn btn-info btn-md" (click)="generateEmailRecipients()">Generate email recipients for the event</button>
           <br>
           <textarea id="email-recipients-text-area" class="col-lg-12 form-control" disabled>{{emailRecipients}}</textarea>
         </div>
@@ -116,7 +116,7 @@
                     <mat-error *ngIf="emailFC.invalid">{{getEmailErrorMessage()}}</mat-error>
                 </mat-form-field>
                 <br>
-                <button id="add-attendee-btn" class="btn btn-sm btn-outline-info" type="submit">Add Attendee</button>
+                <button id="add-attendee-btn" class="btn btn-sm btn-info" type="submit">Add Attendee</button>
                 <button class="btn btn-sm btn-outline-secondary" (click)="resetAddAttendeeForm()">Cancel</button>
             </form>
         </div>
@@ -124,5 +124,5 @@
 </div>
 </div>
 
-<button id="back-btn" class="btn btn-secondary btn-md" routerLink="/dashboard">Back To Dashboard</button>
-<button id="back-btn" class="btn btn-secondary btn-md" routerLink="/itemfilter">Back To Sprint Review Filter</button>
+<button class="btn btn-outline-secondary btn-sm btn-navigation" routerLink="/dashboard">Back To Dashboard</button>
+<button class="btn btn-outline-secondary btn-sm btn-navigation" routerLink="/itemfilter">Back To Sprint Review Filter</button>

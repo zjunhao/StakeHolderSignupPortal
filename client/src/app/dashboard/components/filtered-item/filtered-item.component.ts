@@ -5,6 +5,8 @@ import { ListItemModel } from 'src/app/dashboard/models/item-list-response-model
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { UserService } from 'src/app/log-in/services/user.service';
+import { UserPrivilegeEnum } from 'src/app/log-in/enums/user-privilege-enum';
 
 @Component({
   selector: 'app-filtered-item',
@@ -13,7 +15,7 @@ import { DeleteConfirmationDialogComponent } from 'src/app/shared/components/del
 })
 export class FilteredItemComponent implements OnInit {
 
-  @Input() editMode: boolean;
+  editMode: boolean;
 
   listItems: ListItemModel[];
 
@@ -21,11 +23,19 @@ export class FilteredItemComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
+    private userService: UserService,
     private router: Router,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
+    this.userService.getCurrentUserInfo().subscribe( res => {
+      if (res.success) {
+        this.editMode = res.user.privilege.localeCompare(UserPrivilegeEnum.admin) === 0;
+      } else {
+        console.error('Fail to load current user information');
+      }
+    });
   }
 
   searchSprintReviews() {

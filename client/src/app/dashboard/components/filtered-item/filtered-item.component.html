@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="col-md-8 col-sm-12">
-            <h2 class="text-info text-center">Filtering Sprint Review</h2>
+            <h2 class="text-info text-center" id="title">Filtering Sprint Review</h2>
             <form (submit)="searchSprintReviews()" >
                 <span>Starts between</span>
                 <input name="minTime" type="datetime-local"  [(ngModel)]="filterCondition.minTime">

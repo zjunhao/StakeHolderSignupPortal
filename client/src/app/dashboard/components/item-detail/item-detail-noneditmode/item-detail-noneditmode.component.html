@@ -34,17 +34,17 @@
     <ng-container *ngIf='!userSignedUp'>
         <label class="info-label">You've not signed up yet.</label>
         <br>
-        <button class="signunsignbtn btn btn-md btn-outline-info" (click)='attendeeSignUp()'>Sign me up!</button>
+        <button class="signunsignbtn btn btn-md btn-info" (click)='attendeeSignUp()'>Sign me up!</button>
     </ng-container>
     <!-- Unregister action -->
     <ng-container *ngIf='userSignedUp'>
         <label class="info-label">You've already signed up to this event. Please wait for email invite from organizer.</label>
         <br>
-        <button class="signunsignbtn btn btn-md btn-outline-info" (click)='attendeeUnregister()'>Remove me from attending</button>
+        <button class="signunsignbtn btn btn-md btn-info" (click)='attendeeUnregister()'>Remove me from attending</button>
     </ng-container>
     
     <!-- Routing button -->
     <br>
-    <button class="btn btn-md btn-secondary" routerLink="/dashboard">Back To Dashboard</button>
-    <button class="btn btn-md btn-secondary" routerLink="/itemfilter">Back To Sprint Review Filter</button>
+    <button class="btn btn-sm btn-outline-secondary" routerLink="/dashboard">Back To Dashboard</button>
+    <button class="btn btn-sm btn-outline-secondary" routerLink="/itemfilter">Back To Sprint Review Filter</button>
 </div>
