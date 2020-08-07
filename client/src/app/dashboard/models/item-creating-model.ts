@@ -8,5 +8,6 @@ export class ItemCreatingModel {
     startTime: string;
     endTime: string;
     description: string;
+    detailDescription?: string;
     meetingLink?: string; 
 }

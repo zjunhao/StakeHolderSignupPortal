@@ -82,6 +82,7 @@ export class DashboardService {
       startTime: this.dateTimeFormattingService.toUNIXTimestamp(newSprintReviewRaw.startTime),
       endTime: this.dateTimeFormattingService.toUNIXTimestamp(newSprintReviewRaw.endTime),
       description: newSprintReviewRaw.description,
+      detailDescription: newSprintReviewRaw.detailDescription,
       meetingLink: newSprintReviewRaw.meetingLink
     }
 

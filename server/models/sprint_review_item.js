@@ -42,6 +42,11 @@ const SprintReviewItemSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    // detail description about this sprint review
+    detail_description: {
+        type: String,
+        required: false
+    },
     // id of sprint review attendees signup themselves
     self_signup_attendees_id: {
         type: [String],

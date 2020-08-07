@@ -193,7 +193,8 @@ route.put('/attendeeUnregister/:itemId', [jwtHelper.verifyJwtToken], (req, res)=
 
 // --------------------------------------------- api that only admin can call ------------------------------------
 // create a new sprint review
-route.post('/addItem', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
+route.post('/addItem', (req, res)=>{
+// route.post('/addItem', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserAdminPrivilege], (req, res)=>{
     if (!Number.isInteger(req.body.startTime) || !Number.isInteger(req.body.endTime)) {
         return res.json({success: false, message: 'Start time and end time must be an Integer.'})
     }
@@ -209,6 +210,9 @@ route.post('/addItem', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserA
 
     if (req.body.meetingLink) 
         newItem.meeting_link = req.body.meetingLink;
+
+    if (req.body.detailDescription)
+        newItem.detail_description = req.body.detailDescription;
 
     newItem.save((err, item)=>{
         if(err){

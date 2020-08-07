@@ -15,6 +15,12 @@
         <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error>
       </mat-form-field>   
       <br>
+      <!-- Detail Description -->
+      <mat-form-field appearance="standard" class="form-group">
+        <mat-label>Detail Description</mat-label>
+        <textarea matInput name="detailDescription" [(ngModel)]="newItem.detailDescription"></textarea>
+      </mat-form-field>   
+      <br>
       <!-- Start Time -->
       <div class="form-group">
         <label for="startTime">Start Time *</label>
