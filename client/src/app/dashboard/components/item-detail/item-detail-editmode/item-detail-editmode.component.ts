@@ -216,6 +216,14 @@ export class ItemDetailEditmodeComponent implements OnInit {
       this.refreshItemDetail();
     });
   }
+  onDetailDescriptionUpdate() {
+    if (this.itemDetail.detailDescription !== undefined && this.itemDetail.detailDescription.localeCompare(this.itemDetailOriginal.detailDescription)!==0 ) {
+      const itemId = this.itemDetail._id;
+      this.dashBoardService.updateSprintReview(itemId, "detailDescription", this.itemDetail.detailDescription).subscribe(()=>{
+        this.refreshItemDetail();
+      })
+    }
+  }
   onMeetingLinkUpdate() {
     if (this.itemDetail.meetingLink !== undefined && this.itemDetail.meetingLink.localeCompare(this.itemDetailOriginal.meetingLink)!==0 ) {
       const itemId = this.itemDetail._id;
@@ -223,7 +231,6 @@ export class ItemDetailEditmodeComponent implements OnInit {
         this.refreshItemDetail();
       });
     }
-
   }
 
 }

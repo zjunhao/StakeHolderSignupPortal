@@ -248,6 +248,8 @@ route.put('/updateItem/:id',  [jwtHelper.verifyJwtToken, userIdentityHelper.veri
                 return {$set: { end_time: request.body.endTime }};
             case "description":
                 return {$set: { short_description: request.body.description }};
+            case "detailDescription":
+                return {$set: { detail_description: request.body.detailDescription }};
             case "meetingLink":
                 return {$set: { meeting_link: request.body.meetingLink }};
             default:
