@@ -213,6 +213,7 @@ export class DashboardService {
       startTime: this.dateTimeFormattingService.toLocalDateTimeString(apiItem.startTime),
       endTime: this.dateTimeFormattingService.toLocalDateTimeString(apiItem.endTime),
       description: apiItem.description,
+      detailDescription: apiItem.detailDescription,
       selfSignupAttendees: apiItem.selfSignupAttendees,
       administratorAddedAttendees: apiItem.administratorAddedAttendees,
       meetingLink: apiItem.meetingLink, 

@@ -10,6 +10,7 @@ export class ApiDetailItemModel {
     startTime: number;
     endTime: number;
     description: string;
+    detailDescription?: string;
     selfSignupAttendees?: UserModel[];
     administratorAddedAttendees?: NameEmailModel[];
     meetingLink?: string; 
@@ -23,6 +24,7 @@ export class DetailItemModel {
     startTime: string;
     endTime: string;
     description: string;
+    detailDescription?: string;
     selfSignupAttendees?: UserModel[];
     administratorAddedAttendees?: NameEmailModel[];
     meetingLink?: string; 

@@ -19,9 +19,13 @@
             <td>{{itemDetail.startTime | dateTimeFormatter}} - {{itemDetail.endTime | dateTimeFormatter}}</td>
           </tr>
           <tr>
+            <th scope="row">Event Detail</th>
+            <td>{{itemDetail.detailDescription}}</td>
+          </tr>
+          <!-- <tr>
             <th scope="row">Description</th>
             <td>{{itemDetail.description}}</td>
-          </tr>
+          </tr> -->
           <!-- <tr *ngIf='userSignedUp'>
             <th scope="row">Meeting Link</th>
             <td>{{itemDetail.meetingLink}}</td>
