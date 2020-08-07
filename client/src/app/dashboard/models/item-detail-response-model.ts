@@ -9,7 +9,7 @@ export class ApiDetailItemModel {
     organizer: string;
     startTime: number;
     endTime: number;
-    description: string;
+    shortDescription: string;
     detailDescription?: string;
     selfSignupAttendees?: UserModel[];
     administratorAddedAttendees?: NameEmailModel[];
@@ -23,7 +23,7 @@ export class DetailItemModel {
     organizer: string;
     startTime: string;
     endTime: string;
-    description: string;
+    shortDescription: string;
     detailDescription?: string;
     selfSignupAttendees?: UserModel[];
     administratorAddedAttendees?: NameEmailModel[];

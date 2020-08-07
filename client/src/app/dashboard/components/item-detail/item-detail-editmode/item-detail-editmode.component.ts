@@ -208,11 +208,11 @@ export class ItemDetailEditmodeComponent implements OnInit {
       this.refreshItemDetail();
     });
   }
-  onDescriptionUpdate() {
-    if (this.itemDetailOriginal.description.localeCompare(this.itemDetail.description) === 0) return;
+  onShortDescriptionUpdate() {
+    if (this.itemDetailOriginal.shortDescription.localeCompare(this.itemDetail.shortDescription) === 0) return;
 
     const itemId = this.itemDetail._id;
-    this.dashBoardService.updateSprintReview(itemId, "description", this.itemDetail.description).subscribe(()=>{
+    this.dashBoardService.updateSprintReview(itemId, "shortDescription", this.itemDetail.shortDescription).subscribe(()=>{
       this.refreshItemDetail();
     });
   }

@@ -7,7 +7,7 @@ export class ItemCreatingModel {
     organizer: string;
     startTime: string;
     endTime: string;
-    description: string;
+    shortDescription: string;
     detailDescription?: string;
     meetingLink?: string; 
 }

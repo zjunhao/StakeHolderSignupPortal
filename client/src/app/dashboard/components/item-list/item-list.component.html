@@ -13,7 +13,7 @@
       <ng-container *ngFor="let listItem of listItems">
         <tr (click)='onListItemClick(listItem._id)'>
           <td class="td-text">{{listItem.title}}</td>
-          <td class="td-text">{{listItem.description}}</td>
+          <td class="td-text">{{listItem.shortDescription}}</td>
           <td class="td-text">{{listItem.organizer}}</td>
           <td class="td-text">{{listItem.startTime | dateTimeFormatter}} - {{listItem.endTime | dateTimeFormatter}}</td>
           <td class="td-text">{{listItem.remainingSlots}}</td>

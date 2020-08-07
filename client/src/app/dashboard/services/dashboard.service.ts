@@ -81,7 +81,7 @@ export class DashboardService {
       organizer: newSprintReviewRaw.organizer,
       startTime: this.dateTimeFormattingService.toUNIXTimestamp(newSprintReviewRaw.startTime),
       endTime: this.dateTimeFormattingService.toUNIXTimestamp(newSprintReviewRaw.endTime),
-      description: newSprintReviewRaw.description,
+      shortDescription: newSprintReviewRaw.shortDescription,
       detailDescription: newSprintReviewRaw.detailDescription,
       meetingLink: newSprintReviewRaw.meetingLink
     }
@@ -196,7 +196,7 @@ export class DashboardService {
         startTime: this.dateTimeFormattingService.toLocalDateTimeString(apiItem.startTime),
         endTime: this.dateTimeFormattingService.toLocalDateTimeString(apiItem.endTime),
         remainingSlots: apiItem.remainingSlots,
-        description: apiItem.description,
+        shortDescription: apiItem.shortDescription,
         organizer: apiItem.organizer
       } as ListItemModel;
       items.push(item);
@@ -212,7 +212,7 @@ export class DashboardService {
       organizer: apiItem.organizer,
       startTime: this.dateTimeFormattingService.toLocalDateTimeString(apiItem.startTime),
       endTime: this.dateTimeFormattingService.toLocalDateTimeString(apiItem.endTime),
-      description: apiItem.description,
+      shortDescription: apiItem.shortDescription,
       detailDescription: apiItem.detailDescription,
       selfSignupAttendees: apiItem.selfSignupAttendees,
       administratorAddedAttendees: apiItem.administratorAddedAttendees,

@@ -23,7 +23,7 @@ export class ItemCreaterComponent implements OnInit {
 
   // form controls
   titleFC = new FormControl('', [Validators.required]);
-  descriptionFC = new FormControl('', [Validators.required]);
+  shortDescriptionFC = new FormControl('', [Validators.required]);
   organizerFC = new FormControl('', [Validators.required]);
   totalSlotFC = new FormControl('', [Validators.required, Validators.pattern('\\d+')]);
   startTimeFC = new FormControl('', [Validators.required, Validators.pattern('\\d+-\\d\\d-\\d\\dT\\d\\d:\\d\\d')]);	
@@ -39,7 +39,7 @@ export class ItemCreaterComponent implements OnInit {
   createSprintReview() {
     this.formSubmitted = true;
 
-    if (this.titleFC.valid && this.descriptionFC.valid && this.organizerFC.valid 
+    if (this.titleFC.valid && this.shortDescriptionFC.valid && this.organizerFC.valid 
       && this.totalSlotFC.valid &&this.startTimeFC.valid && this.endTimeFC.valid ) {
       this.dashboardService.addSprintReview(this.newItem).subscribe( res => {
         if (res.success) {
@@ -57,7 +57,7 @@ export class ItemCreaterComponent implements OnInit {
     this.formSubmitted = false;
 
     this.titleFC.reset();
-    this.descriptionFC.reset();  
+    this.shortDescriptionFC.reset();  
     this.organizerFC.reset();  
     this.totalSlotFC.reset();  
     this.startTimeFC.reset();  
@@ -70,8 +70,8 @@ export class ItemCreaterComponent implements OnInit {
   getTitleErrorMessage() {
     return 'Title cannot be empty';
   }
-  getDescriptionErrorMessage() {
-    return 'Description cannot be empty'
+  getShortDescriptionErrorMessage() {
+    return 'Short description cannot be empty'
   }
   getOrganizerErrorMessage() {
     return 'Organizer cannot be empty'

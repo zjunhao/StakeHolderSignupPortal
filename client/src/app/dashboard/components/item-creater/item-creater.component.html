@@ -11,8 +11,8 @@
       <!-- Short Description -->
       <mat-form-field appearance="standard" class="form-group">
         <mat-label>Short Description</mat-label>
-        <textarea matInput name="description" [(ngModel)]="newItem.description" [formControl]="descriptionFC" required></textarea>
-        <mat-error *ngIf="descriptionFC.invalid">{{getDescriptionErrorMessage()}}</mat-error>
+        <textarea matInput name="shortDescription" [(ngModel)]="newItem.shortDescription" [formControl]="shortDescriptionFC" required></textarea>
+        <mat-error *ngIf="shortDescriptionFC.invalid">{{getShortDescriptionErrorMessage()}}</mat-error>
       </mat-form-field>   
       <br>
       <!-- Detail Description -->

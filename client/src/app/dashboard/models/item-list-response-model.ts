@@ -5,7 +5,7 @@ export class ApiListItemModel {
     startTime: number;
     endTime: number;
     remainingSlots: number;
-    description: string;
+    shortDescription: string;
     organizer: string;
 }
 
@@ -15,6 +15,6 @@ export class ListItemModel {
     startTime: string;
     endTime: string;
     remainingSlots: number;
-    description: string;
+    shortDescription: string;
     organizer: string;
 }

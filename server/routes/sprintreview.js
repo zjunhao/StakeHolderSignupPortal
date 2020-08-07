@@ -23,7 +23,7 @@ route.get('/getItemList', [jwtHelper.verifyJwtToken], (req, res) => {
                     startTime: item.start_time,
                     endTime: item.end_time,
                     remainingSlots: item.total_slots - item.self_signup_attendees_id.length,
-                    description: item.short_description,
+                    shortDescription: item.short_description,
                     organizer: item.event_organizer
                 }
                 trimItemList.push(trimItem);
@@ -71,7 +71,7 @@ route.post('/getFilteredItemList', [jwtHelper.verifyJwtToken], (req, res) => {
                     startTime: item.start_time,
                     endTime: item.end_time,
                     remainingSlots: item.total_slots - item.self_signup_attendees_id.length,
-                    description: item.short_description,
+                    shortDescription: item.short_description,
                     organizer: item.event_organizer
                 }
                 trimItemList.push(trimItem);
@@ -114,7 +114,7 @@ route.get('/getItem/:id', [jwtHelper.verifyJwtToken], (req, res) => {
                         organizer: itemDetailRaw.event_organizer,
                         startTime: itemDetailRaw.start_time,
                         endTime: itemDetailRaw.end_time,
-                        description: itemDetailRaw.short_description,
+                        shortDescription: itemDetailRaw.short_description,
                         detailDescription: itemDetailRaw.detail_description,
                         selfSignupAttendees: attendeesInfo,
                         administratorAddedAttendees: itemDetailRaw.administrator_added_attendees,
@@ -203,7 +203,7 @@ route.post('/addItem', [jwtHelper.verifyJwtToken, userIdentityHelper.verifyUserA
         title: req.body.title,
         total_slots: req.body.totalSlots,
         event_organizer: req.body.organizer,
-        short_description: req.body.description,
+        short_description: req.body.shortDescription,
         start_time: req.body.startTime,
         end_time: req.body.endTime
     });
@@ -246,8 +246,8 @@ route.put('/updateItem/:id',  [jwtHelper.verifyJwtToken, userIdentityHelper.veri
                 return {$set: { start_time: request.body.startTime }};
             case "endTime":
                 return {$set: { end_time: request.body.endTime }};
-            case "description":
-                return {$set: { short_description: request.body.description }};
+            case "shortDescription":
+                return {$set: { short_description: request.body.shortDescription }};
             case "detailDescription":
                 return {$set: { detail_description: request.body.detailDescription }};
             case "meetingLink":
