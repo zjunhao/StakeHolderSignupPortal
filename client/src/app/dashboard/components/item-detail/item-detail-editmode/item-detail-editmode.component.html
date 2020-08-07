@@ -7,11 +7,11 @@
             <tbody>
               <tr>
                 <th scope="row">Title</th>
-                <td><textarea id="title" class="form-control" (blur)="onTitleUpdate()" [(ngModel)]="itemDetail.title"></textarea></td>
+                <td><input id="title" class="form-control" (blur)="onTitleUpdate()" [(ngModel)]="itemDetail.title"></td>
               </tr>
               <tr>
                 <th scope="row">Organizer</th>
-                <td><textarea id="organizer" class="form-control" (blur)="onOrganzerUpdate()" [(ngModel)]="itemDetail.organizer"></textarea></td>
+                <td><input id="organizer" class="form-control" (blur)="onOrganzerUpdate()" [(ngModel)]="itemDetail.organizer"></td>
               </tr>
               <tr>
                 <th scope="row">Start Time</th>
@@ -27,7 +27,7 @@
               </tr>
               <tr>
                 <th scope="row">Detail Description</th>
-                <td><textarea id="detailDescription" class="form-control" (blur)="onDetailDescriptionUpdate()" [(ngModel)]="itemDetail.detailDescription"></textarea></td>
+                <td><textarea id="detailDescription" class="form-control textarea-md" (blur)="onDetailDescriptionUpdate()" [(ngModel)]="itemDetail.detailDescription"></textarea></td>
               </tr>
               <!-- <tr>
                 <th scope="row">Meeting Link</th>

@@ -2,23 +2,23 @@
   <form #creationForm (submit)="createSprintReview()">
       <h3 class="text-info">Create New Sprint Review</h3>
       <!-- Title  -->
-      <mat-form-field appearance="standard" class="form-group">
+      <mat-form-field appearance="standard" class="form-group form-field">
         <mat-label>Title</mat-label>
         <input matInput name="eventtitle" [(ngModel)]="newItem.title" [formControl]="titleFC" required>
         <mat-error *ngIf="titleFC.invalid">{{getTitleErrorMessage()}}</mat-error>
       </mat-form-field>
       <br>
       <!-- Short Description -->
-      <mat-form-field appearance="standard" class="form-group">
+      <mat-form-field appearance="standard" class="form-group form-field">
         <mat-label>Short Description</mat-label>
         <textarea matInput name="shortDescription" [(ngModel)]="newItem.shortDescription" [formControl]="shortDescriptionFC" required></textarea>
         <mat-error *ngIf="shortDescriptionFC.invalid">{{getShortDescriptionErrorMessage()}}</mat-error>
       </mat-form-field>   
       <br>
       <!-- Detail Description -->
-      <mat-form-field appearance="standard" class="form-group">
+      <mat-form-field appearance="standard" class="form-group form-field">
         <mat-label>Detail Description</mat-label>
-        <textarea matInput name="detailDescription" [(ngModel)]="newItem.detailDescription"></textarea>
+        <textarea matInput name="detailDescription" id="detail-description-text-area" [(ngModel)]="newItem.detailDescription"></textarea>
       </mat-form-field>   
       <br>
       <!-- Start Time -->
@@ -36,14 +36,14 @@
       </div>
       <br>
       <!-- Organizer -->
-      <mat-form-field appearance="standard" class="form-group">
+      <mat-form-field appearance="standard" class="form-group form-field">
         <mat-label>Event Organizer</mat-label>
         <input matInput name="organizer" [(ngModel)]="newItem.organizer" [formControl]="organizerFC" required>
         <mat-error *ngIf="organizerFC.invalid">{{getOrganizerErrorMessage()}}</mat-error>
       </mat-form-field>   
       <br>
       <!-- Total Slots -->
-      <mat-form-field appearance="standard" class="form-group">
+      <mat-form-field appearance="standard" class="form-group form-field">
         <mat-label>Total Slots</mat-label>
         <input matInput name="slots" [(ngModel)]="newItem.totalSlots" [formControl]="totalSlotFC" required>
         <mat-error *ngIf="totalSlotFC.invalid">{{getTotalSlotsErrorMessage()}}</mat-error>
